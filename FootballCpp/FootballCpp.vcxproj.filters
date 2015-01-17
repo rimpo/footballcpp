@@ -13,24 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Source Files\Util">
-      <UniqueIdentifier>{619f5eb9-e969-4827-9ae3-e3ed76e6a183}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Strategy">
-      <UniqueIdentifier>{e0731b64-ceed-40df-8669-96d23cba4e6b}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\Player">
-      <UniqueIdentifier>{be62285a-32d2-4371-9d24-b0dd757e0c13}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Player">
-      <UniqueIdentifier>{3a5546cc-32ff-4195-a132-59791918871a}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Util">
-      <UniqueIdentifier>{943e98da-f28a-47b1-816e-455cc5e99678}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Strategy">
-      <UniqueIdentifier>{bcfdd036-ac7e-478b-bb6c-290ee18d15db}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <Text Include="ReadMe.txt" />
@@ -57,32 +39,32 @@
     <ClInclude Include="Action.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="strategy\StrategyAI.h">
-      <Filter>Header Files\Strategy</Filter>
+    <ClInclude Include="CounterAttackerAI.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util\Position.h">
-      <Filter>Header Files\Util</Filter>
+    <ClInclude Include="CounterAttackerState.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="util\Vector.h">
-      <Filter>Header Files\Util</Filter>
+    <ClInclude Include="GoalkeeperState.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player\Player.h">
-      <Filter>Header Files\Player</Filter>
+    <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player\PlayerState.h">
-      <Filter>Header Files\Player</Filter>
+    <ClInclude Include="PlayerState.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="strategy\CounterAttackerAI.h">
-      <Filter>Header Files\Strategy</Filter>
+    <ClInclude Include="Position.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Util\Util.h">
-      <Filter>Header Files\Util</Filter>
+    <ClInclude Include="StrategyAI.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player\GoalkeeperState.h">
-      <Filter>Header Files\Player</Filter>
+    <ClInclude Include="Util.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="player\CounterAttackerState.h">
-      <Filter>Header Files\Player</Filter>
+    <ClInclude Include="Vector.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -107,32 +89,32 @@
     <ClCompile Include="Action.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player\Player.cpp">
-      <Filter>Source Files\Player</Filter>
+    <ClCompile Include="CounterAttackerAI.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="strategy\StrategyAI.cpp">
-      <Filter>Source Files\Strategy</Filter>
+    <ClCompile Include="CounterAttackerState.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util\Position.cpp">
-      <Filter>Source Files\Util</Filter>
+    <ClCompile Include="GoalKeeperState.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="util\Vector.cpp">
-      <Filter>Source Files\Util</Filter>
+    <ClCompile Include="Player.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player\PlayerState.cpp">
-      <Filter>Source Files\Player</Filter>
+    <ClCompile Include="PlayerState.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="strategy\CounterAttackerAI.cpp">
-      <Filter>Source Files\Strategy</Filter>
+    <ClCompile Include="Position.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Util\Util.cpp">
-      <Filter>Source Files\Util</Filter>
+    <ClCompile Include="StrategyAI.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player\GoalKeeperState.cpp">
-      <Filter>Source Files\Player</Filter>
+    <ClCompile Include="Util.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="player\CounterAttackerState.cpp">
-      <Filter>Source Files\Player</Filter>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

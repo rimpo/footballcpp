@@ -81,41 +81,41 @@
   <ItemGroup>
     <ClInclude Include="Action.h" />
     <ClInclude Include="Ball.h" />
+    <ClInclude Include="CounterAttackerAI.h" />
+    <ClInclude Include="CounterAttackerState.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="GoalkeeperState.h" />
     <ClInclude Include="Pitch.h" />
-    <ClInclude Include="player\CounterAttackerState.h" />
-    <ClInclude Include="player\GoalkeeperState.h" />
-    <ClInclude Include="player\Player.h" />
-    <ClInclude Include="player\PlayerState.h" />
+    <ClInclude Include="Player.h" />
+    <ClInclude Include="PlayerState.h" />
+    <ClInclude Include="Position.h" />
     <ClInclude Include="stdafx.h" />
-    <ClInclude Include="strategy\CounterAttackerAI.h" />
-    <ClInclude Include="strategy\StrategyAI.h" />
+    <ClInclude Include="StrategyAI.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="Team.h" />
-    <ClInclude Include="util\Position.h" />
-    <ClInclude Include="Util\Util.h" />
-    <ClInclude Include="util\Vector.h" />
+    <ClInclude Include="Util.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Ball.cpp" />
+    <ClCompile Include="CounterAttackerAI.cpp" />
+    <ClCompile Include="CounterAttackerState.cpp" />
     <ClCompile Include="FootballCpp.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GoalKeeperState.cpp" />
     <ClCompile Include="Pitch.cpp" />
-    <ClCompile Include="player\CounterAttackerState.cpp" />
-    <ClCompile Include="player\GoalKeeperState.cpp" />
-    <ClCompile Include="player\Player.cpp" />
-    <ClCompile Include="player\PlayerState.cpp" />
+    <ClCompile Include="Player.cpp" />
+    <ClCompile Include="PlayerState.cpp" />
+    <ClCompile Include="Position.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="strategy\CounterAttackerAI.cpp" />
-    <ClCompile Include="strategy\StrategyAI.cpp" />
+    <ClCompile Include="StrategyAI.cpp" />
     <ClCompile Include="Team.cpp" />
-    <ClCompile Include="util\Position.cpp" />
-    <ClCompile Include="Util\Util.cpp" />
-    <ClCompile Include="util\Vector.cpp" />
+    <ClCompile Include="Util.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

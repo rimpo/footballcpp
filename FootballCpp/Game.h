@@ -5,7 +5,7 @@
 #include"Ball.h"
 #include"Action.h"
 
-#include"./strategy/CounterAttackerAI.h"
+#include"CounterAttackerAI.h"
 
 #define MAX_NO_OF_PLAYERS  12
 #define GAME_AI_CALCULATION_INTERVAL  0.01

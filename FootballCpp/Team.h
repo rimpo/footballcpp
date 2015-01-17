@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./player/Player.h"
+#include "Player.h"
 
 class CTeam
 {

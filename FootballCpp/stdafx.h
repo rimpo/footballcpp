@@ -24,7 +24,7 @@ using namespace rapidjson;
 using namespace std;
 
 
-#include"util/Util.h"
+#include"Util.h"
 #include"Game.h"
 
 CGame& GetGame();

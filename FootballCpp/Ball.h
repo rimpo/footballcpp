@@ -1,7 +1,7 @@
 #pragma once
 
-#include "./util/Position.h"
-#include "./util/Vector.h"
+#include "Position.h"
+#include "Vector.h"
 
 
 class CBall

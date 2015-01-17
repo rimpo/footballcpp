@@ -1,6 +1,6 @@
 #pragma once
 
-#include "./util/Position.h"
+#include "Position.h"
 
 class CPitch
 {
