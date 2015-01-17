@@ -5,7 +5,7 @@
 class CGoalKeeperIdleState : public CPlayerState
 {
 public:
-	CGoalKeeperIdleState() { type_ = eGoalKeeperIdle; }
+	CGoalKeeperIdleState(): CPlayerState(eGoalKeeperIdle) { }
 
 	void Execute(CPlayer* pPlayer);
 };
@@ -14,7 +14,7 @@ public:
 class CGoalKeeperGuardState : public CPlayerState
 {
 public:
-	CGoalKeeperGuardState() { type_ = eGoalKeeperGuardState; }
+	CGoalKeeperGuardState() : CPlayerState(eGoalKeeperGuardState){}
 
 	void Execute(CPlayer* pPlayer);
 };
@@ -23,7 +23,7 @@ public:
 class CGoalKeeperInterceptBall : public CPlayerState
 {
 public:
-	CGoalKeeperInterceptBall() { type_ = eGoalKeeperInterceptBall; }
+	CGoalKeeperInterceptBall() : CPlayerState(eGoalKeeperInterceptBall){}
 
 	 void Execute(CPlayer* pPlayer);
 };
@@ -31,7 +31,7 @@ public:
 class CGoalKeeperTakePossession : public CPlayerState
 {
 public:
-	CGoalKeeperTakePossession() { type_ = eGoalKeeperTakePossession; }
+	CGoalKeeperTakePossession() : CPlayerState(eGoalKeeperTakePossession){}
 
 	void Execute(CPlayer* pPlayer);
 };
@@ -40,7 +40,7 @@ public:
 class CGoalKeeperKickBall : public CPlayerState
 {
 public:
-	CGoalKeeperKickBall() { type_ = eGoalKeeperKickBall; }
+	CGoalKeeperKickBall(): CPlayerState(eGoalKeeperKickBall){}
 
 	void Execute(CPlayer* pPlayer);
 };
@@ -48,7 +48,7 @@ public:
 class CGoalKeeperChaseBall : public CPlayerState
 {
 public:
-	CGoalKeeperChaseBall() { type_ = eGoalKeeperChaseBall; }
+	CGoalKeeperChaseBall(): CPlayerState(eGoalKeeperChaseBall){}
 
 	void Execute(CPlayer* pPlayer);
 };

@@ -9,11 +9,11 @@ class CPlayerState
 {
 public:
 	typedef vector<CPlayerState> Vec;
-	typedef shared_ptr<CPlayerState> Ptr;
+	typedef CPlayerState* Ptr;
 	typedef vector<Ptr> PtrVec;
 
 	enum ePlayerStateType{
-		eIdle,
+		eIdle = 0,
 		eShootAtGoal,
 		eGoToHome,
 		eGoToAttack,
@@ -28,68 +28,29 @@ public:
 		eGoalKeeperKickBall,
 		eGoalKeeperInterceptBall,
 		//----------- counter attacker
-		eCounterAttackerIdle,
-		eCounterAttackerGoHome,
-		eCounterAttackerInterceptBall,
-		eCounterAttackerDefend,
-		eCounterAttackerChaseBall,
-		eCounterAttackerTakePossession
+		eCounterAttackerDefenderIdle,
+		eCounterAttackerDefenderGoHome,
+		eCounterAttackerDefenderInterceptBall,
+		eCounterAttackerDefenderDefend,
+		eCounterAttackerDefenderChaseBall,
+		eCounterAttackerDefenderTakePossession,
+		
+		//Note: add new state above this
+		eLastStateIndex
 	};
 
-	CPlayerState();
+	CPlayerState(int type);
 
-	int GetType() { return type_ = eIdle; }
+	int GetType() { return type_; }
 
 	virtual void Execute(CPlayer* pPlayer) {};
 
 	static CPlayerState *GlobalPlayerState(int type);
-	
+	static PtrVec globalPlayerStates;
 protected:
 	int type_;
 	CGame& game_;
 	CPitch& pitch_;
 	CBall& ball_;
-};
-
-typedef CPlayerState CIdleState;
-
-class CShootAtGoalState : public CPlayerState
-{
-public:
-	CShootAtGoalState() { type_ = eShootAtGoal; }
-
-	virtual void Execute(CPlayer* pPlayer);
-};
-
-class CGoToHomePositionState : public CPlayerState
-{
-public:
-	CGoToHomePositionState() { type_ = eGoToHome; }
-
-	virtual void Execute(CPlayer* pPlayer);
-};
-
-class CGoToAttackPositionState : public CPlayerState
-{
-public:
-	CGoToAttackPositionState() { type_ = eGoToAttack; }
-
-	virtual void Execute(CPlayer* pPlayer);
-};
-
-class CShortKickState : public CPlayerState
-{
-public:
-	CShortKickState() { type_ = eShortKick; }
-
-	virtual void Execute(CPlayer* pPlayer);
-};
-
-class CChaseBallState : public CPlayerState
-{
-public:
-	CChaseBallState() { type_ = eChaseBall; }
-	
-	virtual void Execute(CPlayer* pPlayer);
 };
 

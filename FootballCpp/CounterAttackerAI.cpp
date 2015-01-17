@@ -78,11 +78,11 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 
 		if (pPlayer->GetType() == CPlayer::eLeftDefender)
 		{
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerIdle);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderIdle);
 		}
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerIdle);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderIdle);
 		}
 	}
 

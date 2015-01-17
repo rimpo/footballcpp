@@ -2,37 +2,43 @@
 
 #include "PlayerState.h"
 
-class CCounterAttackerIdleState : public CPlayerState
+class CCounterAttackerDefenderIdleState : public CPlayerState
 {
 public:
-	void Execute(CPlayer *pPlayer);
-};
-class CCounterAttackerReceivePassState : public CPlayerState
-{
-	public:
+	CCounterAttackerDefenderIdleState() : CPlayerState(CPlayerState::eCounterAttackerDefenderIdle){}
+	
 	void Execute(CPlayer *pPlayer);
 };
 
-class CCounterAttackerGoHomeState : public CPlayerState
+
+class CCounterAttackerDefenderGoHomeState : public CPlayerState
 {
 public:
+	CCounterAttackerDefenderGoHomeState() : CPlayerState(CPlayerState::eCounterAttackerDefenderGoHome){}
+
 	void Execute(CPlayer *pPlayer);
 };
 
-class CCounterAttackerDefendState : public CPlayerState
+class CCounterAttackerDefenderDefendState : public CPlayerState
 {
 public:
+	CCounterAttackerDefenderDefendState() : CPlayerState(CPlayerState::eCounterAttackerDefenderDefend){}
+	
 	void Execute(CPlayer *pPlayer);
 };
 
-class CCounterAttackerChaseBallState : public CPlayerState
+class CCounterAttackerDefenderChaseBallState : public CPlayerState
 {
 public:
+	CCounterAttackerDefenderChaseBallState() : CPlayerState(CPlayerState::eCounterAttackerDefenderChaseBall){}
+	
 	void Execute(CPlayer *pPlayer);
 };
 
-class CCounterAttackerTakePossessionState : public CPlayerState
+class CCounterAttackerDefenderTakePossessionState : public CPlayerState
 {
 public:
+	CCounterAttackerDefenderTakePossessionState() : CPlayerState(CPlayerState::eCounterAttackerDefenderTakePossession){}
+	
 	void Execute(CPlayer *pPlayer);
 };

@@ -2,16 +2,16 @@
 #include "CounterAttackerDefenderState.h"
 
 
-void CCounterAttackerIdleState::Execute(CPlayer* pPlayer)
+void CCounterAttackerDefenderIdleState::Execute(CPlayer* pPlayer)
 {
 	if (ball_.IsTheirTeamControlling())
 	{
 		//pPlayer->MoveTo(pPlayer->GetHomePosition());
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefend);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
 	}
 }
 
-void CCounterAttackerGoHomeState::Execute(CPlayer* pPlayer)
+void CCounterAttackerDefenderGoHomeState::Execute(CPlayer* pPlayer)
 {
 	if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(), POSITION_TOLERANCE))
 	{
@@ -19,14 +19,14 @@ void CCounterAttackerGoHomeState::Execute(CPlayer* pPlayer)
 	}
 }
 
-void CCounterAttackerDefendState::Execute(CPlayer* pPlayer)
+void CCounterAttackerDefenderDefendState::Execute(CPlayer* pPlayer)
 {
 	if (pPlayer->GetNumber() == game_.GetClosestPlayer()->GetNumber())
 	{
 		if (ball_.GetStationaryPosition().x_ < 28.0)
 		{
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerChaseBall);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderChaseBall);
 			return;
 		}
 	}
@@ -66,14 +66,14 @@ void CCounterAttackerDefendState::Execute(CPlayer* pPlayer)
 	}
 }
 
-void CCounterAttackerChaseBallState::Execute(CPlayer *pPlayer)
+void CCounterAttackerDefenderChaseBallState::Execute(CPlayer *pPlayer)
 {
 	//ball in range take possession
 	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
 	if (distanceFromBall < 0.5)
 	{
 		pPlayer->TakePossession();
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerTakePossession);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
 		return;
 	}
 	else if (!ball_.HasOwner())	// no owner
@@ -81,21 +81,21 @@ void CCounterAttackerChaseBallState::Execute(CPlayer *pPlayer)
 		if (ball_.GetStationaryPosition().x_ < 28.0)
 		{
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
-			//pPlayer->ChangeState(CPlayerState::eCounterAttackerChaseBall);
+			//pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderChaseBall);
 		}
 		else
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefend);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
 	}
 	else if (ball_.IsTheirTeamControlling()) // not our team member
 	{
 		//possession is not with our team..hell! go run.. gaurd goal.
 		//pPlayer->MoveToGuardGoal();
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefend);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
 	}
 
 }
 
-void CCounterAttackerTakePossessionState::Execute(CPlayer* pPlayer)
+void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 {
 	//ball in range take possession
 	if (ball_.GetOwner() == pPlayer->GetNumber())
@@ -104,18 +104,18 @@ void CCounterAttackerTakePossessionState::Execute(CPlayer* pPlayer)
 		// For testing - kick towards centre (clearance)
 		pPlayer->Kick(pitch_.GetOurGoalCentre(), 100.0);
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefend);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
 		return;
 	}
 	else if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
 		pPlayer->TakePossession();
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerTakePossession);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
 		return;
 	}
 	else if (ball_.IsTheirTeamControlling())
 	{
 		//pPlayer->MoveToGuardGoal();
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefend);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
 	}
 }
