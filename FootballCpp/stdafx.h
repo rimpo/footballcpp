@@ -8,7 +8,10 @@
 #include "targetver.h"
 
 #include <stdio.h>
+
+#ifdef _WIN32
 #include <tchar.h>
+#endif
 
 #include "rapidjson/document.h"
 #include "rapidjson/prettywriter.h"
@@ -27,7 +30,7 @@ using namespace std;
 #include"Util.h"
 #include"Game.h"
 
-CGame& GetGame();
+CGame& GetGame();	
 
 
 

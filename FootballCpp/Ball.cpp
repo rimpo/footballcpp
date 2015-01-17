@@ -68,14 +68,12 @@ bool CBall::IsHittingOurGoal(const Position& targetPos)
 {
 	auto pitch = GetGame().GetPitch();
 	
-	Position p1 ={ 0.0, pitch.GetGoalY1()-1 };
-	Position p2 = { 0.0, pitch.GetGoalY2()+1 };
 	
 	Position intersection, ballStationary;
-	float timeTaken = 0.0;
+	//float timeTaken = 0.0;
 
 		
-	return GetLineIntersection(p1, p2, pos_, targetPos, intersection);
+	return GetLineIntersection(pitch.GetOurGoalY1(), pitch.GetOurGoalY2(), pos_, targetPos, intersection);
 }
 
 void CBall::CorrectToCatchBall_Early(Position& dest,float& timetaken)

@@ -42,7 +42,7 @@ public:
 
 	virtual void Execute(CPlayer* pPlayer) {};
 
-	static CPlayerState *CPlayerState::GlobalPlayerState(int type);
+	static CPlayerState *GlobalPlayerState(int type);
 	
 protected:
 	int type_;

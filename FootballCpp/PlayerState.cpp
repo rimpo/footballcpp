@@ -3,7 +3,7 @@
 
 #include "Player.h"
 #include "GoalkeeperState.h"
-#include "CounterAttackerState.h"
+#include "CounterAttackerDefenderState.h"
 
 CIdleState gIdleState;
 CShootAtGoalState gShootAtGoalState;
