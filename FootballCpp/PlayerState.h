@@ -5,6 +5,7 @@ class CGame;
 class CPitch;
 class CBall;
 
+
 class CPlayerState
 {
 public:
@@ -14,6 +15,7 @@ public:
 
 	enum ePlayerStateType{
 		eIdle = 0,
+		eDead,
 		eShootAtGoal,
 		eGoToHome,
 		eGoToAttack,
@@ -22,12 +24,13 @@ public:
 		eInterceptPass,
 		//----------- goal keeper
 		eGoalKeeperIdle,
-		eGoalKeeperGuardState,
+		eGoalKeeperGuard,
 		eGoalKeeperChaseBall,
 		eGoalKeeperTakePossession,
 		eGoalKeeperKickBall,
 		eGoalKeeperInterceptBall,
-		//----------- counter attacker
+		
+		//-- counter attacker - defender
 		eCounterAttackerDefenderIdle,
 		eCounterAttackerDefenderGoHome,
 		eCounterAttackerDefenderInterceptBall,
@@ -35,6 +38,15 @@ public:
 		eCounterAttackerDefenderChaseBall,
 		eCounterAttackerDefenderTakePossession,
 		
+		//-- counter attacker - striker
+		eCounterAttackerStrikerIdle,
+		eCounterAttackerStrikerGoHome,
+		eCounterAttackerStrikerInterceptBall,
+		eCounterAttackerStrikerDefend,
+		eCounterAttackerStrikerChaseBall,
+		eCounterAttackerStrikerTakePossession,
+		eCounterAttackerStrikerShortKick,
+			
 		//Note: add new state above this
 		eLastStateIndex
 	};
@@ -43,9 +55,12 @@ public:
 
 	int GetType() { return type_; }
 
-	virtual void Execute(CPlayer* pPlayer) {};
+	virtual void Execute(CPlayer* pPlayer) {}
 
 	static CPlayerState *GlobalPlayerState(int type);
+	
+	static void	InitGlobalPlayerStateVector();
+	
 	static PtrVec globalPlayerStates;
 protected:
 	int type_;
@@ -54,3 +69,11 @@ protected:
 	CBall& ball_;
 };
 
+
+class CDeadState : public CPlayerState
+{
+public:	
+	CDeadState() : CPlayerState(CPlayerState::eDead) {}
+	
+	void Execute(CPlayer* pPlayer) {}
+};

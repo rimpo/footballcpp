@@ -76,7 +76,7 @@ void CCounterAttackerDefenderChaseBallState::Execute(CPlayer *pPlayer)
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
 		return;
 	}
-	else if (!ball_.HasOwner())	// no owner
+	else if (ball_.IsFreeBall())	// no owner
 	{
 		if (ball_.GetStationaryPosition().x_ < 28.0)
 		{

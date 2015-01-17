@@ -66,7 +66,7 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 	auto goalKeeperPtr = GetGame().GetOurTeamPtr()->GetGoalKeeper();
 
 	goalKeeperPtr->SetType(eGoalKeeper);
-	goalKeeperPtr->ChangeState(CPlayerState::eGoalKeeperGuardState);
+	goalKeeperPtr->ChangeState(CPlayerState::eGoalKeeperGuard);
 	
 
 	auto ourTeamNonGKPlayers = GetGame().GetOurTeamPtr()->GetNonGoalKeepers();
@@ -83,6 +83,10 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderIdle);
+		}
+		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
+		{
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}
 	}
 

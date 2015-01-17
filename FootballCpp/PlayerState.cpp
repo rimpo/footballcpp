@@ -4,20 +4,8 @@
 #include "Player.h"
 #include "GoalkeeperState.h"
 #include "CounterAttackerDefenderState.h"
+#include "CounterAttackerStrikerState.h"
 
-
-CGoalKeeperIdleState gGKIdleState;
-CGoalKeeperGuardState gGKGuardState;
-CGoalKeeperInterceptBall gGKInterceptState;
-CGoalKeeperTakePossession gGKTakePossession;
-CGoalKeeperKickBall gGKKickBall;
-CGoalKeeperChaseBall gGKChaseBall;
-
-CCounterAttackerDefenderIdleState gCAIdleState;
-CCounterAttackerDefenderGoHomeState gCAGoHomeState;
-CCounterAttackerDefenderDefendState gCADefendState;
-CCounterAttackerDefenderChaseBallState gCAChaseBallState;
-CCounterAttackerDefenderTakePossessionState gCATakePossessionState;
 
 CPlayerState::PtrVec CPlayerState::globalPlayerStates;
 
@@ -27,13 +15,7 @@ CPlayerState::CPlayerState(int type) : type_(type),
 									   pitch_(GetGame().GetPitch()),
 									   ball_(GetGame().GetBall())
 {
-	//pre-allocate the whole vector
-	if (globalPlayerStates.empty())
-	{
-		globalPlayerStates.resize(CPlayerState::eLastStateIndex);
-	}
-	
-	globalPlayerStates[type_] = this;
+
 }
 
 CPlayerState *CPlayerState::GlobalPlayerState(int type)
@@ -44,3 +26,42 @@ CPlayerState *CPlayerState::GlobalPlayerState(int type)
 	return nullptr;
 }
 
+
+void CPlayerState::InitGlobalPlayerStateVector()
+{
+		//pre-allocate the whole vector
+	if (globalPlayerStates.empty())
+	{
+		globalPlayerStates.resize(CPlayerState::eLastStateIndex);
+	}
+	
+	
+	globalPlayerStates[eIdle] = nullptr,
+	globalPlayerStates[eDead] = new CDeadState;
+	
+	//----------- goal keeper
+	globalPlayerStates[eGoalKeeperIdle] 					= new CGoalKeeperIdleState;
+	globalPlayerStates[eGoalKeeperGuard] 					= new CGoalKeeperGuardState;
+	globalPlayerStates[eGoalKeeperChaseBall] 				= new CGoalKeeperChaseBallState;
+	globalPlayerStates[eGoalKeeperTakePossession] 			= new CGoalKeeperTakePossessionState;
+	globalPlayerStates[eGoalKeeperKickBall] 				= new CGoalKeeperKickBallState;
+	globalPlayerStates[eGoalKeeperInterceptBall] 			= new CGoalKeeperInterceptBallState;
+		
+	//-- counter attacker - defender
+	globalPlayerStates[eCounterAttackerDefenderIdle]   		= new CCounterAttackerDefenderIdleState;
+	globalPlayerStates[eCounterAttackerDefenderGoHome]		= new CCounterAttackerDefenderGoHomeState;
+	//globalPlayerStates[eCounterAttackerDefenderInterceptBall] = new CCounterAttackerDefenderInterceptBallState;
+	globalPlayerStates[eCounterAttackerDefenderDefend]		= new CCounterAttackerDefenderDefendState;
+	globalPlayerStates[eCounterAttackerDefenderChaseBall]	= new CCounterAttackerDefenderChaseBallState;
+	globalPlayerStates[eCounterAttackerDefenderTakePossession] = new CCounterAttackerDefenderTakePossessionState;
+		
+	//-- counter attacker - striker
+	globalPlayerStates[eCounterAttackerStrikerIdle]			 = new CCounterAttackerStrikerIdleState;
+	//globalPlayerStates[eCounterAttackerStrikerGoHome]		 = new CCounterAttackerStrikerGoHomeState;
+	//globalPlayerStates[eCounterAttackerStrikerInterceptBall] = new CCounterAttackerStrikerInterceptBallState;
+	//globalPlayerStates[eCounterAttackerStrikerDefend]		 = new CCounterAttackerStrikerDefendState;
+	globalPlayerStates[eCounterAttackerStrikerChaseBall]	 = new CCounterAttackerStrikerChaseBallState;
+	globalPlayerStates[eCounterAttackerStrikerTakePossession] = new CCounterAttackerStrikerTakePossessionState;
+	globalPlayerStates[eCounterAttackerStrikerShortKick]	 = new CCounterAttackerStrikerShortKickState;
+
+}

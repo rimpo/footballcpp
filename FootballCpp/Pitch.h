@@ -25,6 +25,10 @@ public:
 	inline const Position& GetOurGoalY1() { return ourGoalY1_; }
 	inline const Position& GetOurGoalY2() { return ourGoalY2_; }
 	
+	inline const Position& GetTheirGoalCentre(){ return theirGoalCentre_; }
+	inline const Position& GetTheirGoalY1() { return theirGoalY1_; }
+	inline const Position& GetTheirGoalY2() { return theirGoalY2_; }
+	
 	bool IsLineHittingOurGoal(const Position& beginPos, const Position& endPos, Position& hittingAt);
 	bool IsInsideOurGoalArea(const Position& pos);
 

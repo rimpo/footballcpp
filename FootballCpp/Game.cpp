@@ -5,6 +5,7 @@
 
 CGame::CGame()
 {
+	CPlayerState::InitGlobalPlayerStateVector();
 	//creating strategy
 	strategyPtr_ = make_shared<CCounterAttackerAI>();
 

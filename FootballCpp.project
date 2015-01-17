@@ -36,6 +36,7 @@
     <File Name="FootballCpp/GoalKeeperState.cpp"/>
     <File Name="FootballCpp/CounterAttackerAI.cpp"/>
     <File Name="FootballCpp/CounterAttackerDefenderState.cpp"/>
+    <File Name="FootballCpp/CounterAttackerStrikerState.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
     <File Name="FootballCpp/Vector.h"/>
@@ -54,6 +55,7 @@
     <File Name="FootballCpp/Action.h"/>
     <File Name="FootballCpp/targetver.h"/>
     <File Name="FootballCpp/CounterAttackerDefenderState.h"/>
+    <File Name="FootballCpp/CounterAttackerStrikerState.h"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

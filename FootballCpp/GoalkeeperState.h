@@ -2,6 +2,7 @@
 
 #include "PlayerState.h"
 
+
 class CGoalKeeperIdleState : public CPlayerState
 {
 public:
@@ -14,41 +15,41 @@ public:
 class CGoalKeeperGuardState : public CPlayerState
 {
 public:
-	CGoalKeeperGuardState() : CPlayerState(eGoalKeeperGuardState){}
+	CGoalKeeperGuardState() : CPlayerState(eGoalKeeperGuard){}
 
 	void Execute(CPlayer* pPlayer);
 };
 
 
-class CGoalKeeperInterceptBall : public CPlayerState
+class CGoalKeeperInterceptBallState : public CPlayerState
 {
 public:
-	CGoalKeeperInterceptBall() : CPlayerState(eGoalKeeperInterceptBall){}
+	CGoalKeeperInterceptBallState() : CPlayerState(eGoalKeeperInterceptBall){}
 
 	 void Execute(CPlayer* pPlayer);
 };
 
-class CGoalKeeperTakePossession : public CPlayerState
+class CGoalKeeperTakePossessionState : public CPlayerState
 {
 public:
-	CGoalKeeperTakePossession() : CPlayerState(eGoalKeeperTakePossession){}
+	CGoalKeeperTakePossessionState() : CPlayerState(eGoalKeeperTakePossession){}
 
 	void Execute(CPlayer* pPlayer);
 };
 
 
-class CGoalKeeperKickBall : public CPlayerState
+class CGoalKeeperKickBallState : public CPlayerState
 {
 public:
-	CGoalKeeperKickBall(): CPlayerState(eGoalKeeperKickBall){}
+	CGoalKeeperKickBallState(): CPlayerState(eGoalKeeperKickBall){}
 
 	void Execute(CPlayer* pPlayer);
 };
 
-class CGoalKeeperChaseBall : public CPlayerState
+class CGoalKeeperChaseBallState : public CPlayerState
 {
 public:
-	CGoalKeeperChaseBall(): CPlayerState(eGoalKeeperChaseBall){}
+	CGoalKeeperChaseBallState(): CPlayerState(eGoalKeeperChaseBall){}
 
 	void Execute(CPlayer* pPlayer);
 };

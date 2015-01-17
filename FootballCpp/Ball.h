@@ -34,7 +34,7 @@ public:
 
 	void EstimatePath();
 
-	inline bool HasOwner() { return !(controllingPlayerNumber_ == -1); }
+	inline bool IsFreeBall() { return (controllingPlayerNumber_ == -1); }
 	bool IsOurTeamControlling();
 	bool IsTheirTeamControlling();
 	

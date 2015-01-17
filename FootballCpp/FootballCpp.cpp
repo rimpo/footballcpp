@@ -44,6 +44,8 @@ int main(int argc, char* argv[])
 
 		game.Process(strInputJson);
 	}
+	
+	cout << "End of Game. Application Exit!!!" << endl;
 
 	return 0;
 }

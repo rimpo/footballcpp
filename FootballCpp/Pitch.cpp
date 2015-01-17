@@ -34,11 +34,13 @@ int CPitch::ProcessPitch(const Value& pitchValue)
 	ourGoalCentre_.x_ = 0.0;
 	ourGoalCentre_.y_ = centreSpot_.y_;
 
+
+	// For Goalkeeper to protect bigger area than the Y1 and Y2 +/- 0.1 is done 
 	ourGoalY1_.x_ = 0.0;
-	ourGoalY1_.y_ = goalY1_ - 0.1;
+	ourGoalY1_.y_ = goalY1_ - 0.1;			
 
 	ourGoalY2_.x_ = 0.0;
-	ourGoalY2_.y_ = goalY2_ + 0.1;
+	ourGoalY2_.y_ = goalY2_ + 0.1;			
 
 	theirGoalCentre_.x_ = 100.0;
 	theirGoalCentre_.y_ = centreSpot_.y_;

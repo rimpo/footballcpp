@@ -48,7 +48,7 @@ void CGoalKeeperGuardState::Execute(CPlayer *pPlayer)
 	} //else  - ball moving
 
 }
-void CGoalKeeperInterceptBall::Execute(CPlayer* pPlayer)
+void CGoalKeeperInterceptBallState::Execute(CPlayer* pPlayer)
 {
 	//ball in range take possession
 	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
@@ -58,21 +58,21 @@ void CGoalKeeperInterceptBall::Execute(CPlayer* pPlayer)
 		pPlayer->ChangeState(CPlayerState::eGoalKeeperTakePossession);
 		return;
 	}
-	else if (!ball_.HasOwner())
+	else if (ball_.IsFreeBall())
 	{
-
+		// no one owns the ball - continue intercepting
 	}
 	else if (ball_.IsTheirTeamControlling()) // not our team member
 	{
 		//possession is not with our team..hell! go run.. gaurd goal.
 		pPlayer->MoveToGuardGoal();
-		pPlayer->ChangeState(CPlayerState::eGoalKeeperGuardState);
+		pPlayer->ChangeState(CPlayerState::eGoalKeeperGuard);
 	}
 
 	//continue intercepting goal
 }
 
-void CGoalKeeperTakePossession::Execute(CPlayer* pPlayer)
+void CGoalKeeperTakePossessionState::Execute(CPlayer* pPlayer)
 {
 	
 	//ball in range take possession
@@ -94,10 +94,10 @@ void CGoalKeeperTakePossession::Execute(CPlayer* pPlayer)
 	else
 	{
 		pPlayer->MoveToGuardGoal();
-		pPlayer->ChangeState(CPlayerState::eGoalKeeperGuardState);
+		pPlayer->ChangeState(CPlayerState::eGoalKeeperGuard);
 	}
 }
-void CGoalKeeperChaseBall::Execute(CPlayer *pPlayer)
+void CGoalKeeperChaseBallState::Execute(CPlayer *pPlayer)
 {
 	//interecpt chase same for now
 	CPlayerState::GlobalPlayerState(CPlayerState::eGoalKeeperInterceptBall)->Execute(pPlayer);
@@ -108,7 +108,7 @@ void CGoalKeeperIdleState::Execute(CPlayer *pPlayer)
 	
 }
 
-void CGoalKeeperKickBall::Execute(CPlayer *pPlayer)
+void CGoalKeeperKickBallState::Execute(CPlayer *pPlayer)
 {
 	if (ball_.GetOwner() == pPlayer->GetNumber())
 	{
@@ -120,6 +120,6 @@ void CGoalKeeperKickBall::Execute(CPlayer *pPlayer)
 	else
 	{
 		pPlayer->MoveToGuardGoal();
-		pPlayer->ChangeState(CPlayerState::eGoalKeeperGuardState);
+		pPlayer->ChangeState(CPlayerState::eGoalKeeperGuard);
 	}
 }
