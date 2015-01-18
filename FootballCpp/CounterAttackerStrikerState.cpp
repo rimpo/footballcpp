@@ -23,7 +23,7 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 	}
 	else if (ball_.IsFreeBall())	// no owner
 	{
-		
+		pPlayer->MoveTo(ball_.GetPosition());
 	}
 	else if (ball_.IsTheirTeamControlling()) // not our team member
 	{
@@ -43,7 +43,7 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 		// Note: need to wait and kick
 		// For testing - kick towards centre (clearance)
 		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
-		if (distanceFromGoal > 20.0)
+		if (distanceFromGoal > 22.0)
 		{
 				pPlayer->Kick(pitch_.GetTheirGoalCentre(), 40.0);
 				//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
@@ -58,7 +58,7 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 	else if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
 		pPlayer->TakePossession();
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
+		//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
 	}
 	else if (ball_.IsTheirTeamControlling())
 	{

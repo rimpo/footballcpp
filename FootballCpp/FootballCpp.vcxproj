@@ -82,7 +82,8 @@
     <ClInclude Include="Action.h" />
     <ClInclude Include="Ball.h" />
     <ClInclude Include="CounterAttackerAI.h" />
-    <ClInclude Include="CounterAttackerState.h" />
+    <ClInclude Include="CounterAttackerDefenderState.h" />
+    <ClInclude Include="CounterAttackerStrikerState.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GoalkeeperState.h" />
     <ClInclude Include="Pitch.h" />
@@ -100,7 +101,8 @@
     <ClCompile Include="Action.cpp" />
     <ClCompile Include="Ball.cpp" />
     <ClCompile Include="CounterAttackerAI.cpp" />
-    <ClCompile Include="CounterAttackerState.cpp" />
+    <ClCompile Include="CounterAttackerDefenderState.cpp" />
+    <ClCompile Include="CounterAttackerStrikerState.cpp" />
     <ClCompile Include="FootballCpp.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GoalKeeperState.cpp" />

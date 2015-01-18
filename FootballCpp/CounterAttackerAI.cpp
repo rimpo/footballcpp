@@ -112,6 +112,7 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 	for (auto pPlayer : ourPlayers)
 	{
 		if (pPlayer->GetType() == CPlayer::eLeftDefender ||
+			pPlayer->GetType() == CPlayer::eCentreDefender ||
 			pPlayer->GetType() == CPlayer::eRightDefender ||
 			pPlayer->GetType() == CPlayer::eGoalKeeper)
 		{
