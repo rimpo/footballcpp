@@ -63,7 +63,7 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 		stationaryPos_.AddVector(disVector);
 
 		//correction for bounce case;
-		if (stationaryPos_.x_ < 0)
+		/*if (stationaryPos_.x_ < 0)
 		{
 			stationaryPos_.x_ = -1.0 * stationaryPos_.x_;
 		}
@@ -79,7 +79,7 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 		else if (stationaryPos_.y_ > pitch.GetHeight())
 		{
 			stationaryPos_.y_ = pitch.GetHeight() - stationaryPos_.y_;
-		}
+		}*/
 
 		
 	}
@@ -230,11 +230,20 @@ void CBall::EstimatePath()
 	}
 
 }
-bool CBall::IsOurTeamControlling() 
+
+bool CBall::IsOurTeamControlling()
 { 
 	return GetGame().GetOurTeamPtr()->IsMember(GetOwner()); 
 }
-bool CBall::IsTheirTeamControlling() 
+bool CBall::IsTheirTeamControlling()
 { 
 	return GetGame().GetTheirTeamPtr()->IsMember(GetOwner()); 
+}
+bool CBall::IsOurGoalKeeperControlling()
+{
+	return GetGame().GetOurTeamPtr()->GetGoalKeeper()->GetNumber() == GetOwner();
+}
+bool CBall::IsTheirGoalKeeperControlling()
+{ 
+	return GetGame().GetTheirTeamPtr()->GetGoalKeeper()->GetNumber() == GetOwner();
 }

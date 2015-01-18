@@ -187,7 +187,7 @@ void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
 	}
 	else if (pPlayer->GetType() == CPlayer::eRightDefender)
 	{
-
+		
 	}
 	else
 	{
@@ -197,20 +197,40 @@ void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
 
 void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 {
-	//Note: reset of marking should happen in here somewhere
-	/*Vector vec = pos.VectorTo(ball_.GetPosition());
-
-	Vector vecScaled = vec.Scale(dist);
-
-	pos.AddVector(vecScaled);
-
-	if (pos.ApproxEqual(pPlayer->GetPosition(), POSITION_BIG_TOLERANCE))
+	//Note: reset of marking should happen in here on change of state
+	auto pClosestBallPlayer = game_.GetClosestPlayer();
+	auto outTeamPtr = game_.GetOurTeamPtr();
+	//float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
+	
+	if (ball_.GetOwner() == pPlayer->GetNumber())
 	{
-		pPlayer->TurnTo(270.0);
+		//my possession
+		//change state
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
+	}
+	else if (ball_.IsOurGoalKeeperControlling())
+	{
+		//change state
+		//pPlayer->ChangeState(CPlayerState::e)
+	}
+	else if (ball_.IsOurTeamControlling())
+	{
+		//change state
+	}
+	else if (ball_.IsFreeBall() && pClosestBallPlayer->GetNumber() == pPlayer->GetNumber())
+	{
+		//change state
+	}
+	else if (ball_.IsFreeBall() && outTeamPtr->IsMember(pClosestBallPlayer->GetNumber()))
+	{
+		//change state
+	}
+	else if(1)
+	{
+		
 	}
 	else
 	{
-		pPlayer->MoveTo(pos);
+		//mark and remain in this state
 	}
-	*/
 }

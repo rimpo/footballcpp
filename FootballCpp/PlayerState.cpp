@@ -19,7 +19,7 @@ CPlayerState::CPlayerState() : 		   game_(GetGame()),
 
 CPlayerState *CPlayerState::GlobalPlayerState(int type)
 {
-	if( type <= CPlayerState::eLastStateIndex)
+	if( type < globalPlayerStates.size())
 		return globalPlayerStates[type];
 		
 	return nullptr;

@@ -34,6 +34,8 @@ int main(int argc, char* argv[])
 {
 	Test_GetPerpendicularIntersection();
 
+	LOGGER->Log("START");
+	
 	CGame& game = GetGame();
 
 	while (1)
@@ -41,6 +43,9 @@ int main(int argc, char* argv[])
 		string strInputJson;
 		
 		cin >> strInputJson;
+		
+		LOGGER->Log("RECEIVED: %s",strInputJson.c_str());
+		cout << strInputJson << endl;
 
 		game.Process(strInputJson);
 	}

@@ -42,6 +42,9 @@ public:
 	bool IsOurTeamControlling();
 	bool IsTheirTeamControlling();
 	
+	bool IsOurGoalKeeperControlling();
+	bool IsTheirGoalKeeperControlling();
+	
 private:
 	
 	Position pos_;
