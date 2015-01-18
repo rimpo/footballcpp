@@ -48,6 +48,8 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 	}
 	else
 	{
+		CPitch& pitch = GetGame().GetPitch();
+
 		float averageSpeed = (speed_ + 0) / 2.0;	// 0 final velocity
 
 		timeTaken = speed_ / FRICTION;
@@ -59,6 +61,27 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 		stationaryPos_ = pos_;
 
 		stationaryPos_.AddVector(disVector);
+
+		//correction for bounce case;
+		if (stationaryPos_.x_ < 0)
+		{
+			stationaryPos_.x_ = -1.0 * stationaryPos_.x_;
+		}
+		else if (stationaryPos_.x_ > pitch.GetWidth())
+		{
+			stationaryPos_.x_ = pitch.GetWidth() - stationaryPos_.x_;
+		}
+
+		if (stationaryPos_.y_ < 0)
+		{
+			stationaryPos_.y_ = -1.0 * stationaryPos_.y_;
+		}
+		else if (stationaryPos_.y_ > pitch.GetHeight())
+		{
+			stationaryPos_.y_ = pitch.GetHeight() - stationaryPos_.y_;
+		}
+
+		
 	}
 		
 }

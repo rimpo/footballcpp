@@ -29,7 +29,7 @@ void CCounterAttackerDefenderIdleState::Execute(CPlayer* pPlayer)
 			pBallPlayer->GetNumber() == theirTeamSortedX[1]->GetNumber())
 		{
 			//first/second player with/near ball.
-			int supportingDefenderType = pPlayer->GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eRightDefender;
+			int supportingDefenderType = pPlayer->GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender;
 			auto pSupportingPlayer = GetGame().GetOurTeamPtr()->GetPlayerFromPlayerType(supportingDefenderType);
 			
 			pPlayer->SetMarkedPlayer(theirTeamSortedX[0]->GetNumber());
