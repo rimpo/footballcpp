@@ -37,6 +37,8 @@ public:
 		eCounterAttackerDefenderDefend,
 		eCounterAttackerDefenderChaseBall,
 		eCounterAttackerDefenderTakePossession,
+		eCounterAttackerDefenderGuardPass,
+		eCounterAttackerDefenderMark,
 		
 		//-- counter attacker - striker
 		eCounterAttackerStrikerIdle,
@@ -51,9 +53,7 @@ public:
 		eLastStateIndex
 	};
 
-	CPlayerState(int type);
-
-	int GetType() { return type_; }
+	CPlayerState();
 
 	virtual void Execute(CPlayer* pPlayer) {}
 
@@ -63,7 +63,6 @@ public:
 	
 	static PtrVec globalPlayerStates;
 protected:
-	int type_;
 	CGame& game_;
 	CPitch& pitch_;
 	CBall& ball_;
@@ -73,7 +72,6 @@ protected:
 class CDeadState : public CPlayerState
 {
 public:	
-	CDeadState() : CPlayerState(CPlayerState::eDead) {}
-	
+
 	void Execute(CPlayer* pPlayer) {}
 };

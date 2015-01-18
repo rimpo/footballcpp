@@ -38,6 +38,11 @@ public:
 		eRightStriker
 	};
 
+	enum eMarkingPlayerType
+	{
+		eNotMarking = -1
+	};
+
 
 	CPlayer();
 	virtual ~CPlayer();
@@ -66,6 +71,7 @@ public:
 	inline void SetAttackDirection(float direction) { attackDirection_ = direction; }
 	inline void SetAttackPosition(const Position& pos) { attackPos_ = pos; }
 
+	
 	void SetTeamNumber(int teamNumber) { teamNumber_ = teamNumber; }
 	int GetTeamNumber() { return teamNumber_; }
 
@@ -97,6 +103,9 @@ public:
 	void MoveToGuardGoal_Radius();
 	void MoveToGuardGoal_LineSave();
 	void MoveToGuardGoal_Centre();
+
+	inline void SetMarkedPlayer(int playerNumber) { markedPlayerNumber_ = playerNumber; }
+	inline int GetMarkedPlayer() { return markedPlayerNumber_; }
 private:
 	int playerType_;
 	int playerNumber_;
@@ -126,7 +135,7 @@ private:
 	CPitch& pitch_;
 	CBall& ball_;
 
-	
+	int markedPlayerNumber_;
 };
 
 

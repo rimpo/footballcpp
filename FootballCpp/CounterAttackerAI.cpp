@@ -63,13 +63,14 @@ void CCounterAttackerAI::InitializeOurPlayers()
 }
 void CCounterAttackerAI::OnTeamInfoEvent()
 {
-	auto goalKeeperPtr = GetGame().GetOurTeamPtr()->GetGoalKeeper();
+	auto ourTeamPtr = GetGame().GetOurTeamPtr();
+	auto goalKeeperPtr = ourTeamPtr->GetGoalKeeper();
 
 	goalKeeperPtr->SetType(eGoalKeeper);
 	goalKeeperPtr->ChangeState(CPlayerState::eGoalKeeperGuard);
 	
 
-	auto ourTeamNonGKPlayers = GetGame().GetOurTeamPtr()->GetNonGoalKeepers();
+	auto ourTeamNonGKPlayers = ourTeamPtr->GetNonGoalKeepers();
 	
 	int i = CPlayer::eLeftDefender;
 	for (auto pPlayer : ourTeamNonGKPlayers)
@@ -91,6 +92,10 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 		
 		pPlayer->ChangeState(CPlayerState::eDead);
 	}
+
+
+	//map player type to player ptr;
+	ourTeamPtr->MapPlayerTypeToPlayerPtr();
 
 	InitializeOurPlayers();
 }

@@ -10,8 +10,7 @@
 CPlayerState::PtrVec CPlayerState::globalPlayerStates;
 
 
-CPlayerState::CPlayerState(int type) : type_(type),
-									   game_(GetGame()),
+CPlayerState::CPlayerState() : 		   game_(GetGame()),
 									   pitch_(GetGame().GetPitch()),
 									   ball_(GetGame().GetBall())
 {
@@ -54,6 +53,9 @@ void CPlayerState::InitGlobalPlayerStateVector()
 	globalPlayerStates[eCounterAttackerDefenderDefend]		= new CCounterAttackerDefenderDefendState;
 	globalPlayerStates[eCounterAttackerDefenderChaseBall]	= new CCounterAttackerDefenderChaseBallState;
 	globalPlayerStates[eCounterAttackerDefenderTakePossession] = new CCounterAttackerDefenderTakePossessionState;
+	globalPlayerStates[eCounterAttackerDefenderGuardPass] = new CCounterAttackerDefenderGuardPassState;
+	globalPlayerStates[eCounterAttackerDefenderMark] = new CCounterAttackerDefenderMarkState;
+	
 		
 	//-- counter attacker - striker
 	globalPlayerStates[eCounterAttackerStrikerIdle]			 = new CCounterAttackerStrikerIdleState;

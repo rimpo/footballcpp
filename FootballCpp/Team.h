@@ -45,12 +45,16 @@ public:
 
 	inline bool IsMember(int playerNumber) { return playerNumber != -1 && maxTeamNumber_ >= playerNumber && minTeamNumber_ <= playerNumber; }
 
-	
+
+	void MapPlayerTypeToPlayerPtr();
+	inline const CPlayer::Ptr& GetPlayerFromPlayerType(int type) { return playerTypeToPlayer_[type]; }
 private:
 	int teamNumber_;
 	CPlayer::PtrVec players_;
 	CPlayer::PtrVec nonGoalKeepers_;
 	CPlayer::Ptr	goalKeeperPtr_;
+
+	CPlayer::PtrVec playerTypeToPlayer_;
 		
 	eDirectionType  directionType_;		//e.g. eLeft or eRight (i.e. LEFT or RIGHT)
 	string			teamName_;			//e.g. BootAndShoot or XYZ
@@ -62,5 +66,7 @@ private:
 
 	bool firstTime_;					// this is dirty logic to execute code only first time. 
 	int maxTeamNumber_, minTeamNumber_;
+
+
 };
 

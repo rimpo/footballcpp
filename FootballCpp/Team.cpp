@@ -171,3 +171,12 @@ int CTeam::ProcessCapabilitiesRequest(const Document& capValue)
 }
 
 
+
+void CTeam::MapPlayerTypeToPlayerPtr()
+{
+	playerTypeToPlayer_.resize(players_.size());
+	for (auto pPlayer : players_)
+	{
+		playerTypeToPlayer_[pPlayer->GetType()] = pPlayer;
+	}
+}

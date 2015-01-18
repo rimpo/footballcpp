@@ -6,6 +6,7 @@ CPlayer::CPlayer() : game_(GetGame()),
 					 pitch_(GetGame().GetPitch()),
 					 ball_(GetGame().GetBall())
 {
+	SetMarkedPlayer(eNotMarking);
 }
 
 

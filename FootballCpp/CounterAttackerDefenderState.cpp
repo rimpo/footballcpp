@@ -25,20 +25,29 @@ void CCounterAttackerDefenderIdleState::Execute(CPlayer* pPlayer)
 	
 	if (pBallPlayer)
 	{
-		if (pBallPlayer->GetNumber() == theirTeamSortedX[0]->GetNumber())
+		if (pBallPlayer->GetNumber() == theirTeamSortedX[0]->GetNumber() ||
+			pBallPlayer->GetNumber() == theirTeamSortedX[1]->GetNumber())
 		{
-			//first player with/near ball.
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
-		}
-		else if (pBallPlayer->GetNumber() == theirTeamSortedX[1]->GetNumber())
-		{
-			//second player with/near ball.
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
+			//first/second player with/near ball.
+			int supportingDefenderType = pPlayer->GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eRightDefender;
+			auto pSupportingPlayer = GetGame().GetOurTeamPtr()->GetPlayerFromPlayerType(supportingDefenderType);
+			
+			pPlayer->SetMarkedPlayer(theirTeamSortedX[0]->GetNumber());
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+
+			pSupportingPlayer->SetMarkedPlayer(theirTeamSortedX[1]->GetNumber());
+			pSupportingPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+			
+			//}
 		}
 		else if (distanceBallFromOurGoal > 40.0)
 		{
 			//third player (with/near ball) far from our goal.
-
+			if (pPlayer->GetType() == CPlayer::eLeftDefender)
+			{
+				//pPlayer->MoveTo(guard pass pos);
+				pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderGuardPass);
+			}
 			//guardpass to first and second player
 		}
 		else
@@ -167,4 +176,41 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 		//pPlayer->MoveToGuardGoal();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
 	}
+}
+
+
+void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
+{
+	if (pPlayer->GetType() == CPlayer::eLeftDefender)
+	{
+			
+	}
+	else if (pPlayer->GetType() == CPlayer::eRightDefender)
+	{
+
+	}
+	else
+	{
+			//error
+	}
+}
+
+void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
+{
+	//Note: reset of marking should happen in here somewhere
+	/*Vector vec = pos.VectorTo(ball_.GetPosition());
+
+	Vector vecScaled = vec.Scale(dist);
+
+	pos.AddVector(vecScaled);
+
+	if (pos.ApproxEqual(pPlayer->GetPosition(), POSITION_BIG_TOLERANCE))
+	{
+		pPlayer->TurnTo(270.0);
+	}
+	else
+	{
+		pPlayer->MoveTo(pos);
+	}
+	*/
 }
