@@ -10,9 +10,7 @@ class CBall
 public:
 	CBall();
 	~CBall();
-
 	
-
 	inline Position& GetPosition() { return pos_; }
 	inline const Vector& GetVector() { return vector_; }
 

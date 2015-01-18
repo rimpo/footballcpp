@@ -1,8 +1,10 @@
+#include "stdafx.h"
 #include "Logger.h"
 //#include"Utilities.h"
 const string CLogger::m_sFileName = "./my_log.log";
 CLogger* CLogger:: m_pThis = NULL;
 ofstream CLogger::m_Logfile;
+char sMessage[4096];
 
 CLogger::CLogger()
 {
@@ -18,10 +20,10 @@ CLogger* CLogger::getLogger(){
  
 void CLogger::Log( const char * format, ... )
 {
-    char sMessage[512];
+    
     va_list args;
     va_start (args, format);
-    vsprintf (sMessage,format, args);
+    vsprintf_s(sMessage,format, args);
     //m_Logfile <<"\n"<<Util::CurrentDateTime()<<":\t";
     m_Logfile << sMessage << "\n";
     va_end (args);

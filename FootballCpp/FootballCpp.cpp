@@ -44,9 +44,8 @@ int main(int argc, char* argv[])
 		
 		cin >> strInputJson;
 
-		LOGGER->Log("RECEIVED: %s",strInputJson.c_str());
-		cout << strInputJson << endl;
-
+		//LOGGER->Log("RECEIVED: %s",strInputJson.c_str());
+		
 		game.Process(strInputJson);
 	}
 	

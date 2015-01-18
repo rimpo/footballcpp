@@ -24,19 +24,19 @@ public:
 
 	void SetDirectionType(eDirectionType dirType){ directionType_ = dirType; }
 
-	const string& GetTeamIdentifier(){ return teamIdentifier_; }
-	const void SetTeamIdentifier(const string& strId){ teamIdentifier_ = strId; }
+	inline const string& GetTeamIdentifier(){ return teamIdentifier_; }
+	inline const void SetTeamIdentifier(const string& strId){ teamIdentifier_ = strId; }
 
-	void SetTeamNumber(int teamNumber) { teamNumber_ = teamNumber; }
-	int GetTeamNumber() { return teamNumber_; }
+	inline void SetTeamNumber(int teamNumber) { teamNumber_ = teamNumber; }
+	inline int GetTeamNumber() { return teamNumber_; }
 
-	const CPlayer::PtrVec& GetPlayers(){ return players_; }
-	const CPlayer::PtrVec& GetNonGoalKeepers(){ return nonGoalKeepers_; }
-	const CPlayer::Ptr&	   GetGoalKeeper(){ return goalKeeperPtr_; }
+	inline const CPlayer::PtrVec& GetPlayers(){ return players_; }
+	inline const CPlayer::PtrVec& GetNonGoalKeepers(){ return nonGoalKeepers_; }
+	inline const CPlayer::Ptr&	   GetGoalKeeper(){ return goalKeeperPtr_; }
 
-	const eDirectionType GetPlayingDirection(){ return directionType_; }
+	inline const eDirectionType GetPlayingDirection(){ return directionType_; }
 
-	const CCapability& GetTotalCapability(){ return totalCapability_; }
+	inline const CCapability& GetTotalCapability(){ return totalCapability_; }
 
 	int ProcessTeamInfo(const Document& document);
 	int ProcessTeamKickOffInfo(const Document& document);

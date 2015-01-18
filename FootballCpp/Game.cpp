@@ -34,7 +34,6 @@ CGame::~CGame()
 
 int CGame::Process(const string& sJsonMsg)
 {
-	LOGGER->Log("RECEIVED: %s",sJsonMsg.c_str());
 	Document document;
 
 	if (document.Parse(sJsonMsg.c_str()).HasParseError() == true)
@@ -127,8 +126,7 @@ int CGame::Process(const string& sJsonMsg)
 		}
 		else if (requestTypeValue == "CONFIGURE_ABILITIES")
 		{
-			LOGGER->Log("CONFIGURE_ABILITIES RECEIVED:%s",sJsonMsg.c_str());
-			
+	
 			ourTeamPtr_->ProcessCapabilitiesRequest(document);
 
 			strategyPtr_->OnCapabilityRequest();
