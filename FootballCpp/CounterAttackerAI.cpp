@@ -88,6 +88,8 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 		{
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}
+		
+		pPlayer->ChangeState(CPlayerState::eDead);
 	}
 
 	InitializeOurPlayers();
@@ -101,13 +103,11 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 	auto ourGoalKeeper = ourTeamPtr->GetGoalKeeper();
 
 	
-	GetGame().CalculatePlayerReachesFirstToBall();
+	GetGame().CalculateAllPlayerToBallSortedDistance();
 	GetGame().SortTheirTeamX();
 	
-	float timetaken;
-	ball.CalculateStationaryPos(timetaken);
-
-	//ball.EstimatePath();
+	//calulate all path position and stationary position.
+	GetGame().GetBall().EstimatePath();
 
 	for (auto pPlayer : ourPlayers)
 	{

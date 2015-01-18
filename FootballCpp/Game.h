@@ -36,6 +36,8 @@ public:
 
 	inline const CPlayer::Ptr& GetClosestPlayer(){ return closestPlayer_; }
 	inline const CPlayer::PtrVec& GetTheirTeamSortedX() { return theirTeamSortedX_; }
+	inline const CPlayer::PtrVec& GetAllPlayersToBallSortedDist() { return allPlayersToBallSortedDist_; }
+
 	
 	inline CPitch& GetPitch() { return pitch_; }
 	inline CBall& GetBall() { return ball_; }
@@ -46,7 +48,7 @@ public:
 	void PrintKickOffResponse();
 	void PrintPlayResponse();
 
-	void CalculatePlayerReachesFirstToBall();
+	void CalculateAllPlayerToBallSortedDistance();
 
 	void SortTheirTeamX();
 	
@@ -69,6 +71,7 @@ private:
 
 	CPlayer::PtrVec theirTeamSortedX_; //x co-oridnate ascending sort
 
+	CPlayer::PtrVec allPlayersToBallSortedDist_;
 public:
 	int noOfGoalAttempts;
 };

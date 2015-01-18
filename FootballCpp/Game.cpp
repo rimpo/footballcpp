@@ -265,7 +265,7 @@ void CGame::PrintPlayResponse()
 	cout << "]}" << endl;
 }
 
-void CGame::CalculatePlayerReachesFirstToBall()
+void CGame::CalculateAllPlayerToBallSortedDistance()
 {
 	//ball is inside goal area.
 	if (pitch_.IsInsideTheirGoalArea(ball_.GetPosition()))
@@ -290,7 +290,7 @@ void CGame::CalculatePlayerReachesFirstToBall()
 		auto nonGoalKeepers = teamPtr->GetNonGoalKeepers();
 		for (auto pPlayer : nonGoalKeepers)
 		{
-			t = pPlayer->CalculateTimeToReachPosition(ball_.GetPosition());
+			t = pPlayer->CalculateTimeToReachPosition(ball_.GetStationaryPosition());
 
 			if (minTimeTaken > t)
 			{

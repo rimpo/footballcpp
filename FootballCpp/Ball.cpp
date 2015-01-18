@@ -173,12 +173,12 @@ void CBall::EstimatePath()
 {
 	//clear old path
 	pathPos_.clear();
-	pathTime_.clear();
+	pathPosTime_.clear();
 	
 	//calculate stationary pos of ball
 	CalculateStationaryPos(stationaryTimeTaken_);
 
-	float max_distance = stationaryPos_.DistanceFrom(pos_);
+	float max_distance = GetStationaryPosition().DistanceFrom(pos_);
 	float v = speed_;
 	float u = speed_;
 	float d = 0.0f;
@@ -203,7 +203,7 @@ void CBall::EstimatePath()
 		Position currentPos = pos_;
 		currentPos.AddVector(totalDistVector);
 		pathPos_.push_back(currentPos);
-		pathTime_.push_back(timetaken);
+		pathPosTime_.push_back(timetaken);
 	}
 
 }

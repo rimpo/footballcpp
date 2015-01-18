@@ -7,7 +7,7 @@ void CGoalKeeperGuardState::Execute(CPlayer *pPlayer)
 	
 	Position intersection, ballStationary;
 
-	float timeTaken = 0.0;
+	//float timeTaken = 0.0;
 
 	if (ball_.GetSpeed() == 0)
 	{
@@ -26,8 +26,8 @@ void CGoalKeeperGuardState::Execute(CPlayer *pPlayer)
 	}
 	else //ball is moving
 	{
-		//calculate position where ball will be stationary
-		ball_.CalculateStationaryPos(timeTaken);
+		////calculate position where ball will be stationary
+		//ball_.CalculateStationaryPos(timeTaken);
 
 		Position hittingAt;			//hitting on goal line
 

@@ -45,27 +45,42 @@ int CPlayer::ProcessDynamicState(const Value& dynamicState)
 void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 {
 	// try catching ball.
-	vector<Position> posVec;
-	vector<float> timeTakenVec;
-
 	Position surePos, almostPos;
 	bool isSure = false, isAlmost = false;
 
-	ball_.PositionTimeTaken(hittingAt, posVec, timeTakenVec);
+	bool isFirstPosClosestToGoal = true;
+	Position firstPosClosestToGoal;
+
+	auto pathPos = ball_.GetPathPos(); 
+	auto pathPosTime = ball_.GetPathPosTime();
 
 	bool found = false;
-	for (int i = posVec.size() - 1; i >= 0; --i)
+	for (int i = pathPos.size() - 1; i >= 0; --i)
 	{
-		float t1 = CalculateTimeToReachPosition(posVec[i]);
-
-		if (t1 < timeTakenVec[i])
+		//ignore co-ordinate crossing our goal (i.e x < 0)
+		if (hittingAt.x_ < pitch_.GetOurGoalCentre().x_)
 		{
-			surePos = posVec[i];
+			continue;
+		}
+
+		//saving the first pos - incase of player not able to reach any coordinate
+		//						 goalkeeper will attempt to go to this first pos.
+		if (isFirstPosClosestToGoal)
+		{
+			firstPosClosestToGoal = pathPos[i];
+			isFirstPosClosestToGoal = false;
+		}
+
+		float t1 = CalculateTimeToReachPosition(pathPos[i]);
+
+		if (t1 < pathPosTime[i])
+		{
+			surePos = pathPos[i];
 			isSure = true;
 		}
-		else if (ApproxEqual(t1, timeTakenVec[i], 0.055f))
+		else if (ApproxEqual(t1, pathPosTime[i], 0.055f))
 		{
-			almostPos = posVec[i];
+			almostPos = pathPos[i];
 			isAlmost = true;
 		}
 	}
@@ -80,7 +95,7 @@ void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 	}
 	else
 	{
-		MoveTo(posVec[posVec.size() - 1]);
+		MoveTo(firstPosClosestToGoal);
 	}
 }
 void CPlayer::MoveTo(const Position& dest)

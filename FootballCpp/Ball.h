@@ -3,6 +3,7 @@
 #include "Position.h"
 #include "Vector.h"
 
+typedef vector<float> TimeVec;
 
 class CBall
 {
@@ -10,7 +11,7 @@ public:
 	CBall();
 	~CBall();
 
-	typedef vector<float> TimeVec;
+	
 
 	inline Position& GetPosition() { return pos_; }
 	inline const Vector& GetVector() { return vector_; }
@@ -34,6 +35,9 @@ public:
 
 	void EstimatePath();
 
+	inline const Position::Vec& GetPathPos() { return pathPos_; }
+	inline const TimeVec& GetPathPosTime() { return pathPosTime_; }
+
 	inline bool IsFreeBall() { return (controllingPlayerNumber_ == -1); }
 	bool IsOurTeamControlling();
 	bool IsTheirTeamControlling();
@@ -49,6 +53,6 @@ private:
 	float	 stationaryTimeTaken_;
 	
 	Position::Vec pathPos_;
-	TimeVec	 pathTime_;
+	TimeVec	 pathPosTime_;
 };
 
