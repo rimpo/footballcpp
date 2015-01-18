@@ -43,7 +43,7 @@ int main(int argc, char* argv[])
 		string strInputJson;
 		
 		cin >> strInputJson;
-		
+
 		LOGGER->Log("RECEIVED: %s",strInputJson.c_str());
 		cout << strInputJson << endl;
 

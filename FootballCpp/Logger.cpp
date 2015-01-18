@@ -1,6 +1,6 @@
 #include "Logger.h"
 //#include"Utilities.h"
-const string CLogger::m_sFileName = "/home/manoj/my_log.log";
+const string CLogger::m_sFileName = "./my_log.log";
 CLogger* CLogger:: m_pThis = NULL;
 ofstream CLogger::m_Logfile;
 
