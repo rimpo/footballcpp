@@ -59,7 +59,7 @@ void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 	for (int i = pathPos.size() - 1; i >= 0; --i)
 	{
 		//ignore co-ordinate crossing our goal (i.e x < 0)
-		if (hittingAt.x_ < pitch_.GetOurGoalCentre().x_)
+		if (pathPos[i].x_ < pitch_.GetOurGoalCentre().x_)
 		{
 			continue;
 		}
@@ -278,7 +278,7 @@ float CPlayer::CalculateTimeToReachPosition(const Position& dest)
 
 	float distanceInSingleTurn = speed*GAME_AI_CALCULATION_INTERVAL;
 
-	float noOfTurn = distanceToDest / distanceInSingleTurn;
+	int noOfTurn = distanceToDest / distanceInSingleTurn;
 
 	if ((distanceToDest - distanceInSingleTurn * noOfTurn) > 0.0)
 	{
