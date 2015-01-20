@@ -52,8 +52,8 @@ void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 	bool isFirstPosClosestToGoal = true;
 	Position firstPosClosestToGoal;
 
-	auto pathPos = ball_.GetPathPos(); 
-	auto pathPosTime = ball_.GetPathPosTime();
+	auto& pathPos = ball_.GetPathPos(); 
+	auto& pathPosTime = ball_.GetPathPosTime();
 
 	bool found = false;
 	for (int i = pathPos.size() - 1; i >= 0; --i)
@@ -127,11 +127,11 @@ void CPlayer::TakePossession()
 }
 float CPlayer::PredictDirection()
 {
-	auto theirTeamPtr = game_.GetTheirTeamPtr();
+	auto& theirTeamPtr = game_.GetTheirTeamPtr();
 	
 	if (theirTeamPtr->IsMember(ball_.GetOwner()))
 	{
-		auto pBallPlayer = game_.GetPlayer(ball_.GetOwner());
+		auto& pBallPlayer = game_.GetPlayer(ball_.GetOwner());
 
 		Vector vecDir = GetVectorFromDirection(pBallPlayer->GetDirection());
 		

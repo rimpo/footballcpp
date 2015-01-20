@@ -89,7 +89,7 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 
 bool CBall::IsHittingOurGoal(const Position& targetPos)
 {
-	auto pitch = GetGame().GetPitch();
+	auto& pitch = GetGame().GetPitch();
 	
 	
 	Position intersection, ballStationary;

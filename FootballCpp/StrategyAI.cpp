@@ -77,10 +77,10 @@ void CStrategyAI::OnTeamInfoEvent()
 
 void CStrategyAI::OnCapabilityRequest()
 {
-	auto totalCapability = GetGame().GetOurTeamPtr()->GetTotalCapability();
-	auto ourPlayers = GetGame().GetOurTeamPtr()->GetPlayers();
+	auto& totalCapability = GetGame().GetOurTeamPtr()->GetTotalCapability();
+	auto& ourPlayers = GetGame().GetOurTeamPtr()->GetPlayers();
 	
-	for (auto pPlayer : ourPlayers)
+	for (auto& pPlayer : ourPlayers)
 	{
 		pPlayer->GetCapability().kickingAbility_ = totalCapability.kickingAbility_ / 6.0;
 		pPlayer->GetCapability().runningAbility_ = totalCapability.runningAbility_ / 6.0;

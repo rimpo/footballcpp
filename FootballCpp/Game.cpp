@@ -151,7 +151,7 @@ void CGame::PrintCapabilityResponse()
 	const CPlayer::PtrVec& ourTeamPlayers = ourTeamPtr_->GetPlayers();
 
 	int i = 0;
-	for (auto pPlayer : ourTeamPlayers)
+	for (auto& pPlayer : ourTeamPlayers)
 	{
 		if (0 != i++)
 			cout << ",";
@@ -185,7 +185,7 @@ void CGame::PrintKickOffResponse()
 	Position pos;
 	float direction;
 	int i = 0;
-	for (auto pPlayer : ourTeamPlayers)
+	for (auto& pPlayer : ourTeamPlayers)
 	{
 		if (0 != i++)
 			cout << ",";
@@ -223,7 +223,7 @@ void CGame::PrintPlayResponse()
 	Position destination;
 	float	 direction = 0.0;
 	int i = 0;
-	for (auto pPlayer : ourTeamPlayers)
+	for (auto& pPlayer : ourTeamPlayers)
 	{
 		CAction& action = pPlayer->GetAction();
 
@@ -280,16 +280,16 @@ void CGame::CalculateAllPlayerToBallSortedDistance()
 		return;
 	}
 	
-	auto ourNonGoalKeeper = ourTeamPtr_->GetNonGoalKeepers();
+	auto& ourNonGoalKeeper = ourTeamPtr_->GetNonGoalKeepers();
 
 	double minTimeTaken = 9999999.0;	//dummy max number
 	double t = 0.0;
 
 	//all non goal keeper (from both teams)
-	for (auto teamPtr : teams_)
+	for (auto& teamPtr : teams_)
 	{
-		auto nonGoalKeepers = teamPtr->GetNonGoalKeepers();
-		for (auto pPlayer : nonGoalKeepers)
+		auto& nonGoalKeepers = teamPtr->GetNonGoalKeepers();
+		for (auto& pPlayer : nonGoalKeepers)
 		{
 			t = pPlayer->CalculateTimeToReachPosition(ball_.GetStationaryPosition());
 

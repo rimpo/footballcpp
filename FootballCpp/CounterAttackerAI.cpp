@@ -47,9 +47,9 @@ void CCounterAttackerAI::InitializeOurPlayers()
 	//facing towards opponent side
 	playersAttackDirection_ = { 90, 90, 90, 90, 90, 90 };
 
-	auto ourTeamPlayers = GetGame().GetOurTeamPtr()->GetPlayers();
+	auto& ourTeamPlayers = GetGame().GetOurTeamPtr()->GetPlayers();
 
-	for (auto pPlayer : ourTeamPlayers)
+	for (auto& pPlayer : ourTeamPlayers)
 	{
 		pPlayer->SetHomePosition(playersHomePos_[pPlayer->GetType()]);
 		pPlayer->SetHomeDirection(playersHomeDirection_[pPlayer->GetType()]);
@@ -63,17 +63,17 @@ void CCounterAttackerAI::InitializeOurPlayers()
 }
 void CCounterAttackerAI::OnTeamInfoEvent()
 {
-	auto ourTeamPtr = GetGame().GetOurTeamPtr();
-	auto goalKeeperPtr = ourTeamPtr->GetGoalKeeper();
+	auto& ourTeamPtr = GetGame().GetOurTeamPtr();
+	auto& goalKeeperPtr = ourTeamPtr->GetGoalKeeper();
 
 	goalKeeperPtr->SetType(eGoalKeeper);
 	goalKeeperPtr->ChangeState(CPlayerState::eGoalKeeperGuard);
 	
 
-	auto ourTeamNonGKPlayers = ourTeamPtr->GetNonGoalKeepers();
+	auto& ourTeamNonGKPlayers = ourTeamPtr->GetNonGoalKeepers();
 	
 	int i = CPlayer::eLeftDefender;
-	for (auto pPlayer : ourTeamNonGKPlayers)
+	for (auto& pPlayer : ourTeamNonGKPlayers)
 	{
 		pPlayer->SetType(i++);
 
@@ -102,11 +102,11 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 }
 void CCounterAttackerAI::OnStartOfTurnEvent()
 {
-	auto ball = GetGame().GetBall();
-	auto ourTeamPtr = GetGame().GetOurTeamPtr();
-	auto ourPlayers = ourTeamPtr->GetPlayers();
+	auto& ball = GetGame().GetBall();
+	auto& ourTeamPtr = GetGame().GetOurTeamPtr();
+	auto& ourPlayers = ourTeamPtr->GetPlayers();
 
-	auto ourGoalKeeper = ourTeamPtr->GetGoalKeeper();
+	auto& ourGoalKeeper = ourTeamPtr->GetGoalKeeper();
 
 	
 	GetGame().CalculateAllPlayerToBallSortedDistance();
@@ -115,7 +115,7 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 	//calulate all path position and stationary position.
 	GetGame().GetBall().EstimatePath();
 
-	for (auto pPlayer : ourPlayers)
+	for (auto& pPlayer : ourPlayers)
 	{
 		if (pPlayer->GetType() == CPlayer::eLeftDefender ||
 			pPlayer->GetType() == CPlayer::eCentreDefender ||
@@ -130,10 +130,10 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 
 void CCounterAttackerAI::OnCapabilityRequest()
 {
-	auto totalCapability = GetGame().GetOurTeamPtr()->GetTotalCapability();
-	auto ourPlayers = GetGame().GetOurTeamPtr()->GetPlayers();
+	auto& totalCapability = GetGame().GetOurTeamPtr()->GetTotalCapability();
+	auto& ourPlayers = GetGame().GetOurTeamPtr()->GetPlayers();
 
-	for (auto pPlayer : ourPlayers)
+	for (auto& pPlayer : ourPlayers)
 	{
 		pPlayer->GetCapability().kickingAbility_ = totalCapability.kickingAbility_ / 6.0;
 		pPlayer->GetCapability().runningAbility_ = totalCapability.runningAbility_ / 6.0;

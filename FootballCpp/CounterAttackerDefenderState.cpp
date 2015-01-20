@@ -4,9 +4,9 @@
 
 void CCounterAttackerDefenderIdleState::Execute(CPlayer* pPlayer)
 {
-	auto pClosestToBallPlayer = game_.GetClosestPlayer();
-	auto theirTeamPtr = game_.GetTheirTeamPtr();
-	auto theirTeamSortedX = game_.GetTheirTeamSortedX();
+	auto& pClosestToBallPlayer = game_.GetClosestPlayer();
+	auto& theirTeamPtr = game_.GetTheirTeamPtr();
+	auto& theirTeamSortedX = game_.GetTheirTeamSortedX();
 	
 	float distanceBallFromOurGoal = ball_.GetPosition().DistanceFrom(pitch_.GetOurGoalCentre());
 	
@@ -30,7 +30,7 @@ void CCounterAttackerDefenderIdleState::Execute(CPlayer* pPlayer)
 		{
 			//first/second player with/near ball.
 			int supportingDefenderType = pPlayer->GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender;
-			auto pSupportingPlayer = GetGame().GetOurTeamPtr()->GetPlayerFromPlayerType(supportingDefenderType);
+			auto& pSupportingPlayer = GetGame().GetOurTeamPtr()->GetPlayerFromPlayerType(supportingDefenderType);
 			
 			pPlayer->SetMarkedPlayer(theirTeamSortedX[0]->GetNumber());
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
@@ -198,8 +198,8 @@ void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
 void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 {
 	//Note: reset of marking should happen in here on change of state
-	auto pClosestBallPlayer = game_.GetClosestPlayer();
-	auto ourTeamPtr = game_.GetOurTeamPtr();
+	auto& pClosestBallPlayer = game_.GetClosestPlayer();
+	auto& ourTeamPtr = game_.GetOurTeamPtr();
 	float ourGoalDistanceFromBall = ball_.GetStationaryPosition().DistanceFrom(pitch_.GetOurGoalCentre());
 	
 	if (ball_.GetOwner() == pPlayer->GetNumber())
@@ -237,7 +237,7 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 	}*/
 	else
 	{
-		auto pMarkedPlayer = game_.GetPlayer(pPlayer->GetMarkedPlayer());
+		auto& pMarkedPlayer = game_.GetPlayer(pPlayer->GetMarkedPlayer());
 
 		//float distWithY1 = pitch_.GetOurGoalY1().DistanceFrom(pMarkedPlayer->GetPosition());
 		Position markPos = pMarkedPlayer->GetPosition();

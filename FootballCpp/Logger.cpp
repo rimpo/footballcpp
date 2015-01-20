@@ -23,7 +23,11 @@ void CLogger::Log( const char * format, ... )
     
     va_list args;
     va_start (args, format);
+#ifdef _WIN32	
     vsprintf_s(sMessage,format, args);
+#else
+	vsprintf(sMessage,format, args);
+#endif	
     //m_Logfile <<"\n"<<Util::CurrentDateTime()<<":\t";
     m_Logfile << sMessage << "\n";
     va_end (args);
