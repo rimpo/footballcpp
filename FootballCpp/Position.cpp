@@ -34,3 +34,30 @@ bool Position::ApproxEqual(const Position& pos, float tolerance) const
 	}
 	return false;
 }
+
+//out of bound co-ordinates are put back in
+Position Position::GetRealPosition()
+{
+	auto& pitch = GetGame().GetPitch();
+	
+	Position realPos =  *this;
+		//correction for bounce case;
+		if (realPos.x_ < 0)
+		{
+			realPos.x_ = -1.0 * realPos.x_;
+		}
+		else if (realPos.x_ > pitch.GetWidth())
+		{
+			realPos.x_ = pitch.GetWidth() - realPos.x_;
+		}
+
+		if (realPos.y_ < 0)
+		{
+			realPos.y_ = -1.0 * realPos.y_;
+		}
+		else if (realPos.y_ > pitch.GetHeight())
+		{
+			realPos.y_ = pitch.GetHeight() - realPos.y_;
+		}
+	return realPos;
+}

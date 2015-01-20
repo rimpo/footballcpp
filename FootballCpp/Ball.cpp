@@ -45,6 +45,7 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 	{
 		timeTaken = 0.0;
 		stationaryPos_ = pos_;
+		virtualStationaryPos_ = pos_;
 	}
 	else
 	{
@@ -58,30 +59,12 @@ void CBall::CalculateStationaryPos(float& timeTaken)
 
 		Vector disVector = vector_.Scale(distance);
 
-		stationaryPos_ = pos_;
+		virtualStationaryPos_ = pos_;
 
-		stationaryPos_.AddVector(disVector);
-
-		//correction for bounce case;
-		/*if (stationaryPos_.x_ < 0)
-		{
-			stationaryPos_.x_ = -1.0 * stationaryPos_.x_;
-		}
-		else if (stationaryPos_.x_ > pitch.GetWidth())
-		{
-			stationaryPos_.x_ = pitch.GetWidth() - stationaryPos_.x_;
-		}
-
-		if (stationaryPos_.y_ < 0)
-		{
-			stationaryPos_.y_ = -1.0 * stationaryPos_.y_;
-		}
-		else if (stationaryPos_.y_ > pitch.GetHeight())
-		{
-			stationaryPos_.y_ = pitch.GetHeight() - stationaryPos_.y_;
-		}*/
-
+		virtualStationaryPos_.AddVector(disVector);
 		
+		//out of bound co-ordinates are put back in
+		stationaryPos_ = virtualStationaryPos_.GetRealPosition();	
 	}
 		
 }
@@ -195,13 +178,14 @@ void CBall::PositionTimeTaken(const Position& dest, vector<Position>& posVec, ve
 void CBall::EstimatePath()
 {
 	//clear old path
+	pathVirtualPos_.clear();
 	pathPos_.clear();
 	pathPosTime_.clear();
 	
 	//calculate stationary pos of ball
 	CalculateStationaryPos(stationaryTimeTaken_);
 
-	float max_distance = GetStationaryPosition().DistanceFrom(pos_);
+	float max_distance = GetVirtualStationaryPosition().DistanceFrom(pos_);
 	float v = speed_;
 	float u = speed_;
 	float d = 0.0f;
@@ -225,7 +209,9 @@ void CBall::EstimatePath()
 		Vector totalDistVector = vector_.Scale(total_distance);
 		Position currentPos = pos_;
 		currentPos.AddVector(totalDistVector);
-		pathPos_.push_back(currentPos);
+		
+		pathVirtualPos_.push_back(currentPos);
+		pathPos_.push_back(currentPos.GetRealPosition());
 		pathPosTime_.push_back(timetaken);
 	}
 

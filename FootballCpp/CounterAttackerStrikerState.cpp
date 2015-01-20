@@ -6,7 +6,7 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 {
 	if (ball_.IsFreeBall())
 	{
-		pPlayer->MoveTo(ball_.GetPosition());
+		pPlayer->MoveTo(ball_.GetStationaryPosition());
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
 	}
 }

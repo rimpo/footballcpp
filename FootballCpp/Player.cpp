@@ -6,7 +6,7 @@ CPlayer::CPlayer() : game_(GetGame()),
 					 pitch_(GetGame().GetPitch()),
 					 ball_(GetGame().GetBall())
 {
-	SetMarkedPlayer(eNotMarking);
+	SetMarkedPlayerNumber(eNotMarking);
 }
 
 
@@ -52,14 +52,14 @@ void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 	bool isFirstPosClosestToGoal = true;
 	Position firstPosClosestToGoal;
 
-	auto& pathPos = ball_.GetPathPos(); 
+	auto& pathVirtualPos = ball_.GetPathVirutalPos(); 
 	auto& pathPosTime = ball_.GetPathPosTime();
 
 	bool found = false;
-	for (int i = pathPos.size() - 1; i >= 0; --i)
+	for (int i = pathVirtualPos.size() - 1; i >= 0; --i)
 	{
 		//ignore co-ordinate crossing our goal (i.e x < 0)
-		if (pathPos[i].x_ < pitch_.GetOurGoalCentre().x_)
+		if (pathVirtualPos[i].x_ < pitch_.GetOurGoalCentre().x_)
 		{
 			continue;
 		}
@@ -68,20 +68,20 @@ void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 		//						 goalkeeper will attempt to go to this first pos.
 		if (isFirstPosClosestToGoal)
 		{
-			firstPosClosestToGoal = pathPos[i];
+			firstPosClosestToGoal = pathVirtualPos[i];
 			isFirstPosClosestToGoal = false;
 		}
 
-		float t1 = CalculateTimeToReachPosition(pathPos[i]);
+		float t1 = CalculateTimeToReachPosition(pathVirtualPos[i]);
 
 		if (t1 < pathPosTime[i])
 		{
-			surePos = pathPos[i];
+			surePos = pathVirtualPos[i];
 			isSure = true;
 		}
 		else if (ApproxEqual(t1, pathPosTime[i], 0.055f))
 		{
-			almostPos = pathPos[i];
+			almostPos = pathVirtualPos[i];
 			isAlmost = true;
 		}
 	}
@@ -125,6 +125,15 @@ void CPlayer::TakePossession()
 {
 	action_.type_ = CAction::eTakePossession;
 }
+
+void CPlayer::Kick(const Position& destination, float speed)
+{
+	action_.type_ = CAction::eKick;
+	action_.destination_ = destination;
+	action_.speed_ = speed;
+}
+
+
 float CPlayer::PredictDirection()
 {
 	auto& theirTeamPtr = game_.GetTheirTeamPtr();
@@ -220,11 +229,114 @@ void CPlayer::MoveToGuardGoal_LineSave()
 	}
 }
 
-void CPlayer::Kick(const Position& destination, float speed)
+
+
+void CPlayer::MoveToMarkedPlayer_GuardPass()
 {
-	action_.type_ = CAction::eKick;
-	action_.destination_ = destination;
-	action_.speed_ = speed;
+	auto& pMarkedPlayer = game_.GetPlayer(GetMarkedPlayerNumber());
+
+	Position ballPos = ball_.GetPosition();
+		
+	Position markPos = pMarkedPlayer->GetPosition();
+		
+	Vector towardsBall = markPos.VectorTo(ballPos);
+	Vector towardsBallScaled = towardsBall.Scale(4.0);
+
+	markPos.AddVector(towardsBallScaled);
+
+	if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
+	{
+		TurnTo(270.0);
+	}
+	else
+	{
+		MoveTo(markPos);
+	}
+}
+
+void CPlayer::MoveToMarkedPlayer_Mark()
+{
+	auto& pMarkedPlayer = game_.GetPlayer(GetMarkedPlayerNumber());
+
+		//float distWithY1 = pitch_.GetOurGoalY1().DistanceFrom(pMarkedPlayer->GetPosition());
+	Position markPos = pMarkedPlayer->GetPosition();
+		
+	Vector towardsOurGoalY1 = markPos.VectorTo(pitch_.GetOurGoalY1());
+	Vector towardsOurGoalY1_Diff = towardsOurGoalY1.Scale(3.0);
+
+	markPos.AddVector(towardsOurGoalY1_Diff);
+
+	if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
+	{
+		TurnTo(270.0);
+	}
+	else
+	{
+		MoveTo(markPos);
+	}
+}
+
+void CPlayer::MoveForBall()
+{
+	if (ball_.GetSpeed() > 0)
+	{
+		// try catching ball.
+		Position surePos, almostPos;
+		bool isSure = false, isAlmost = false;
+
+		bool isFirstPosClosestToGoal = true;
+		Position firstPosClosestToGoal;
+
+		auto& pathPos = ball_.GetPathPos(); 
+		auto& pathPosTime = ball_.GetPathPosTime();
+
+		for (int i = pathPos.size() - 1; i >= 0; --i)
+		{
+			//ignore co-ordinate crossing our goal (i.e x < 0)
+			if (pathPos[i].x_ < pitch_.GetOurGoalCentre().x_)
+			{
+				continue;
+			}
+
+			//saving the first pos - incase of player not able to reach any coordinate
+			//						 player will attempt to go to this first pos.
+			if (isFirstPosClosestToGoal)
+			{
+				firstPosClosestToGoal = pathPos[i];
+				isFirstPosClosestToGoal = false;
+			}
+
+			float t1 = CalculateTimeToReachPosition(pathPos[i]);
+
+			if (t1 < pathPosTime[i])
+			{
+				surePos = pathPos[i];
+				isSure = true;
+			}
+			else if (ApproxEqual(t1, pathPosTime[i], 0.055f))
+			{
+				almostPos = pathPos[i];
+				isAlmost = true;
+			}
+		}
+
+		if (isSure)
+		{
+			MoveTo(surePos);
+		}
+		else if (isAlmost)
+		{
+			MoveTo(almostPos);
+		}
+		else
+		{
+			MoveTo(firstPosClosestToGoal);
+		}		
+	}
+	else
+	{
+		MoveTo(ball_.GetStationaryPosition());
+	}
 }
 
 float CPlayer::CalculateTimeToTurn(float direction)

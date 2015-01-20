@@ -15,6 +15,7 @@ public:
 	inline const Vector& GetVector() { return vector_; }
 
 	inline const Position& GetStationaryPosition() { return stationaryPos_; }
+	inline const Position& GetVirtualStationaryPosition() { return virtualStationaryPos_; }
 
 	inline int GetOwner() { return controllingPlayerNumber_; }
 	inline float GetSpeed() { return speed_; }
@@ -34,6 +35,7 @@ public:
 	void EstimatePath();
 
 	inline const Position::Vec& GetPathPos() { return pathPos_; }
+	inline const Position::Vec& GetPathVirutalPos() { return pathVirtualPos_; }
 	inline const TimeVec& GetPathPosTime() { return pathPosTime_; }
 
 	inline bool IsFreeBall() { return (controllingPlayerNumber_ == -1); }
@@ -50,10 +52,12 @@ private:
 	float	  speed_;
 	int		  controllingPlayerNumber_;
 
-	Position stationaryPos_;
+	Position stationaryPos_;			// actual stationary position with negative values are normalized
+	Position virtualStationaryPos_;		// unrealistic value i.e can be negative (used to check goal hit condition)
 	float	 stationaryTimeTaken_;
 	
 	Position::Vec pathPos_;
+	Position::Vec pathVirtualPos_;		// used only for goalkeeper (need to think a better way to avoid this)
 	TimeVec	 pathPosTime_;
 };
 

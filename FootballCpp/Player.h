@@ -103,9 +103,13 @@ public:
 	void MoveToGuardGoal_Radius();
 	void MoveToGuardGoal_LineSave();
 	void MoveToGuardGoal_Centre();
-
-	inline void SetMarkedPlayer(int playerNumber) { markedPlayerNumber_ = playerNumber; }
-	inline int GetMarkedPlayer() { return markedPlayerNumber_; }
+	
+	void MoveToMarkedPlayer_GuardPass();
+	void MoveToMarkedPlayer_Mark();
+	void MoveForBall();					// this should handle all condtion for ball interception,chase_ball
+	
+	inline void SetMarkedPlayerNumber(int playerNumber) { markedPlayerNumber_ = playerNumber; }
+	inline int GetMarkedPlayerNumber() { return markedPlayerNumber_; }
 private:
 	int playerType_;
 	int playerNumber_;

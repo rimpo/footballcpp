@@ -33,13 +33,17 @@ struct Position
 	}
 
 	float DistanceFrom(const Position& pos) const;
-	void AddVector(const Vector& vec);
 	float AngleWith(const Position& pos);
+	
+	void AddVector(const Vector& vec);
 
 	Vector VectorTo(const Position& pos) { return Vector(pos.x_ - x_, pos.y_ - y_); }
 
 	bool ApproxEqual(const Position& pos, float tolerance) const;
 
 	inline bool IsNegative() { return x_ < 0.0 || y_ < 0.0; }
+	
+	Position GetRealPosition();	//out of bound co-ordinates are put back in (help in ball bouncing boundary)
+	
 };
 

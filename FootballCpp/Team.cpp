@@ -174,6 +174,7 @@ int CTeam::ProcessCapabilitiesRequest(const Document& capValue)
 
 void CTeam::MapPlayerTypeToPlayerPtr()
 {
+	//this enables us to fetch CPLayer::Ptr from player type (i.e. eLeftDefender, eRightDefender ..)
 	playerTypeToPlayer_.resize(players_.size());
 	for (auto& pPlayer : players_)
 	{

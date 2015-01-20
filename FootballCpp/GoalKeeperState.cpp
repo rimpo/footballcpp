@@ -11,7 +11,7 @@ void CGoalKeeperGuardState::Execute(CPlayer *pPlayer)
 		pPlayer->MoveTo(ball_.GetPosition());
 		pPlayer->ChangeState(CPlayerState::eGoalKeeperChaseBall);
 	}
-	else if (pitch_.IsLineHittingOurGoal(ball_.GetPosition(), ball_.GetStationaryPosition(), hittingAt))
+	else if (pitch_.IsLineHittingOurGoal(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), hittingAt))
 	{
 		pPlayer->MoveToSaveGoal_GoalKeeper(hittingAt);
 		pPlayer->ChangeState(CPlayerState::eGoalKeeperInterceptBall);
