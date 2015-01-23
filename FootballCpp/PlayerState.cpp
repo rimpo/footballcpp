@@ -7,7 +7,6 @@
 #include "CounterAttackerStrikerState.h"
 
 
-CPlayerState::PtrVec CPlayerState::globalPlayerStates;
 
 
 CPlayerState::CPlayerState() : 		   game_(GetGame()),
@@ -19,6 +18,7 @@ CPlayerState::CPlayerState() : 		   game_(GetGame()),
 
 CPlayerState *CPlayerState::GlobalPlayerState(int type)
 {
+	auto& globalPlayerStates = GetGame().GetStateVec();
 	if( type < globalPlayerStates.size())
 		return globalPlayerStates[type];
 		
@@ -28,6 +28,7 @@ CPlayerState *CPlayerState::GlobalPlayerState(int type)
 
 void CPlayerState::InitGlobalPlayerStateVector()
 {
+	auto& globalPlayerStates = GetGame().GetStateVec();
 		//pre-allocate the whole vector
 	if (globalPlayerStates.empty())
 	{

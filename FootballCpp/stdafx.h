@@ -8,6 +8,7 @@
 #include "targetver.h"
 
 #include <stdio.h>
+#include <cstdlib>
 
 #ifdef _WIN32
 #include <tchar.h>
@@ -30,8 +31,15 @@ using namespace std;
 #include"Util.h"
 #include"Game.h"
 
-CGame& GetGame();	
 
+class Global
+{
+public:	
+static CGame game;
+
+};
+
+inline CGame& GetGame() { return Global::game;}
 
 
 // TODO: reference additional headers your program requires here

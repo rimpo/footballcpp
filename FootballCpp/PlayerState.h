@@ -61,7 +61,7 @@ public:
 	
 	static void	InitGlobalPlayerStateVector();
 	
-	static PtrVec globalPlayerStates;
+
 protected:
 	CGame& game_;
 	CPitch& pitch_;

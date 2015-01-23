@@ -6,8 +6,16 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 {
 	if (ball_.IsFreeBall())
 	{
-		pPlayer->MoveTo(ball_.GetStationaryPosition());
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
+		if (ball_.GetPosition().x_ < 25.0)
+		{
+			pPlayer->MoveTo({25.0,25.0});
+		}
+		else
+		{
+			pPlayer->MoveTo(ball_.GetStationaryPosition());
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
+		};
+		
 	}
 }
 
@@ -23,7 +31,14 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 	}
 	else if (ball_.IsFreeBall())	// no owner
 	{
-		pPlayer->MoveTo(ball_.GetPosition());
+		if (ball_.GetPosition().x_ < 25.0)
+		{
+			pPlayer->MoveTo({25.0,25.0});
+		}
+		else
+		{
+			pPlayer->MoveTo(ball_.GetStationaryPosition());
+		}
 	}
 	else if (ball_.IsTheirTeamControlling()) // not our team member
 	{
@@ -43,9 +58,10 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 		// Note: need to wait and kick
 		// For testing - kick towards centre (clearance)
 		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
-		if (distanceFromGoal > 22.0)
+		if (distanceFromGoal > 20.0)
 		{
-				pPlayer->Kick(pitch_.GetTheirGoalCentre(), 40.0);
+			    float randomY = RandomRange(10.0f, 20.0f);
+				pPlayer->Kick({pitch_.GetTheirGoalCentre().x_,randomY}, 40.0);
 				//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
 		}
 		else

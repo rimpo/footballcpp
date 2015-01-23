@@ -80,15 +80,17 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 		if (pPlayer->GetType() == CPlayer::eLeftDefender)
 		{
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderIdle);
+			//pPlayer->ChangeState(CPlayerState::eDead);
 		}
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
-			pPlayer->ChangeState(CPlayerState::eDead);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderIdle);
+			//pPlayer->ChangeState(CPlayerState::eDead);
 		}
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
-			//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-			pPlayer->ChangeState(CPlayerState::eDead);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			//pPlayer->ChangeState(CPlayerState::eDead);
 		}
 		
 		

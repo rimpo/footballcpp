@@ -61,7 +61,7 @@ bool CPitch::IsLineHittingOurGoal(const Position& beginPos, const Position& endP
 bool CPitch::IsInsideOurGoalArea(const Position& pos)
 {
 	//check x > 0 is to ensure the x is in the field.
-	return pos.x_ > 0 && pos.DistanceFrom(ourGoalCentre_) < goalAreaRadius_;
+	return pos.x_ > 0 && pos.DistanceFrom(ourGoalCentre_) < (goalAreaRadius_ - 0.3);
 }
 
 bool CPitch::IsLineHittingTheirGoal(const Position& beginPos, const Position& endPos)
@@ -72,5 +72,5 @@ bool CPitch::IsLineHittingTheirGoal(const Position& beginPos, const Position& en
 bool CPitch::IsInsideTheirGoalArea(const Position& pos)
 {
 	//check x > 0 is to ensure the x is in the field.
-	return pos.x_ > 0 && pos.DistanceFrom(theirGoalCentre_) < goalAreaRadius_;
+	return pos.x_ > 0 && pos.DistanceFrom(theirGoalCentre_) < (goalAreaRadius_ - 0.3);
 }

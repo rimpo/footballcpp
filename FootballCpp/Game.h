@@ -29,11 +29,13 @@ public:
 	
 	CGame();
 	virtual ~CGame();
-
+	
 	inline const CPlayer::Ptr& GetPlayer(int playerNumber) { return allPlayers_[playerNumber];}
 	inline const CStrategyAI::Ptr& GetStrategy() { return strategyPtr_; }
 	inline const CTeam::Ptr& GetOurTeamPtr() { return ourTeamPtr_; }
 	inline const CTeam::Ptr& GetTheirTeamPtr() { return theirTeamPtr_; }
+	
+	inline CPlayerState::PtrVec& GetStateVec() { return allStatesVec_;}
 
 	inline const CPlayer::Ptr& GetClosestPlayer(){ return closestPlayer_; }
 	inline const CPlayer::PtrVec& GetTheirTeamSortedX() { return theirTeamSortedX_; }
@@ -52,6 +54,7 @@ public:
 	void CalculateAllPlayerToBallSortedDistance();
 
 	void SortTheirTeamX();
+	
 	
 private:
 	CTeam::PtrVec teams_;
@@ -73,6 +76,8 @@ private:
 	CPlayer::PtrVec theirTeamSortedX_; //x co-oridnate ascending sort
 
 	CPlayer::PtrVec allPlayersToBallSortedDist_;
+	
+	CPlayerState::PtrVec allStatesVec_;
 public:
 	int noOfGoalAttempts;
 };

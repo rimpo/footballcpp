@@ -60,6 +60,11 @@ int CGame::Process(const string& sJsonMsg)
 			theirTeamPtr_->ProcessStartOfTurn(document);
 
 			strategyPtr_->OnStartOfTurnEvent();
+			
+			if (currentTimeSeconds_ > 1799.9)
+			{
+				LOGGER->Log("NoOfAttempts:%d",noOfGoalAttempts);
+			}
 		}
 		else if (eventTypeItr->value == "GOAL")
 		{

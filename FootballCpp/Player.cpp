@@ -180,8 +180,8 @@ void CPlayer::MoveToGuardGoal_Radius()
 
 	ourGoalCentre.AddVector(scaledVec);
 
-	if (ourGoalCentre.x_ > 2.5)
-		ourGoalCentre.x_ = 2.5;
+	if (ourGoalCentre.x_ > 3.0)
+		ourGoalCentre.x_ = 3.0;
 
 	if (pos_.ApproxEqual(ourGoalCentre, POSITION_GUARD_TOLERANCE))
 	{
@@ -233,14 +233,23 @@ void CPlayer::MoveToGuardGoal_LineSave()
 
 void CPlayer::MoveToMarkedPlayer_GuardPass()
 {
+	SelectMarkedPlayer();
+	
 	auto& pMarkedPlayer = game_.GetPlayer(GetMarkedPlayerNumber());
 
 	Position ballPos = ball_.GetPosition();
 		
 	Position markPos = pMarkedPlayer->GetPosition();
+	
+	//to solve nan problem - ball and mark pos almost same.
+	if (ballPos.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
+	{
+		MoveTo(markPos);
+		return	;
+	}
 		
 	Vector towardsBall = markPos.VectorTo(ballPos);
-	Vector towardsBallScaled = towardsBall.Scale(4.0);
+	Vector towardsBallScaled = towardsBall.Scale(3.0);
 
 	markPos.AddVector(towardsBallScaled);
 
@@ -253,16 +262,86 @@ void CPlayer::MoveToMarkedPlayer_GuardPass()
 		MoveTo(markPos);
 	}
 }
+bool CPlayer::IsSupportingDefenderAlreadyMarking(int playerNumber)
+{
+	int supportingPlayerType = (GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+	auto& ourTeamPtr = game_.GetOurTeamPtr();
+	
+	auto& pSupportingPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
+	
+	if(pSupportingPlayer->GetMarkedPlayerNumber() == playerNumber)
+		return true;
+	return false;
+}
+
+void CPlayer::SelectMarkedPlayer()
+{
+	auto& theirTeamSortedX = game_.GetTheirTeamSortedX();
+	
+	if (GetMarkedPlayerNumber() == eNotMarking) 
+	{
+		//set marked player
+		if (theirTeamSortedX[0]->GetPosition().y_ < theirTeamSortedX[1]->GetPosition().y_)
+		{
+			if (GetType() == CPlayer::eLeftDefender)
+			{
+				SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
+				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+			}
+			else
+			{
+				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
+				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+			}
+		}
+		else
+		{
+			if (GetType() == CPlayer::eLeftDefender)
+			{
+				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
+				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+			}
+			else
+			{
+				SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
+				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+			}
+		}
+	}
+	else
+	{
+		// check if someone else has come close to our goal.
+		if ( GetMarkedPlayerNumber() != theirTeamSortedX[0]->GetNumber() &&
+		     GetMarkedPlayerNumber() != theirTeamSortedX[1]->GetNumber())
+		{
+			//check if it is already marked.
+			if(IsSupportingDefenderAlreadyMarking(theirTeamSortedX[0]->GetNumber()))
+			{
+				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
+			}
+			else
+			{
+				SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
+			}
+			
+		}
+	
+	}
+}
 
 void CPlayer::MoveToMarkedPlayer_Mark()
 {
+	
+	SelectMarkedPlayer();
+	
+	
 	auto& pMarkedPlayer = game_.GetPlayer(GetMarkedPlayerNumber());
 
 		//float distWithY1 = pitch_.GetOurGoalY1().DistanceFrom(pMarkedPlayer->GetPosition());
 	Position markPos = pMarkedPlayer->GetPosition();
 		
 	Vector towardsOurGoalY1 = markPos.VectorTo(pitch_.GetOurGoalY1());
-	Vector towardsOurGoalY1_Diff = towardsOurGoalY1.Scale(3.0);
+	Vector towardsOurGoalY1_Diff = towardsOurGoalY1.Scale(0.2);
 
 	markPos.AddVector(towardsOurGoalY1_Diff);
 
