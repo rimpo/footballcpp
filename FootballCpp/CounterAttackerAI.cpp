@@ -89,8 +89,8 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 		}
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-			//pPlayer->ChangeState(CPlayerState::eDead);
+			//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			pPlayer->ChangeState(CPlayerState::eDead);
 		}
 		
 		

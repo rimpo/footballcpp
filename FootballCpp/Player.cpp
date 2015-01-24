@@ -43,6 +43,23 @@ int CPlayer::ProcessDynamicState(const Value& dynamicState)
 	}
 	return 0;
 }
+
+bool CPlayer::IsOurTeamMember()
+{
+	if (game_.GetOurTeamPtr()->GetTeamNumber() == teamNumber_)
+		return true;
+		
+	return false;	
+}
+bool CPlayer::IsTheirTeamMember()
+{
+	if (game_.GetTheirTeamPtr()->GetTeamNumber() == teamNumber_)
+		return true;
+		
+	return false;
+}
+
+
 void CPlayer::MoveToSaveGoal_GoalKeeper(const Position& hittingAt)
 {
 	// try catching ball.
@@ -491,7 +508,17 @@ float CPlayer::CalculateTimeToReachPosition(const Position& dest)
 
 	float distanceInSingleTurn = speed*GAME_AI_CALCULATION_INTERVAL;
 
-	int noOfTurn = distanceToDest / distanceInSingleTurn;
+	//To solve cabaility problem.
+	int noOfTurn = 0;
+	if (distanceInSingleTurn > 0.0f)
+	{
+		noOfTurn = distanceToDest / distanceInSingleTurn;
+	}
+	else
+	{	//invalid value;
+		return 9999999.0f;	//dummy huge time
+	}
+	
 
 	if ((distanceToDest - distanceInSingleTurn * noOfTurn) > 0.0)
 	{

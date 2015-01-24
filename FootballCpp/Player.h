@@ -78,6 +78,9 @@ public:
 	
 	void SetTeamNumber(int teamNumber) { teamNumber_ = teamNumber; }
 	int GetTeamNumber() { return teamNumber_; }
+	
+	bool IsOurTeamMember();				//using team number to identify team.
+	bool IsTheirTeamMember();
 
 	inline CCapability& GetCapability() { return capability_; }
 	inline CAction& GetAction() { return action_; }

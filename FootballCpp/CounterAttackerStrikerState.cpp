@@ -4,11 +4,13 @@
 
 void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 {
-	if (ball_.IsFreeBall())
+	Position perIntersection;
+	
+	if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
 	{
 		if (ball_.GetPosition().x_ < 25.0)
 		{
-			pPlayer->MoveTo({25.0,25.0});
+			pPlayer->MoveTo({50.0,25.0});
 		}
 		else
 		{
@@ -16,6 +18,11 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
 		};
 		
+	}
+	else if (GetPerpendicularIntersection(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
+	{
+		pPlayer->MoveForBall();
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
 	}
 }
 
@@ -33,11 +40,20 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 	{
 		if (ball_.GetPosition().x_ < 25.0)
 		{
-			pPlayer->MoveTo({25.0,25.0});
+			pPlayer->MoveTo({50.0,25.0});
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}
-		else
+		
+		auto& pClosestPlayer = game_.GetClosestPlayer();
+		
+		if (pClosestPlayer->IsTheirTeamMember())
 		{
-			pPlayer->MoveTo(ball_.GetStationaryPosition());
+			pPlayer->MoveTo({50.0,25.0});
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+		}
+		else if(pClosestPlayer->GetNumber() != pPlayer->GetNumber())
+		{
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}
 	}
 	else if (ball_.IsTheirTeamControlling()) // not our team member
