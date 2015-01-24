@@ -5,8 +5,14 @@
 void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 {
 	Position perIntersection;
-	
-	if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
+	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
+	if (distanceFromBall < 0.5)
+	{
+		pPlayer->TakePossession();
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
+		return;
+	}
+	else if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
 	{
 		if (ball_.GetPosition().x_ < 25.0)
 		{
@@ -15,7 +21,7 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		else
 		{
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
+			//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
 		};
 		
 	}
@@ -36,32 +42,31 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
 		return;
 	}
-	else if (ball_.IsFreeBall())	// no owner
+	else if (ball_.IsFreeBall() && ball_.GetSpeed() == 0)	// no owner
 	{
 		if (ball_.GetPosition().x_ < 25.0)
 		{
 			pPlayer->MoveTo({50.0,25.0});
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			return;
 		}
 		
-		auto& pClosestPlayer = game_.GetClosestPlayer();
+		/*auto& pClosestPlayer = game_.GetClosestPlayer();
 		
-		if (pClosestPlayer->IsTheirTeamMember())
+		if(pClosestPlayer->GetNumber() != pPlayer->GetNumber())
 		{
 			pPlayer->MoveTo({50.0,25.0});
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-		}
-		else if(pClosestPlayer->GetNumber() != pPlayer->GetNumber())
-		{
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-		}
+		}*/
+		pPlayer->MoveTo(ball_.GetPosition());
+		//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 	}
 	else if (ball_.IsTheirTeamControlling()) // not our team member
 	{
 		//possession is not with our team..hell! go run.. gaurd goal.
 		//pPlayer->MoveToGuardGoal();
 		pPlayer->MoveTo(ball_.GetPosition());
-		//pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderDefend);
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 	}
 
 }
@@ -77,35 +82,22 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
 		if (distanceFromGoal > 20.0)
 		{
-			float direction = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
-			
-			
-			int randVal = RandomRangeInteger(0,2);
-			
-			direction = direction + (randVal - 1)*20.0;
-			//float arr[] = {30.0,60.0,90.0,120.0,150.0};
-			float arr[] = {50.0,70.0,90.0,110.0,130.0};
-			//float randomY = RandomRange(10.0f, 20.0f);
-				
-			//Vector shootVec = GetVectorFromDirection(arr[RandomRangeInteger(2, 4)]);
-			Vector shootVec = GetVectorFromDirection(direction);
-			shootVec = shootVec.Scale(5.0);
-			
-			Position shootPos = pPlayer->GetPosition();
-			shootPos.AddVector(shootVec);
-			
-			pPlayer->Kick(shootPos, 40.0f);
-			
-			//testing purpose 
-			//pPlayer->Kick(pitch_.GetTheirGoalY1(), 100.0);
-				//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
+			pPlayer->KickShort();
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
 		}
 		else
 		{
-			pPlayer->Kick(pitch_.GetTheirGoalY1(), 100.0);
+			int randVal = RandomRangeInteger(0,1);
+			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
+			
+			Position shootAt = pitch_.GetTheirGoalCentre();
+			shootAt.y_ += (randVal - 1)*randShootYDiff;
+			
+			pPlayer->Kick(shootAt, 100.0);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
-		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
+		
 	}
 	else if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
@@ -121,6 +113,41 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 
 void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
 {
+	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
 	
+	if (ball_.GetOwner() == pPlayer->GetNumber())
+	{
+		
+		// Note: need to wait and kick
+		// For testing - kick towards centre (clearance)
+		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
+		if (distanceFromGoal > 20.0)
+		{
+			pPlayer->KickShort();
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
+		}
+		else
+		{
+			pPlayer->Kick(pitch_.GetTheirGoalY1(), 100.0);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+		}
+		//pPlayer->MoveTo({ 8.0f, 25.0 });
+		
+	}
+	else if (distanceFromBall < 0.5)
+	{
+		pPlayer->TakePossession();
+		//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
+		return;
+	}
+	else if (ball_.IsFreeBall())	// no owner
+	{
+		pPlayer->MoveTo(ball_.GetStationaryPosition());
+	}
+	else if (ball_.IsTheirTeamControlling())
+	{
+		pPlayer->MoveTo({50.0,25.0});
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+	}
 }
 

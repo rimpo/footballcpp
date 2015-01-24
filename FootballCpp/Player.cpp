@@ -150,7 +150,26 @@ void CPlayer::Kick(const Position& destination, float speed)
 	action_.speed_ = speed;
 }
 
-
+void CPlayer::KickShort()
+{
+	float direction = GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
+			
+	int randVal = RandomRangeInteger(0,2);
+			
+	direction = direction + (randVal - 1)*20.0;
+			//float arr[] = {30.0,60.0,90.0,120.0,150.0};
+	float arr[] = {50.0,70.0,90.0,110.0,130.0};
+			//float randomY = RandomRange(10.0f, 20.0f);
+				
+			//Vector shootVec = GetVectorFromDirection(arr[RandomRangeInteger(2, 4)]);
+	Vector shootVec = GetVectorFromDirection(direction);
+	shootVec = shootVec.Scale(5.0);
+			
+	Position shootPos = GetPosition();
+	shootPos.AddVector(shootVec);
+			
+	Kick(shootPos, 40.0f);
+}
 float CPlayer::PredictDirection()
 {
 	auto& theirTeamPtr = game_.GetTheirTeamPtr();

@@ -25,11 +25,11 @@ void CCounterAttackerAI::InitializeOurPlayers()
 
 	playersKickOffPos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
-		{ 17, 20 },			//eLeftDefender,
-		{ 17, 30 },			//eRightDefender,
-		{ 25, 35 },			//eLeftCounterAttacker,
-		{ 49, 24 },			//eCentralCounterAttacker,	note:insider kick off circle
-		{ 49, 26 }			//eRightCounterAttacker     note:insider kick off circle  
+		{ 49, 26 },			//eLeftDefender,
+		{ 49, 24},			//eCentreDefender,
+		{ 25, 35 },			//eRightDefender,
+		{ 15, 23 },			//eLeftStriker,	note:dead player
+		{ 15, 27 }			//eRightStriker     note:dead player 
 	};
 
 	//facing towards opponent side
@@ -89,8 +89,8 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 		}
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
-			//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-			pPlayer->ChangeState(CPlayerState::eDead);
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			//pPlayer->ChangeState(CPlayerState::eDead);
 		}
 		
 		

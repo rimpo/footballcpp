@@ -64,7 +64,8 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 	{
 		// Note: need to wait and kick
 		// For testing - kick towards centre (clearance)
-		pPlayer->Kick({100.0, 25.0}, 70.0);
+		auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
+		pPlayer->Kick(pCentrePlayer->GetPosition(), 70.0);
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 		return;
@@ -163,7 +164,7 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		pPlayer->MoveForBall();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderChaseBall);
 	}
-	/*else if (pPlayer->GetMarkedPlayerNumber() != CPlayer::eNotMarking)
+	else if (pPlayer->GetMarkedPlayerNumber() != CPlayer::eNotMarking)
 	{
 		auto& pMarkedPlayer = game_.GetPlayer(pPlayer->GetMarkedPlayerNumber());
 		
@@ -177,7 +178,7 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		{
 			pPlayer->MoveToMarkedPlayer_Mark();
 		}
-	}*/
+	}
 	else
 	{
 		pPlayer->MoveToMarkedPlayer_Mark();

@@ -115,6 +115,8 @@ public:
 	void MoveToMarkedPlayer_Mark();
 	void MoveForBall();					// this should handle all condtion for ball interception,chase_ball
 	
+	void KickShort();
+	
 	bool IsSupportingDefenderAlreadyMarking(int playerNumber);
 	void SelectMarkedPlayer();
 	
