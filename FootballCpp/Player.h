@@ -10,6 +10,10 @@
 #define DIRECTION_TOLERANCE 0.1f
 
 
+#define MAX_DISTANCE_MARK_TO_GAURD_PASS 15.0f
+#define PERCANTAGE_DIST_FOR_GUAR_PASS 0.35f
+
+
 struct CCapability{
 	float kickingAbility_;
 	float runningAbility_;

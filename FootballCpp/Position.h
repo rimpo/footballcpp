@@ -4,7 +4,7 @@
 
 #include"Vector.h"
 
-#define POSITION_TOLERANCE 0.0000001f
+#define POSITION_TOLERANCE 0.00001f
 #define POSITION_GUARD_TOLERANCE 0.2f
 
 

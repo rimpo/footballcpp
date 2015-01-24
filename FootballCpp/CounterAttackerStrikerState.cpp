@@ -55,13 +55,33 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 	//ball in range take possession
 	if (ball_.GetOwner() == pPlayer->GetNumber())
 	{
+		
 		// Note: need to wait and kick
 		// For testing - kick towards centre (clearance)
 		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
 		if (distanceFromGoal > 20.0)
 		{
-			    float randomY = RandomRange(10.0f, 20.0f);
-				pPlayer->Kick({pitch_.GetTheirGoalCentre().x_,randomY}, 40.0);
+			float direction = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
+			
+			
+			int randVal = RandomRangeInteger(0,2);
+			
+			direction = direction + (randVal - 1)*20.0;
+			//float arr[] = {30.0,60.0,90.0,120.0,150.0};
+			float arr[] = {50.0,70.0,90.0,110.0,130.0};
+			//float randomY = RandomRange(10.0f, 20.0f);
+				
+			//Vector shootVec = GetVectorFromDirection(arr[RandomRangeInteger(2, 4)]);
+			Vector shootVec = GetVectorFromDirection(direction);
+			shootVec = shootVec.Scale(5.0);
+			
+			Position shootPos = pPlayer->GetPosition();
+			shootPos.AddVector(shootVec);
+			
+			pPlayer->Kick(shootPos, 40.0f);
+			
+			//testing purpose 
+			//pPlayer->Kick(pitch_.GetTheirGoalY1(), 100.0);
 				//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
 		}
 		else

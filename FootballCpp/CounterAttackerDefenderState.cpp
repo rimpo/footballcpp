@@ -179,7 +179,7 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 	{
 		// Note: need to wait and kick
 		// For testing - kick towards centre (clearance)
-		pPlayer->Kick({50.0, 0.0}, 100.0);
+		pPlayer->Kick({50.0, 25.0}, 70.0);
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 		return;
@@ -236,23 +236,6 @@ void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 		
 	}
-	else if (pPlayer->GetMarkedPlayerNumber() == CPlayer::eNotMarking)
-	{
-		//identify close player to goal and guard pass to them
-		
-		auto& theirTeamSortedX = game_.GetTheirTeamSortedX();
-		
-		int supportingDefenderType = pPlayer->GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender;
-		auto& pSupportingPlayer = GetGame().GetOurTeamPtr()->GetPlayerFromPlayerType(supportingDefenderType);
-			
-		pPlayer->SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
-		pSupportingPlayer->SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
-		
-		pPlayer->MoveToMarkedPlayer_GuardPass();
-		pSupportingPlayer->MoveToMarkedPlayer_GuardPass();
-		
-		//remain in this state
-	}
 	else
 	{
 		pPlayer->MoveToMarkedPlayer_GuardPass();
@@ -266,6 +249,8 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 	auto& ourTeamPtr = game_.GetOurTeamPtr();
 	float ourGoalDistanceFromBall = ball_.GetStationaryPosition().DistanceFrom(pitch_.GetOurGoalCentre());
 	
+	Position perIntersection;
+	
 	if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
 		//my possession
@@ -273,7 +258,6 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		pPlayer->TakePossession();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
 	}
-	
 	/*else if (ball_.IsOurGoalKeeperControlling())
 	{
 		//change state
@@ -288,6 +272,10 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		pPlayer->MoveTo(ball_.GetStationaryPosition());
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderChaseBall);
 	}*/
+	else if (GetPerpendicularIntersection(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
+	{
+		pPlayer->MoveForBall();
+	}
 	else if (pPlayer->GetMarkedPlayerNumber() != CPlayer::eNotMarking)
 	{
 		auto& pMarkedPlayer = game_.GetPlayer(pPlayer->GetMarkedPlayerNumber());

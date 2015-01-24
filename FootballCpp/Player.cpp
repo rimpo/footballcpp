@@ -241,6 +241,8 @@ void CPlayer::MoveToMarkedPlayer_GuardPass()
 		
 	Position markPos = pMarkedPlayer->GetPosition();
 	
+	float distBallToMarkPlayer = ballPos.DistanceFrom(markPos);
+	
 	//to solve nan problem - ball and mark pos almost same.
 	if (ballPos.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
 	{
@@ -249,7 +251,7 @@ void CPlayer::MoveToMarkedPlayer_GuardPass()
 	}
 		
 	Vector towardsBall = markPos.VectorTo(ballPos);
-	Vector towardsBallScaled = towardsBall.Scale(3.0);
+	Vector towardsBallScaled = towardsBall.Scale(distBallToMarkPlayer*PERCANTAGE_DIST_FOR_GUAR_PASS);
 
 	markPos.AddVector(towardsBallScaled);
 
@@ -314,7 +316,25 @@ void CPlayer::SelectMarkedPlayer()
 		if ( GetMarkedPlayerNumber() != theirTeamSortedX[0]->GetNumber() &&
 		     GetMarkedPlayerNumber() != theirTeamSortedX[1]->GetNumber())
 		{
-			//check if it is already marked.
+			/*int supportingPlayerType = (GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+			
+			auto& ourTeamPtr = game_.GetOurTeamPtr();
+			auto& pSupportingPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
+			
+			int supportingMarkedPlayerNumber = pSupportingPlayer->GetMarkedPlayerNumber();
+			// this player is marking 3rd closest player to our goal
+			// and supporting player marking 1st clostest player to our goal
+			
+			if (GetMarkedPlayerNumber() == theirTeamSortedX[2]->GetNumber())
+			{
+				float distBtwSupportingPlyAnd
+					
+			}
+			
+			
+			
+			float distanceOfSupportingPlayer = pSupportingPlayer->
+			*/
 			if(IsSupportingDefenderAlreadyMarking(theirTeamSortedX[0]->GetNumber()))
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
@@ -369,7 +389,8 @@ void CPlayer::MoveForBall()
 		auto& pathPos = ball_.GetPathPos(); 
 		auto& pathPosTime = ball_.GetPathPosTime();
 
-		for (int i = pathPos.size() - 1; i >= 0; --i)
+		//for (int i = pathPos.size() - 1; i >= 0; --i)
+		for (size_t i = 0; i < pathPos.size(); ++i)
 		{
 			//ignore co-ordinate crossing our goal (i.e x < 0)
 			if (pathPos[i].x_ < pitch_.GetOurGoalCentre().x_)
@@ -391,6 +412,7 @@ void CPlayer::MoveForBall()
 			{
 				surePos = pathPos[i];
 				isSure = true;
+				break;
 			}
 			else if (ApproxEqual(t1, pathPosTime[i], 0.055f))
 			{
