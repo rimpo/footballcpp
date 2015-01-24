@@ -216,8 +216,8 @@ void CPlayer::MoveToGuardGoal_Radius()
 
 	ourGoalCentre.AddVector(scaledVec);
 
-	if (ourGoalCentre.x_ > 3.0)
-		ourGoalCentre.x_ = 3.0;
+	if (ourGoalCentre.x_ > 2.5)
+		ourGoalCentre.x_ = 2.5;
 
 	if (pos_.ApproxEqual(ourGoalCentre, POSITION_GUARD_TOLERANCE))
 	{

@@ -14,10 +14,10 @@ void CCounterAttackerAI::InitializeOurPlayers()
 	playersHomePos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
 		{ 17, 30 },			//eLeftDefender,
-		{ 17, 40 },			//eRightDefender,
-		{ 25, 35 },			//eLeftCounterAttacker,
-		{ 25, 25 },			//eCentralCounterAttacker,
-		{ 25, 45 }			//eRightCounterAttacker
+		{ 75, 37 },			//eCentreDefender,
+		{ 25, 35 },			//eRightDefender,
+		{ 25, 25 },			//eLeftStriker,
+		{ 25, 45 }			//eRightStriker
 	};
 
 	//facing towards opponent side

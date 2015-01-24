@@ -26,3 +26,9 @@ class CCounterAttackerStrikerTakePossessionState : public CPlayerState
 public:
 	void Execute(CPlayer *pPlayer);
 };
+
+class CCounterAttackerStrikerInterceptBallState : public CPlayerState
+{
+public:
+	void Execute(CPlayer *pPlayer);
+};
