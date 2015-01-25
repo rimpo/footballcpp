@@ -121,12 +121,25 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 		{
 			int randVal = RandomRangeInteger(0,1);
 			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
-			
+				
 			Position shootAt = pitch_.GetTheirGoalCentre();
 			shootAt.y_ += (randVal - 1)*randShootYDiff;
+				
+					
+			float angle = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
+		
+			if (!pPlayer->IsTheirPlayerNearMe() && 
+				!ApproxEqual(pPlayer->GetDirection(),angle,DIRECTION_TOLERANCE))
+			{
 			
-			pPlayer->Kick(shootAt, 100.0);
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+				pPlayer->TurnTo(angle);
+			}
+			else
+			{
+							
+				pPlayer->Kick(shootAt, 100.0);
+				pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			}
 		}
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
 		
@@ -164,12 +177,24 @@ void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
 		{
 			int randVal = RandomRangeInteger(0,1);
 			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
-			
+				
 			Position shootAt = pitch_.GetTheirGoalCentre();
 			shootAt.y_ += (randVal - 1)*randShootYDiff;
-			
-			pPlayer->Kick(shootAt, 100.0);
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+				
+					
+			float angle = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
+		
+			if (!pPlayer->IsTheirPlayerNearMe() && 
+				!ApproxEqual(pPlayer->GetDirection(),angle,DIRECTION_TOLERANCE))
+			{
+				pPlayer->TurnTo(angle);
+			}
+			else
+			{
+							
+				pPlayer->Kick(shootAt, 100.0);
+				pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			}
 		}
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
 		

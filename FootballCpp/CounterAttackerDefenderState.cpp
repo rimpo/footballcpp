@@ -34,7 +34,6 @@ void CCounterAttackerDefenderChaseBallState::Execute(CPlayer *pPlayer)
 		{
 			pPlayer->TakePossession();
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderTakePossession);
-			
 		}
 		else
 		{
@@ -71,23 +70,22 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 	//ball in range take possession
 	if (pPlayer->HasBall())
 	{
-		// Note: need to wait and kick
-		// For testing - kick towards centre (clearance)
+		auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
+		
+		float angle = pPlayer->GetPosition().AngleWith(pCentrePlayer->GetAction().destination_);
+		
 		if (!pPlayer->IsTheirPlayerNearMe() && 
-			!ApproxEqual(pPlayer->GetDirection(),90.0,DIRECTION_TOLERANCE))
+			!ApproxEqual(pPlayer->GetDirection(),angle,DIRECTION_TOLERANCE))
 		{
 			
-			pPlayer->TurnTo(90.0);
+			pPlayer->TurnTo(angle);
 		}
 		else
 		{
-			auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
-			
-			pCentrePlayer->MoveForBall();
 			pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 					
 		
-			pPlayer->Kick(pCentrePlayer->GetPosition(), 100.0);
+			pPlayer->Kick(pCentrePlayer->GetAction().destination_, 100.0);
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 		}

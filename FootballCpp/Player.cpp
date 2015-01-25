@@ -516,7 +516,8 @@ bool CPlayer::IsTheirPlayerNearMe()
 	for (auto& pPlayer : nonGoalKeepers)
 	{
 		if (IsWithinRange(pPlayer->GetPosition().x_, pos_.x_- rangeWidth, pos_.x_ + rangeWidth ) &&
-			IsWithinRange(pPlayer->GetPosition().y_, pos_.y_- rangeWidth, pos_.y_ + rangeWidth )
+			IsWithinRange(pPlayer->GetPosition().y_, pos_.y_- rangeWidth, pos_.y_ + rangeWidth ) &&
+			pPlayer->GetCapability().runningAbility_ > 10	// not a dead player 
 			)
 		{
 				return true;
