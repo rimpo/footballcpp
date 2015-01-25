@@ -214,7 +214,18 @@ void CBall::EstimatePath()
 		pathPos_.push_back(currentPos.GetRealPosition());
 		pathPosTime_.push_back(timetaken);
 	}
-
+	
+	/*LOGGER->Log("Virtual Pos");
+	for (size_t i = 0; i < pathVirtualPos_.size(); ++i)
+	{
+		LOGGER->Log("%d pos(%f %f)",i, pathVirtualPos_[i].x_,pathVirtualPos_[i].y_);
+	}
+	LOGGER->Log("Real Pos");
+	for (size_t i = 0; i < pathVirtualPos_.size(); ++i)
+	{
+		LOGGER->Log("%d pos(%f %f)",i, pathPos_[i].x_,pathPos_[i].y_);
+	}
+	*/
 }
 
 bool CBall::IsOurTeamControlling()

@@ -287,18 +287,21 @@ void CPlayer::MoveToMarkedPlayer_GuardPass()
 	}
 		
 	Vector towardsBall = markPos.VectorTo(ballPos);
-	Vector towardsBallScaled = towardsBall.Scale(distBallToMarkPlayer*PERCANTAGE_DIST_FOR_GUAR_PASS);
+	Vector towardsBallScaled = towardsBall.Scale(distBallToMarkPlayer*PERCANTAGE_DIST_FOR_GUARD_PASS);
 
 	markPos.AddVector(towardsBallScaled);
+	
+	MoveTo(markPos);
 
-	if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
+	
+	/*if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
 	{
 		TurnTo(270.0);
 	}
 	else
 	{
 		MoveTo(markPos);
-	}
+	}*/
 }
 bool CPlayer::IsSupportingDefenderAlreadyMarking(int playerNumber)
 {
@@ -324,12 +327,10 @@ void CPlayer::SelectMarkedPlayer()
 			if (GetType() == CPlayer::eLeftDefender)
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
-				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 			}
 			else
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
-				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 			}
 		}
 		else
@@ -337,12 +338,10 @@ void CPlayer::SelectMarkedPlayer()
 			if (GetType() == CPlayer::eLeftDefender)
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
-				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 			}
 			else
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
-				ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 			}
 		}
 	}
@@ -352,7 +351,8 @@ void CPlayer::SelectMarkedPlayer()
 		if ( GetMarkedPlayerNumber() != theirTeamSortedX[0]->GetNumber() &&
 		     GetMarkedPlayerNumber() != theirTeamSortedX[1]->GetNumber())
 		{
-			/*int supportingPlayerType = (GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+			//Switch of marked player
+			int supportingPlayerType = (GetType() == CPlayer::eLeftDefender ? CPlayer::eRightDefender : CPlayer::eLeftDefender);
 			
 			auto& ourTeamPtr = game_.GetOurTeamPtr();
 			auto& pSupportingPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
@@ -361,24 +361,52 @@ void CPlayer::SelectMarkedPlayer()
 			// this player is marking 3rd closest player to our goal
 			// and supporting player marking 1st clostest player to our goal
 			
+			
 			if (GetMarkedPlayerNumber() == theirTeamSortedX[2]->GetNumber())
 			{
-				float distBtwSupportingPlyAnd
-					
+				float distX = 0.0f, distY = 0.0f, distZ = 0.0f;
+				
+				int newMarkedPlayerNumber = eNotMarking;
+				//supporting player marking 
+				if (supportingMarkedPlayerNumber == theirTeamSortedX[1]->GetNumber())
+				{
+					distX =  GetPosition().DistanceFrom(theirTeamSortedX[0]->GetPosition());	//new player at pos 0
+					distY =  pSupportingPlayer->GetPosition().DistanceFrom(theirTeamSortedX[0]->GetPosition());	//new player at pos 0
+					newMarkedPlayerNumber = theirTeamSortedX[0]->GetNumber();
+				}
+				else 
+				{
+					distX =  GetPosition().DistanceFrom(theirTeamSortedX[1]->GetPosition());	//new player at pos 1
+					distY =  pSupportingPlayer->GetPosition().DistanceFrom(theirTeamSortedX[1]->GetPosition());	//new player at pos 1
+					newMarkedPlayerNumber = theirTeamSortedX[1]->GetNumber();
+				}
+			
+				distZ = GetPosition().DistanceFrom(pSupportingPlayer->GetPosition());
+				
+				if (distX > distY && distZ < distX)
+				{
+					//switch defending 
+					SetMarkedPlayerNumber(supportingMarkedPlayerNumber);
+					pSupportingPlayer->SetMarkedPlayerNumber(newMarkedPlayerNumber);
+				}
+				else
+				{
+					SetMarkedPlayerNumber(newMarkedPlayerNumber);
+				}
 			}
 			
 			
+					
 			
-			float distanceOfSupportingPlayer = pSupportingPlayer->
-			*/
-			if(IsSupportingDefenderAlreadyMarking(theirTeamSortedX[0]->GetNumber()))
+			//Logic Easy: 3rd player goes for 1st
+			/*if(IsSupportingDefenderAlreadyMarking(theirTeamSortedX[0]->GetNumber()))
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[1]->GetNumber());
 			}
 			else
 			{
 				SetMarkedPlayerNumber(theirTeamSortedX[0]->GetNumber());
-			}
+			}*/
 			
 		}
 	
@@ -429,7 +457,9 @@ void CPlayer::MoveForBall()
 		for (size_t i = 0; i < pathPos.size(); ++i)
 		{
 			//ignore co-ordinate crossing our goal (i.e x < 0)
-			if (pathPos[i].x_ < pitch_.GetOurGoalCentre().x_)
+			if (pitch_.IsInsideTheirGoalArea(pathPos[i]) ||
+				pitch_.IsInsideOurGoalArea(pathPos[i])
+			)
 			{
 				continue;
 			}
@@ -476,6 +506,25 @@ void CPlayer::MoveForBall()
 	}
 }
 
+bool CPlayer::IsTheirPlayerNearMe()
+{
+	auto& theirTeamPtr = game_.GetTheirTeamPtr();
+	auto& nonGoalKeepers = theirTeamPtr->GetNonGoalKeepers();
+	
+	float rangeWidth = 3.0;
+	
+	for (auto& pPlayer : nonGoalKeepers)
+	{
+		if (IsWithinRange(pPlayer->GetPosition().x_, pos_.x_- rangeWidth, pos_.x_ + rangeWidth ) &&
+			IsWithinRange(pPlayer->GetPosition().y_, pos_.y_- rangeWidth, pos_.y_ + rangeWidth )
+			)
+		{
+				return true;
+		}
+	}
+	
+	return false;
+}
 float CPlayer::CalculateTimeToTurn(float direction)
 {
 	float timeTaken = 0.0;

@@ -11,7 +11,7 @@
 
 
 #define MAX_DISTANCE_MARK_TO_GAURD_PASS 15.0f
-#define PERCANTAGE_DIST_FOR_GUAR_PASS 0.35f
+#define PERCANTAGE_DIST_FOR_GUARD_PASS 0.45f
 
 
 struct CCapability{
@@ -87,6 +87,8 @@ public:
 	inline Position& GetPosition() { return pos_; }
 	inline CPlayerState* GetState() { return pState_; }
 	inline float GetDirection() { return direction_; }
+	
+	inline bool HasBall() { return hasBall_;}
 
 	void ChangeState(int type);
 
@@ -122,6 +124,9 @@ public:
 	
 	inline void SetMarkedPlayerNumber(int playerNumber) { markedPlayerNumber_ = playerNumber; }
 	inline int GetMarkedPlayerNumber() { return markedPlayerNumber_; }
+	
+	bool IsTheirPlayerNearMe();
+	
 private:
 	int playerType_;
 	int playerNumber_;
