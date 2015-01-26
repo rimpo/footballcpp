@@ -128,6 +128,9 @@ public:
 	
 	bool IsTheirPlayerNearMe();
 	
+	inline void SetShootCache(const Position& shootAt) { shootAt_ = shootAt; isShootCached_ = true; }
+	inline bool GetShootCache(Position& shootAt) { if (isShootCached_) { shootAt = shootAt_;} return isShootCached_; }
+	inline bool ResetShootCache() {isShootCached_ = false;}
 private:
 	int playerType_;
 	int playerNumber_;
@@ -158,6 +161,9 @@ private:
 	CBall& ball_;
 
 	int markedPlayerNumber_;
+	
+	Position shootAt_;
+	bool     isShootCached_;
 };
 
 

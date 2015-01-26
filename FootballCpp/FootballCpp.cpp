@@ -32,6 +32,8 @@ bool Test_GetPerpendicularIntersection()
 
 int main(int argc, char* argv[])
 {
+	//srand();
+	
 	Test_GetPerpendicularIntersection();
 
 	LOGGER->Log("START");

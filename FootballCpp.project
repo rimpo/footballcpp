@@ -37,6 +37,7 @@
     <File Name="FootballCpp/CounterAttackerDefenderState.cpp"/>
     <File Name="FootballCpp/CounterAttackerStrikerState.cpp"/>
     <File Name="FootballCpp/Logger.cpp"/>
+    <File Name="FootballCpp/FootballCpp.cpp"/>
   </VirtualDirectory>
   <VirtualDirectory Name="inc">
     <File Name="FootballCpp/Vector.h"/>
@@ -57,7 +58,6 @@
     <File Name="FootballCpp/CounterAttackerDefenderState.h"/>
     <File Name="FootballCpp/CounterAttackerStrikerState.h"/>
     <File Name="FootballCpp/Logger.h"/>
-    <File Name="FootballCpp/FootballCpp.cpp"/>
   </VirtualDirectory>
   <Settings Type="Executable">
     <GlobalSettings>

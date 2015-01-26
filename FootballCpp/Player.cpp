@@ -7,6 +7,7 @@ CPlayer::CPlayer() : game_(GetGame()),
 					 ball_(GetGame().GetBall())
 {
 	SetMarkedPlayerNumber(eNotMarking);
+	isShootCached_ = false;
 }
 
 
@@ -158,7 +159,7 @@ void CPlayer::KickShort(float power)
 			
 	direction = direction + (randVal - 1)*20.0;
 			//float arr[] = {30.0,60.0,90.0,120.0,150.0};
-	float arr[] = {50.0,70.0,90.0,110.0,130.0};
+	//float arr[] = {50.0,70.0,90.0,110.0,130.0};
 			//float randomY = RandomRange(10.0f, 20.0f);
 				
 			//Vector shootVec = GetVectorFromDirection(arr[RandomRangeInteger(2, 4)]);
@@ -175,11 +176,11 @@ void CPlayer::KickShort_Striker()
 	float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
 	if (distanceFromGoal > 20.0)
 	{
-		/*if (distanceFromGoal < 22.0)
+		if (distanceFromGoal < 22.0)
 		{
 			KickShort(35.0f);
 		}
-		else*/
+		else
 		{
 			KickShort(40.0f);
 		}
@@ -188,21 +189,25 @@ void CPlayer::KickShort_Striker()
 	}
 	else
 	{
-		/*if (distanceFromGoal > 17.5)
+		/*if (distanceFromGoal > 18.5)
 		{
-			KickShort(30.0f);
+			KickShort(35.0f);
 			return;
 		}*/
-		
-		
-		int randVal = RandomRangeInteger(0,1);
-		float randShootYDiff = RandomRangeFloat(3.7, 3.9);
+		Position shootAt;
+		if (!GetShootCache(shootAt))
+		{
+			//calucate random shoot direction;
+			int randVal = RandomRangeInteger(0,1);
+			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
 				
-		Position shootAt = pitch_.GetTheirGoalCentre();
-		shootAt.y_ += (randVal - 1)*randShootYDiff;
-				
+			shootAt = pitch_.GetTheirGoalCentre();
+			shootAt.y_ += (randVal == 0?-1:1)*randShootYDiff;
+			SetShootCache(shootAt);
+		}
+						
 					
-		float angle = GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
+		float angle = GetPosition().AngleWith(shootAt);
 		
 		if (!IsTheirPlayerNearMe() && 
 			!ApproxEqual(GetDirection(),angle,DIRECTION_TOLERANCE))
@@ -212,9 +217,19 @@ void CPlayer::KickShort_Striker()
 		}
 		else
 		{
+			//if couldnt turn but so we will try to hit centre (this helps in inacurrate shot hit)
+			/*float diff = fabsf(GetDirection() - angle);
+			if (diff > 10.0f)
+			{
+				shootAt = pitch_.GetTheirGoalCentre();
+			}*/
+			
 			game_.noOfGoalAttemptsByUs++;
+			
 			Kick(shootAt, 100.0);
 			ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			
+			ResetShootCache();
 		}
 	}
 }
