@@ -109,40 +109,7 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 	//ball in range take possession
 	if (pPlayer->HasBall())
 	{
-		// Note: need to wait and kick
-		// For testing - kick towards centre (clearance)
-		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
-		if (distanceFromGoal > 20.0)
-		{
-			pPlayer->KickShort();
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
-		}
-		else
-		{
-			int randVal = RandomRangeInteger(0,1);
-			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
-				
-			Position shootAt = pitch_.GetTheirGoalCentre();
-			shootAt.y_ += (randVal - 1)*randShootYDiff;
-				
-					
-			float angle = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
-		
-			if (!pPlayer->IsTheirPlayerNearMe() && 
-				!ApproxEqual(pPlayer->GetDirection(),angle,DIRECTION_TOLERANCE))
-			{
-			
-				pPlayer->TurnTo(angle);
-			}
-			else
-			{
-							
-				pPlayer->Kick(shootAt, 100.0);
-				pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-			}
-		}
-		//pPlayer->MoveTo({ 8.0f, 25.0 });
-		
+		pPlayer->KickShort_Striker();
 	}
 	else if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
@@ -162,42 +129,9 @@ void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
 {
 	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
 	
-	if (ball_.GetOwner() == pPlayer->GetNumber())
+	if (pPlayer->HasBall())
 	{
-		
-		// Note: need to wait and kick
-		// For testing - kick towards centre (clearance)
-		float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
-		if (distanceFromGoal > 20.0)
-		{
-			pPlayer->KickShort();
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
-		}
-		else
-		{
-			int randVal = RandomRangeInteger(0,1);
-			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
-				
-			Position shootAt = pitch_.GetTheirGoalCentre();
-			shootAt.y_ += (randVal - 1)*randShootYDiff;
-				
-					
-			float angle = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
-		
-			if (!pPlayer->IsTheirPlayerNearMe() && 
-				!ApproxEqual(pPlayer->GetDirection(),angle,DIRECTION_TOLERANCE))
-			{
-				pPlayer->TurnTo(angle);
-			}
-			else
-			{
-							
-				pPlayer->Kick(shootAt, 100.0);
-				pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-			}
-		}
-		//pPlayer->MoveTo({ 8.0f, 25.0 });
-		
+		pPlayer->KickShort_Striker();
 	}
 	else if (distanceFromBall < 0.5)
 	{
