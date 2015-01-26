@@ -79,6 +79,7 @@ private:
 	
 	CPlayerState::PtrVec allStatesVec_;
 public:
-	int noOfGoalAttempts;
+	int noOfGoalAttemptsOnUs;
+	int noOfGoalAttemptsByUs;
 };
 

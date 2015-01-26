@@ -22,7 +22,8 @@ CGame::CGame()
 	teams_.push_back(ourTeamPtr_);
 	teams_.push_back(theirTeamPtr_);
 		
-	noOfGoalAttempts = 0;
+	noOfGoalAttemptsOnUs = 0;
+	noOfGoalAttemptsByUs = 0;
 }
 
 
@@ -63,7 +64,8 @@ int CGame::Process(const string& sJsonMsg)
 			
 			if (currentTimeSeconds_ > 1799.9)
 			{
-				LOGGER->Log("NoOfAttempts:%d",noOfGoalAttempts);
+				LOGGER->Log("NoOfAttempts On Us:%d",noOfGoalAttemptsOnUs);
+				LOGGER->Log("NoOfAttempts By Us:%d",noOfGoalAttemptsByUs);
 			}
 		}
 		else if (eventTypeItr->value == "GOAL")

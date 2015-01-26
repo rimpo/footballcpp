@@ -175,11 +175,11 @@ void CPlayer::KickShort_Striker()
 	float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
 	if (distanceFromGoal > 20.0)
 	{
-		if (distanceFromGoal < 22.0)
+		/*if (distanceFromGoal < 22.0)
 		{
 			KickShort(35.0f);
 		}
-		else
+		else*/
 		{
 			KickShort(40.0f);
 		}
@@ -188,11 +188,11 @@ void CPlayer::KickShort_Striker()
 	}
 	else
 	{
-		if (distanceFromGoal > 17.5)
+		/*if (distanceFromGoal > 17.5)
 		{
 			KickShort(30.0f);
 			return;
-		}
+		}*/
 		
 		
 		int randVal = RandomRangeInteger(0,1);
@@ -212,7 +212,7 @@ void CPlayer::KickShort_Striker()
 		}
 		else
 		{
-		
+			game_.noOfGoalAttemptsByUs++;
 			Kick(shootAt, 100.0);
 			ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}

@@ -15,7 +15,7 @@ void CGoalKeeperGuardState::Execute(CPlayer *pPlayer)
 	{
 		pPlayer->MoveToSaveGoal_GoalKeeper(hittingAt);
 		pPlayer->ChangeState(CPlayerState::eGoalKeeperInterceptBall);
-		game_.noOfGoalAttempts++;
+		game_.noOfGoalAttemptsOnUs++;
 	}
 	else
 	{
