@@ -106,9 +106,9 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 		}
 		return;
 	}
-	else if (ball_.IsTheirTeamControlling())
+	else //if (ball_.IsTheirTeamControlling())
 	{
-		//pPlayer->MoveToGuardGoal();
+		pPlayer->MoveToMarkedPlayer_Mark();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 	}
 }

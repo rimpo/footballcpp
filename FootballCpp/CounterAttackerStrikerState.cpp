@@ -136,8 +136,7 @@ void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
 	else if (distanceFromBall < 0.5)
 	{
 		pPlayer->TakePossession();
-		//pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
-		return;
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
 	}
 	else if (ball_.IsFreeBall())	// no owner
 	{

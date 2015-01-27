@@ -511,9 +511,6 @@ void CPlayer::MoveForBall()
 		Position surePos, almostPos;
 		bool isSure = false, isAlmost = false;
 
-		bool isFirstPosClosestToGoal = true;
-		Position firstPosClosestToGoal;
-
 		auto& pathPos = ball_.GetPathPos(); 
 		auto& pathPosTime = ball_.GetPathPosTime();
 
@@ -527,15 +524,7 @@ void CPlayer::MoveForBall()
 			{
 				continue;
 			}
-
-			//saving the first pos - incase of player not able to reach any coordinate
-			//						 player will attempt to go to this first pos.
-			if (isFirstPosClosestToGoal)
-			{
-				firstPosClosestToGoal = pathPos[i];
-				isFirstPosClosestToGoal = false;
-			}
-
+			
 			float t1 = CalculateTimeToReachPosition(pathPos[i]);
 
 			if (t1 < pathPosTime[i])
@@ -561,7 +550,7 @@ void CPlayer::MoveForBall()
 		}
 		else
 		{
-			MoveTo(firstPosClosestToGoal);
+			MoveTo(ball_.GetStationaryPosition());
 		}		
 	}
 	else
