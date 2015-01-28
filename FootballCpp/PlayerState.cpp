@@ -54,7 +54,7 @@ void CPlayerState::InitGlobalPlayerStateVector()
 	globalPlayerStates[eCounterAttackerDefenderDefend]		= new CCounterAttackerDefenderDefendState;
 	globalPlayerStates[eCounterAttackerDefenderChaseBall]	= new CCounterAttackerDefenderChaseBallState;
 	globalPlayerStates[eCounterAttackerDefenderTakePossession] = new CCounterAttackerDefenderTakePossessionState;
-	globalPlayerStates[eCounterAttackerDefenderGuardPass] = new CCounterAttackerDefenderGuardPassState;
+	//globalPlayerStates[eCounterAttackerDefenderGuardPass] = new CCounterAttackerDefenderGuardPassState;
 	globalPlayerStates[eCounterAttackerDefenderMark] = new CCounterAttackerDefenderMarkState;
 	
 		

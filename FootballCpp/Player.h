@@ -120,6 +120,8 @@ public:
 	void KickShort(float power);
 	void KickShort_Striker();
 	
+	void Kick_Defender();
+	
 	bool IsSupportingDefenderAlreadyMarking(int playerNumber);
 	void SelectMarkedPlayer();
 	

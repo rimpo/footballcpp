@@ -234,6 +234,29 @@ void CPlayer::KickShort_Striker()
 	}
 }
 
+void CPlayer::Kick_Defender()
+{
+		auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
+		
+		float angle = this->GetPosition().AngleWith(pCentrePlayer->GetAction().destination_);
+		
+		if (!this->IsTheirPlayerNearMe() && 
+			!ApproxEqual(this->GetDirection(),angle,DIRECTION_TOLERANCE))
+		{
+			
+			this->TurnTo(angle);
+		}
+		else
+		{
+			pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+	
+			this->Kick(pCentrePlayer->GetAction().destination_, 100.0);
+			
+		//pPlayer->MoveTo({ 8.0f, 25.0 });
+			this->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+		}
+}
+
 float CPlayer::PredictDirection()
 {
 	auto& theirTeamPtr = game_.GetTheirTeamPtr();
@@ -492,6 +515,9 @@ void CPlayer::MoveToMarkedPlayer_Mark()
 	Vector towardsOurGoalY1_Diff = towardsOurGoalY1.Scale(0.2);
 
 	markPos.AddVector(towardsOurGoalY1_Diff);
+	
+	MoveTo(ball_.GetStationaryPosition());
+	return;
 
 	if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
 	{

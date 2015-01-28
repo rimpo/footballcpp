@@ -40,7 +40,6 @@ void CCounterAttackerDefenderChaseBallState::Execute(CPlayer *pPlayer)
 			pPlayer->MoveToMarkedPlayer_Mark();
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 		}
-		return;
 	}
 	else if (ball_.IsFreeBall())	// no owner
 	{
@@ -70,26 +69,8 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 	//ball in range take possession
 	if (pPlayer->HasBall())
 	{
-		auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
-		
-		float angle = pPlayer->GetPosition().AngleWith(pCentrePlayer->GetAction().destination_);
-		
-		if (!pPlayer->IsTheirPlayerNearMe() && 
-			!ApproxEqual(pPlayer->GetDirection(),angle,DIRECTION_TOLERANCE))
-		{
-			
-			pPlayer->TurnTo(angle);
-		}
-		else
-		{
-			pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-					
-		
-			pPlayer->Kick(pCentrePlayer->GetAction().destination_, 100.0);
-		//pPlayer->MoveTo({ 8.0f, 25.0 });
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
-		}
-		return;
+		//internally changes state to mark.
+		pPlayer->Kick_Defender();
 	}
 	else if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
@@ -114,9 +95,9 @@ void CCounterAttackerDefenderTakePossessionState::Execute(CPlayer* pPlayer)
 }
 
 
-void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
+/*void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
 {
-	/*auto& pClosestBallPlayer = game_.GetClosestPlayer();
+	auto& pClosestBallPlayer = game_.GetClosestPlayer();
 	auto& ourTeamPtr = game_.GetOurTeamPtr();
 	float ourGoalDistanceFromBall = ball_.GetStationaryPosition().DistanceFrom(pitch_.GetOurGoalCentre());
 	
@@ -155,8 +136,8 @@ void CCounterAttackerDefenderGuardPassState::Execute(CPlayer *pPlayer)
 	else
 	{
 		pPlayer->MoveToMarkedPlayer_GuardPass();
-	}*/
-}
+	}
+}*/
 
 void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 {
@@ -167,7 +148,14 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 	
 	Position perIntersection;
 	
-	if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
+	
+	if (pPlayer->HasBall())
+	{
+		//internally changes state to mark.
+		//centre striker state to idle.
+		pPlayer->Kick_Defender();
+	}
+	else if (ball_.GetPosition().DistanceFrom(pPlayer->GetPosition()) < 0.5)
 	{
 		//my possession
 		//change state

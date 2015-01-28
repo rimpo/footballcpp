@@ -35,11 +35,11 @@ public:
 	void Execute(CPlayer *pPlayer);
 };
 
-class CCounterAttackerDefenderGuardPassState : public CPlayerState
+/*class CCounterAttackerDefenderGuardPassState : public CPlayerState
 {
 public:
 	void Execute(CPlayer *pPlayer);
-};
+};*/
 
 class CCounterAttackerDefenderMarkState : public CPlayerState
 {
