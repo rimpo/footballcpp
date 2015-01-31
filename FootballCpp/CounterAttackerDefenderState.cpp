@@ -189,7 +189,7 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		pPlayer->MoveForBall();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderChaseBall);
 	}
-	else if (pPlayer->GetMarkedPlayerNumber() != CPlayer::eNotMarking)
+	else 
 	{
 		auto& pMarkedPlayer = game_.GetPlayer(pPlayer->GetMarkedPlayerNumber());
 		
@@ -204,8 +204,5 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 			pPlayer->MoveToMarkedPlayer_Mark();
 		}
 	}
-	else
-	{
-		pPlayer->MoveToMarkedPlayer_Mark();
-	}
+	
 }

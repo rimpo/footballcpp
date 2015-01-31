@@ -48,7 +48,7 @@ Position Position::GetRealPosition()
 		}
 		else if (realPos.x_ > pitch.GetWidth())
 		{
-			realPos.x_ = pitch.GetWidth() - realPos.x_;
+			realPos.x_ = pitch.GetWidth() - (realPos.x_ - pitch.GetWidth());
 		}
 
 		if (realPos.y_ < 0)
@@ -57,7 +57,7 @@ Position Position::GetRealPosition()
 		}
 		else if (realPos.y_ > pitch.GetHeight())
 		{
-			realPos.y_ = pitch.GetHeight() - realPos.y_;
+			realPos.y_ = pitch.GetHeight() - (realPos.y_ - pitch.GetHeight());
 		}
 	return realPos;
 }
