@@ -1,4 +1,4 @@
-#pragma once
+	#pragma once
 
 #include "Position.h"
 #include "Action.h"
@@ -12,6 +12,8 @@
 
 #define MAX_DISTANCE_MARK_TO_GAURD_PASS 15.0f
 #define PERCANTAGE_DIST_FOR_GUARD_PASS 0.45f
+#define STRIKER_NO_ONE_CLOSE 2.0f
+#define DEFENDER_NO_ONE_CLOSE 2.0f
 
 
 struct CCapability{
@@ -128,7 +130,7 @@ public:
 	inline void SetMarkedPlayerNumber(int playerNumber) { markedPlayerNumber_ = playerNumber; }
 	inline int GetMarkedPlayerNumber() { return markedPlayerNumber_; }
 	
-	bool IsTheirPlayerNearMe();
+	bool IsTheirPlayerNear(float distance);
 	
 	inline void SetShootCache(const Position& shootAt) { shootAt_ = shootAt; isShootCached_ = true; }
 	inline bool GetShootCache(Position& shootAt) { if (isShootCached_) { shootAt = shootAt_;} return isShootCached_; }

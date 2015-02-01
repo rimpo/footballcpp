@@ -42,6 +42,13 @@ int CPlayer::ProcessDynamicState(const Value& dynamicState)
 				
 		direction_ = 360.0 - direction_;
 	}
+	
+	//fixing the hange issue due to direction calculated to 0 and player direction as 360
+	if (direction_ == 360.0)
+	{
+		direction_ = 0.0;
+	}
+	
 	return 0;
 }
 
@@ -208,8 +215,9 @@ void CPlayer::KickShort_Striker()
 						
 					
 		float angle = GetPosition().AngleWith(shootAt);
+		bool isNoOneClose = IsTheirPlayerNear(STRIKER_NO_ONE_CLOSE);
 		
-		if (!IsTheirPlayerNearMe() && 
+		if (!isNoOneClose && 
 			!ApproxEqual(GetDirection(),angle,DIRECTION_TOLERANCE))
 		{
 			
@@ -217,19 +225,20 @@ void CPlayer::KickShort_Striker()
 		}
 		else
 		{
-			//if couldnt turn but so we will try to hit centre (this helps in inacurrate shot hit)
-			/*float diff = fabsf(GetDirection() - angle);
-			if (diff > 10.0f)
+			
+			if (!isNoOneClose && distanceFromGoal > 15.1f)
 			{
-				shootAt = pitch_.GetTheirGoalCentre();
-			}*/
+				MoveTo(shootAt);
+			}
+			else
+			{
+				game_.noOfGoalAttemptsByUs++;
 			
-			game_.noOfGoalAttemptsByUs++;
+				Kick(shootAt, 100.0);
+				ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 			
-			Kick(shootAt, 100.0);
-			ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-			
-			ResetShootCache();
+				ResetShootCache();
+			}
 		}
 	}
 }
@@ -240,7 +249,9 @@ void CPlayer::Kick_Defender()
 		
 		float angle = this->GetPosition().AngleWith(pCentrePlayer->GetAction().destination_);
 		
-		if (!this->IsTheirPlayerNearMe() && 
+		float distance = this->GetPosition().DistanceFrom(pCentrePlayer->GetPosition());
+		
+		if (!this->IsTheirPlayerNear(DEFENDER_NO_ONE_CLOSE) && 
 			!ApproxEqual(this->GetDirection(),angle,DIRECTION_TOLERANCE))
 		{
 			
@@ -250,7 +261,11 @@ void CPlayer::Kick_Defender()
 		{
 			pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 	
-			this->Kick(pCentrePlayer->GetAction().destination_, 100.0);
+			float speed = 100.0;
+			/*if (distance < 15.0) 
+				speed = 60.0;
+			*/	
+			this->Kick(pCentrePlayer->GetAction().destination_, speed);
 			
 		//pPlayer->MoveTo({ 8.0f, 25.0 });
 			this->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
@@ -517,16 +532,17 @@ void CPlayer::MoveToMarkedPlayer_Mark()
 	markPos.AddVector(towardsOurGoalY1_Diff);
 	
 	MoveTo(ball_.GetStationaryPosition());
+	
 	return;
 
-	if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
+	/*if (pos_.ApproxEqual(markPos, POSITION_BIG_TOLERANCE))
 	{
 		TurnTo(270.0);
 	}
 	else
 	{
 		MoveTo(markPos);
-	}
+	}*/
 }
 
 void CPlayer::MoveForBall()
@@ -585,17 +601,16 @@ void CPlayer::MoveForBall()
 	}
 }
 
-bool CPlayer::IsTheirPlayerNearMe()
+bool CPlayer::IsTheirPlayerNear(float distance)
 {
 	auto& theirTeamPtr = game_.GetTheirTeamPtr();
 	auto& nonGoalKeepers = theirTeamPtr->GetNonGoalKeepers();
 	
-	float rangeWidth = 2.0;
-	
+		
 	for (auto& pPlayer : nonGoalKeepers)
 	{
-		if (IsWithinRange(pPlayer->GetPosition().x_, pos_.x_- rangeWidth, pos_.x_ + rangeWidth ) &&
-			IsWithinRange(pPlayer->GetPosition().y_, pos_.y_- rangeWidth, pos_.y_ + rangeWidth ) &&
+		if (IsWithinRange(pPlayer->GetPosition().x_, pos_.x_- distance, pos_.x_ + distance ) &&
+			IsWithinRange(pPlayer->GetPosition().y_, pos_.y_- distance, pos_.y_ + distance ) &&
 			pPlayer->GetCapability().runningAbility_ > 10	// not a dead player 
 			)
 		{
