@@ -81,5 +81,9 @@ private:
 public:
 	int noOfGoalAttemptsOnUs;
 	int noOfGoalAttemptsByUs;
+	int noOfTimesOurTeamOwnBall;
+	int noOfTimesTheirTeamOwnBall;
+	int noOfGoalsOur;
+	int noOfGoalsTheir;
 };
 

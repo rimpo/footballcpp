@@ -14,6 +14,7 @@
 #define PERCANTAGE_DIST_FOR_GUARD_PASS 0.45f
 #define STRIKER_NO_ONE_CLOSE 2.0f
 #define DEFENDER_NO_ONE_CLOSE 2.0f
+#define DEFENDER_SHORT_KICK_NO_ONE_CLOSE 10.0f
 
 
 struct CCapability{
@@ -131,10 +132,13 @@ public:
 	inline int GetMarkedPlayerNumber() { return markedPlayerNumber_; }
 	
 	bool IsTheirPlayerNear(float distance);
+	bool IsTheirPlayerNearFromFront(float max_distance);
 	
 	inline void SetShootCache(const Position& shootAt) { shootAt_ = shootAt; isShootCached_ = true; }
 	inline bool GetShootCache(Position& shootAt) { if (isShootCached_) { shootAt = shootAt_;} return isShootCached_; }
 	inline bool ResetShootCache() {isShootCached_ = false;}
+	
+	Position GetRandomShootAtGoal();
 private:
 	int playerType_;
 	int playerNumber_;

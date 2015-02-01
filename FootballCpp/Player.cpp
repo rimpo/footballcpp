@@ -205,11 +205,7 @@ void CPlayer::KickShort_Striker()
 		if (!GetShootCache(shootAt))
 		{
 			//calucate random shoot direction;
-			int randVal = RandomRangeInteger(0,1);
-			float randShootYDiff = RandomRangeFloat(3.7, 3.9);
-				
-			shootAt = pitch_.GetTheirGoalCentre();
-			shootAt.y_ += (randVal == 0?-1:1)*randShootYDiff;
+			shootAt = GetRandomShootAtGoal();
 			SetShootCache(shootAt);
 		}
 						
@@ -250,7 +246,8 @@ void CPlayer::Kick_Defender()
 		float angle = this->GetPosition().AngleWith(pCentrePlayer->GetAction().destination_);
 		
 		float distance = this->GetPosition().DistanceFrom(pCentrePlayer->GetPosition());
-		
+		float distanceFromGoal = this->GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
+				
 		if (!this->IsTheirPlayerNear(DEFENDER_NO_ONE_CLOSE) && 
 			!ApproxEqual(this->GetDirection(),angle,DIRECTION_TOLERANCE))
 		{
@@ -259,16 +256,37 @@ void CPlayer::Kick_Defender()
 		}
 		else
 		{
-			pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-	
-			float speed = 100.0;
-			/*if (distance < 15.0) 
-				speed = 60.0;
-			*/	
-			this->Kick(pCentrePlayer->GetAction().destination_, speed);
-			
-		//pPlayer->MoveTo({ 8.0f, 25.0 });
+			//no one near you try to short kick.
+			if (!this->IsTheirPlayerNearFromFront(DEFENDER_SHORT_KICK_NO_ONE_CLOSE))
+			{
+				this->KickShort(35.0);
+			}	
+			else
+			{
+				//you are a defender but you are very close attempt goal.
+				if (distanceFromGoal < 20.0)
+				{
+					Position shootAt = GetRandomShootAtGoal();
+					
+					this->Kick(shootAt, 100.0);
+				}
+				else
+				{
+					pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+		
+					float speed = 100.0;
+					/*if (distance < 15.0) 
+						speed = 60.0;
+					*/	
+					Position shootAt = pCentrePlayer->GetAction().destination_;
+					//shootAt.y_ -= 20.0; 
+					this->Kick(shootAt, speed);
+					
+				}
+				
+			//pPlayer->MoveTo({ 8.0f, 25.0 });
 			this->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+			}
 		}
 }
 
@@ -620,6 +638,26 @@ bool CPlayer::IsTheirPlayerNear(float distance)
 	
 	return false;
 }
+bool CPlayer::IsTheirPlayerNearFromFront(float distance)
+{
+	auto& theirTeamPtr = game_.GetTheirTeamPtr();
+	auto& nonGoalKeepers = theirTeamPtr->GetNonGoalKeepers();
+	
+		
+	for (auto& pPlayer : nonGoalKeepers)
+	{
+		if (IsWithinRange(pPlayer->GetPosition().x_, pos_.x_- distance, pos_.x_ + distance ) &&
+			IsWithinRange(pPlayer->GetPosition().y_, pos_.y_- distance, pos_.y_ + distance ) &&
+			pPlayer->GetCapability().runningAbility_ > 10 &&// not a dead player 
+			pPlayer->GetPosition().x_ > pos_.x_  // opponent player in front
+			)
+		{
+				return true;
+		}
+	}
+	
+	return false;
+}
 float CPlayer::CalculateTimeToTurn(float direction)
 {
 	float timeTaken = 0.0;
@@ -692,6 +730,16 @@ float CPlayer::CalculateTimeToReachPosition(const Position& dest)
 
 	return timeTaken;
 }
+
+Position CPlayer::GetRandomShootAtGoal() 
+{ 	int randVal = RandomRangeInteger(0,1);
+	float randShootYDiff = RandomRangeFloat(3.7, 3.9);
+				
+	Position shootAt = pitch_.GetTheirGoalCentre();
+	shootAt.y_ += (randVal == 0?-1:1)*randShootYDiff;
+	return shootAt;
+}
+
 void CPlayer::ChangeState(int type)
 {
 	pState_ = CPlayerState::GlobalPlayerState(type);

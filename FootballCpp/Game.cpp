@@ -24,6 +24,10 @@ CGame::CGame()
 		
 	noOfGoalAttemptsOnUs = 0;
 	noOfGoalAttemptsByUs = 0;
+	noOfTimesOurTeamOwnBall = 0;
+	noOfTimesTheirTeamOwnBall = 0;
+	noOfGoalsOur = 0;
+	noOfGoalsTheir = 0;
 }
 
 
@@ -62,14 +66,33 @@ int CGame::Process(const string& sJsonMsg)
 
 			strategyPtr_->OnStartOfTurnEvent();
 			
+			if(ourTeamPtr_->IsMember(ball_.GetOwner()))
+			{
+					noOfTimesOurTeamOwnBall++;
+			}
+			else if(theirTeamPtr_->IsMember(ball_.GetOwner()))
+			{
+					noOfTimesTheirTeamOwnBall++;
+			}
+			
+			
 			if (currentTimeSeconds_ > 1799.9)
 			{
-				LOGGER->Log("NoOfAttempts On Us:%d",noOfGoalAttemptsOnUs);
-				LOGGER->Log("NoOfAttempts By Us:%d",noOfGoalAttemptsByUs);
+				LOGGER->Log("NoOfAttempts Our:%d Their:%d", noOfGoalAttemptsByUs, noOfGoalAttemptsOnUs);
+				LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
+				LOGGER->Log("NOOfTimes BallOwned Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
 			}
 		}
 		else if (eventTypeItr->value == "GOAL")
 		{
+			if (ball_.GetPosition().x_ < 50.0)
+			{
+				noOfGoalsTheir++;
+			}
+			else
+			{
+				noOfGoalsOur++;
+			}
 			strategyPtr_->OnGoalEvent();
 		}
 		else if (eventTypeItr->value == "HALF_TIME")
