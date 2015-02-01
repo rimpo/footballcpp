@@ -11,10 +11,12 @@
 
 
 #define MAX_DISTANCE_MARK_TO_GAURD_PASS 15.0f
-#define PERCANTAGE_DIST_FOR_GUARD_PASS 0.45f
+#define PERCANTAGE_DIST_FOR_GUARD_PASS 0.25f
 #define STRIKER_NO_ONE_CLOSE 2.0f
 #define DEFENDER_NO_ONE_CLOSE 2.0f
 #define DEFENDER_SHORT_KICK_NO_ONE_CLOSE 10.0f
+
+#define MAX_GOALKEEPER_WAIT_TICKS 20
 
 
 struct CCapability{
@@ -139,6 +141,15 @@ public:
 	inline bool ResetShootCache() {isShootCached_ = false;}
 	
 	Position GetRandomShootAtGoal();
+	
+	//only for goalkeeper.
+	inline void IncrementGoalKeeperWaitTicks() { goalKeeperWaitTicks_++; }
+	inline int GetGoalKeeperWaitTicks() { return goalKeeperWaitTicks_;}
+	inline int ResetGoalKeeperWaitTicks() { goalKeeperWaitTicks_ = 0;}
+	
+	inline  int GetKickingTowardPlayerNumber() { return kickingTowardPlayerNumber_;	}
+	inline  int SetKickingTowardPlayerNumber(int playerNumber) { kickingTowardPlayerNumber_ = playerNumber;	}
+	inline  int ResetKickingTowardPlayerNumber() { kickingTowardPlayerNumber_ = -1; }
 private:
 	int playerType_;
 	int playerNumber_;
@@ -172,6 +183,9 @@ private:
 	
 	Position shootAt_;
 	bool     isShootCached_;
+	
+	int goalKeeperWaitTicks_;
+	int kickingTowardPlayerNumber_;
 };
 
 

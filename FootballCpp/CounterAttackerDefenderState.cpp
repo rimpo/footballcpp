@@ -11,14 +11,6 @@ void CCounterAttackerDefenderIdleState::Execute(CPlayer* pPlayer)
 	
 }
 
-void CCounterAttackerDefenderGoHomeState::Execute(CPlayer* pPlayer)
-{
-	if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(), POSITION_TOLERANCE))
-	{
-
-	}
-}
-
 void CCounterAttackerDefenderDefendState::Execute(CPlayer* pPlayer)
 {
 	
@@ -169,12 +161,15 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 			pPlayer->MoveToMarkedPlayer_Mark();
 		}
 	}
-	/*else if (ball_.IsOurGoalKeeperControlling())
+	else if (ball_.IsOurGoalKeeperControlling())
 	{
 		//change state
 		//pPlayer->ChangeState(CPlayerState::e)
+		pPlayer->MoveTo(pPlayer->GetHomePosition());
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderGoHome);
+		
 	}
-	else if (ball_.IsOurTeamControlling())
+	/*else if (ball_.IsOurTeamControlling())
 	{
 		//change state
 	}
@@ -205,4 +200,17 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		}
 	}
 	
+}
+
+void CCounterAttackerDefenderGoHomeState::Execute(CPlayer* pPlayer)
+{
+	if(ball_.GetSpeed() > 0)
+	{
+		pPlayer->MoveToMarkedPlayer_Mark();
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
+	}
+	else
+	{
+		pPlayer->MoveTo(pPlayer->GetHomePosition());
+	}
 }

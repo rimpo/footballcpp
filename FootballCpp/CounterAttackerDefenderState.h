@@ -10,13 +10,6 @@ public:
 	void Execute(CPlayer *pPlayer);
 };
 
-
-class CCounterAttackerDefenderGoHomeState : public CPlayerState
-{
-public:
-	void Execute(CPlayer *pPlayer);
-};
-
 class CCounterAttackerDefenderDefendState : public CPlayerState
 {
 public:
@@ -42,6 +35,12 @@ public:
 };*/
 
 class CCounterAttackerDefenderMarkState : public CPlayerState
+{
+public:
+	void Execute(CPlayer *pPlayer);
+};
+
+class CCounterAttackerDefenderGoHomeState : public CPlayerState
 {
 public:
 	void Execute(CPlayer *pPlayer);

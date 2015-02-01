@@ -8,6 +8,9 @@ CPlayer::CPlayer() : game_(GetGame()),
 {
 	SetMarkedPlayerNumber(eNotMarking);
 	isShootCached_ = false;
+
+	ResetGoalKeeperWaitTicks();
+	ResetKickingTowardPlayerNumber();
 }
 
 
@@ -405,9 +408,14 @@ void CPlayer::MoveToMarkedPlayer_GuardPass()
 		MoveTo(markPos);
 		return	;
 	}
+	
+	if (distBallToMarkPlayer < 40.0)
+		distBallToMarkPlayer = distBallToMarkPlayer*PERCANTAGE_DIST_FOR_GUARD_PASS;
+	else
+		distBallToMarkPlayer = distBallToMarkPlayer - 30.0;
 		
 	Vector towardsBall = markPos.VectorTo(ballPos);
-	Vector towardsBallScaled = towardsBall.Scale(distBallToMarkPlayer*PERCANTAGE_DIST_FOR_GUARD_PASS);
+	Vector towardsBallScaled = towardsBall.Scale(distBallToMarkPlayer);
 
 	markPos.AddVector(towardsBallScaled);
 	
