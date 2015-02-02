@@ -85,5 +85,7 @@ public:
 	int noOfTimesTheirTeamOwnBall;
 	int noOfGoalsOur;
 	int noOfGoalsTheir;
+	int noOfTicksInOurHalf;
+	int noOfTicksInTheirHalf;
 };
 

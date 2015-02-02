@@ -5,7 +5,8 @@
 
 #include "PlayerState.h"
 
-#define GUARD_RADIUS 5.0f
+#define GUARD_RADIUS 4.5f
+#define GUARD_LINE 2.5f
 
 #define DIRECTION_TOLERANCE 0.1f
 
@@ -15,6 +16,8 @@
 #define STRIKER_NO_ONE_CLOSE 2.0f
 #define DEFENDER_NO_ONE_CLOSE 2.0f
 #define DEFENDER_SHORT_KICK_NO_ONE_CLOSE 10.0f
+
+#define DEFENDER_SHOOTING_RANGE 20.0
 
 #define MAX_GOALKEEPER_WAIT_TICKS 20
 
@@ -138,18 +141,18 @@ public:
 	
 	inline void SetShootCache(const Position& shootAt) { shootAt_ = shootAt; isShootCached_ = true; }
 	inline bool GetShootCache(Position& shootAt) { if (isShootCached_) { shootAt = shootAt_;} return isShootCached_; }
-	inline bool ResetShootCache() {isShootCached_ = false;}
+	inline void ResetShootCache() {isShootCached_ = false;}
 	
 	Position GetRandomShootAtGoal();
 	
 	//only for goalkeeper.
 	inline void IncrementGoalKeeperWaitTicks() { goalKeeperWaitTicks_++; }
 	inline int GetGoalKeeperWaitTicks() { return goalKeeperWaitTicks_;}
-	inline int ResetGoalKeeperWaitTicks() { goalKeeperWaitTicks_ = 0;}
+	inline void ResetGoalKeeperWaitTicks() { goalKeeperWaitTicks_ = 0;}
 	
 	inline  int GetKickingTowardPlayerNumber() { return kickingTowardPlayerNumber_;	}
-	inline  int SetKickingTowardPlayerNumber(int playerNumber) { kickingTowardPlayerNumber_ = playerNumber;	}
-	inline  int ResetKickingTowardPlayerNumber() { kickingTowardPlayerNumber_ = -1; }
+	inline  void SetKickingTowardPlayerNumber(int playerNumber) { kickingTowardPlayerNumber_ = playerNumber;	}
+	inline  void ResetKickingTowardPlayerNumber() { kickingTowardPlayerNumber_ = -1; }
 private:
 	int playerType_;
 	int playerNumber_;

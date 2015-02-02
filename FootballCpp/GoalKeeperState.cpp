@@ -64,7 +64,8 @@ void CGoalKeeperTakePossessionState::Execute(CPlayer* pPlayer)
 		// Note: need to wait and kick
 		// For testing - kick towards centre (clearance)
 		//pPlayer->Kick(pitch_.GetCentreSpot(), 100.0);
-		//pPlayer->MoveTo({ 8.0f, 25.0 });
+		Position safePos = { GUARD_LINE, pitch_.GetOurGoalCentre().y_ };	// {2.5,25.0}
+		pPlayer->MoveTo(safePos);
 		pPlayer->IncrementGoalKeeperWaitTicks();
 		
 		//ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
@@ -112,27 +113,32 @@ void CGoalKeeperKickBallState::Execute(CPlayer *pPlayer)
 {
 	if (ball_.GetOwner() == pPlayer->GetNumber())
 	{
-		int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 5 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
-		auto& ourTeamPtr = game_.GetOurTeamPtr();
-		auto& pPassPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
+		Position safePos =  { GUARD_LINE, pitch_.GetOurGoalCentre().y_ };	// {2.5,25.0}
 		
-		int randVal = RandomRangeInteger(0,1);
-		//int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 2 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
-		float direction = pPlayer->GetPosition().AngleWith(pPassPlayer->GetHomePosition());
-		
-		pPlayer->IncrementGoalKeeperWaitTicks();
-		
-		if (pPlayer->GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS ||
-		   (pPlayer->GetGoalKeeperWaitTicks() > 5 && (pPlayer->GetGoalKeeperWaitTicks() + 1) % 5 == 0 && randVal == 1))
+		//move to safe position.
+		if (pPlayer->GetPosition().ApproxEqual(safePos,POSITION_BIG_TOLERANCE))
 		{
-			pPlayer->Kick(pPassPlayer->GetHomePosition(),80.0);
-			pPlayer->ResetGoalKeeperWaitTicks();
+			int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 5 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+			auto& ourTeamPtr = game_.GetOurTeamPtr();
+			auto& pPassPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
+			
+			int randVal = RandomRangeInteger(0,1);
+			//int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 2 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+			float direction = pPlayer->GetPosition().AngleWith(pPassPlayer->GetHomePosition());
+			
+			pPlayer->IncrementGoalKeeperWaitTicks();
+			
+			if (pPlayer->GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS ||
+			   (pPlayer->GetGoalKeeperWaitTicks() > 5 && (pPlayer->GetGoalKeeperWaitTicks() + 1) % 5 == 0 && randVal == 1))
+			{
+				pPlayer->Kick(pPassPlayer->GetHomePosition(),80.0);
+				pPlayer->ResetGoalKeeperWaitTicks();
+			}
+			else 
+			{
+				pPlayer->TurnTo(direction);
+			}
 		}
-		else 
-		{
-			pPlayer->TurnTo(direction);
-		}
-	
 	}
 	else
 	{

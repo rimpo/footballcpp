@@ -28,6 +28,8 @@ CGame::CGame()
 	noOfTimesTheirTeamOwnBall = 0;
 	noOfGoalsOur = 0;
 	noOfGoalsTheir = 0;
+	noOfTicksInOurHalf = 0;
+	noOfTicksInTheirHalf = 0;
 }
 
 
@@ -66,6 +68,7 @@ int CGame::Process(const string& sJsonMsg)
 
 			strategyPtr_->OnStartOfTurnEvent();
 			
+			//stats
 			if(ourTeamPtr_->IsMember(ball_.GetOwner()))
 			{
 					noOfTimesOurTeamOwnBall++;
@@ -75,12 +78,21 @@ int CGame::Process(const string& sJsonMsg)
 					noOfTimesTheirTeamOwnBall++;
 			}
 			
+			if(pitch_.IsOurHalf(ball_.GetPosition()))
+			{
+				noOfTicksInOurHalf++;
+			}
+			else
+			{
+				noOfTicksInTheirHalf++;
+			}
 			
-			if (currentTimeSeconds_ > 1799.9)
+			if (currentTimeSeconds_ > 1800.0)
 			{
 				LOGGER->Log("NoOfAttempts Our:%d Their:%d", noOfGoalAttemptsByUs, noOfGoalAttemptsOnUs);
 				LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
 				LOGGER->Log("NOOfTimes BallOwned Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
+				LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
 			}
 		}
 		else if (eventTypeItr->value == "GOAL")

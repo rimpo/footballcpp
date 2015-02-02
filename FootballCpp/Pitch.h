@@ -17,7 +17,7 @@ public:
 	inline float GetCentreCircleRadius() { return centreCircleRadius_; }
 	inline float GetGoalAreadRadius() { return goalAreaRadius_; }
 
-	inline bool IsOurHalf(const Position& pos) { return pos.x_ < width_; }
+	inline bool IsOurHalf(const Position& pos) { return pos.x_ < width_/2; }
 
 	int ProcessPitch(const Value& pitchValue);
 

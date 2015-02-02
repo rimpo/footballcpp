@@ -7,7 +7,11 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 	Position perIntersection;
 	auto& pClosestPlayer = game_.GetClosestPlayer();
 	//ball is travelling and iterception is possible
-	if (ball_.GetSpeed() > 0 && ball_.GetStationaryPosition().x_ > 50.0 &&
+	if (pPlayer->HasBall())
+	{
+		pPlayer->KickShort_Striker();
+	}
+	else if (ball_.GetSpeed() > 0 && ball_.GetStationaryPosition().x_ > 50.0 &&
 	    GetPerpendicularIntersection(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
 	{
 		//try to intercept ball

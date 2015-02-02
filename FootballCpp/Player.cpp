@@ -260,18 +260,23 @@ void CPlayer::Kick_Defender()
 		else
 		{
 			//no one near you try to short kick.
-			if (!this->IsTheirPlayerNearFromFront(DEFENDER_SHORT_KICK_NO_ONE_CLOSE))
+			if (!this->IsTheirPlayerNearFromFront(DEFENDER_SHORT_KICK_NO_ONE_CLOSE) && 
+				distanceFromGoal > DEFENDER_SHOOTING_RANGE	)
 			{
 				this->KickShort(35.0);
 			}	
 			else
 			{
 				//you are a defender but you are very close attempt goal.
-				if (distanceFromGoal < 20.0)
+				if (distanceFromGoal <= DEFENDER_SHOOTING_RANGE)
 				{
+					//attempt on goal.
+					
 					Position shootAt = GetRandomShootAtGoal();
 					
 					this->Kick(shootAt, 100.0);
+					
+					game_.noOfGoalAttemptsByUs++;
 				}
 				else
 				{
@@ -335,12 +340,12 @@ void CPlayer::MoveToGuardGoal_Radius()
 	Vector goalToBallvector(ourGoalCentre, ball_.GetPosition());
 
 
-	Vector scaledVec = goalToBallvector.Scale(4.5);
+	Vector scaledVec = goalToBallvector.Scale(GUARD_RADIUS);
 
 	ourGoalCentre.AddVector(scaledVec);
 
-	if (ourGoalCentre.x_ > 2.5)
-		ourGoalCentre.x_ = 2.5;
+	if (ourGoalCentre.x_ > GUARD_LINE)
+		ourGoalCentre.x_ = GUARD_LINE;
 
 	if (pos_.ApproxEqual(ourGoalCentre, POSITION_GUARD_TOLERANCE))
 	{
