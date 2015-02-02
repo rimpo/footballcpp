@@ -20,7 +20,14 @@ void CCounterAttackerDefenderChaseBallState::Execute(CPlayer *pPlayer)
 {
 	//ball in range take possession
 	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
-	if (distanceFromBall < 0.5)
+	
+	if (pPlayer->HasBall())
+	{
+		//internally changes state to mark.
+		//centre striker state to idle.
+		pPlayer->Kick_Defender();
+	}
+	else if (distanceFromBall < 0.5)
 	{
 		if (!ball_.IsOurTeamControlling())
 		{

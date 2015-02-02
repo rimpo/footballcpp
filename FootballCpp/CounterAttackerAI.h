@@ -25,4 +25,7 @@ public:
 protected:
 	Position::Vec playersAttackPos_;
 	vector<float> playersAttackDirection_;
+	
+	Position lastBallPos_;
+	int sameBallPosTickCount_;	// value greater than 30 signifies hang state.
 };

@@ -37,10 +37,10 @@ int CPitch::ProcessPitch(const Value& pitchValue)
 
 	// For Goalkeeper to protect bigger area than the Y1 and Y2 +/- 0.1 is done 
 	ourGoalY1_.x_ = 0.0;
-	ourGoalY1_.y_ = goalY1_ - 0.1;			
+	ourGoalY1_.y_ = goalY1_ - 0.2;			
 
 	ourGoalY2_.x_ = 0.0;
-	ourGoalY2_.y_ = goalY2_ + 0.1;			
+	ourGoalY2_.y_ = goalY2_ + 0.2;			
 
 	theirGoalCentre_.x_ = 100.0;
 	theirGoalCentre_.y_ = centreSpot_.y_;
@@ -50,6 +50,8 @@ int CPitch::ProcessPitch(const Value& pitchValue)
 
 	theirGoalY2_.x_ = 100.0;
 	theirGoalY2_.y_ = goalY2_;
+	
+	LOGGER->Log("Our goal Y1 = (%f, %f) and Y2 = (%f, %f)", ourGoalY1_.x_, ourGoalY1_.y_, ourGoalY2_.x_, ourGoalY2_.y_ );
 
 	return 0;
 }
@@ -61,7 +63,7 @@ bool CPitch::IsLineHittingOurGoal(const Position& beginPos, const Position& endP
 bool CPitch::IsInsideOurGoalArea(const Position& pos)
 {
 	//check x > 0 is to ensure the x is in the field.
-	return pos.x_ > 0 && pos.DistanceFrom(ourGoalCentre_) < (goalAreaRadius_ - 0.3);
+	return pos.x_ > 0 && pos.DistanceFrom(ourGoalCentre_) < (goalAreaRadius_);// - 0.3);
 }
 
 bool CPitch::IsLineHittingTheirGoal(const Position& beginPos, const Position& endPos)
@@ -72,5 +74,5 @@ bool CPitch::IsLineHittingTheirGoal(const Position& beginPos, const Position& en
 bool CPitch::IsInsideTheirGoalArea(const Position& pos)
 {
 	//check x > 0 is to ensure the x is in the field.
-	return pos.x_ > 0 && pos.DistanceFrom(theirGoalCentre_) < (goalAreaRadius_ - 0.3);
+	return pos.x_ > 0 && pos.DistanceFrom(theirGoalCentre_) < (goalAreaRadius_);//- 0.3);
 }

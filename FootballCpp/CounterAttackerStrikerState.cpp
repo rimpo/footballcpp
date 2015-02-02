@@ -127,6 +127,16 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 	}
+	else if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
+	{
+		if (ball_.GetStationaryPosition().x_ > 50.0f)
+			pPlayer->MoveTo(ball_.GetStationaryPosition());
+		else
+		{
+			pPlayer->MoveTo(pPlayer->GetHomePosition());
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+		}
+	}
 }
 
 void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)

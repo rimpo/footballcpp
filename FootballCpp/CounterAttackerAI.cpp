@@ -3,7 +3,7 @@
 
 CCounterAttackerAI::CCounterAttackerAI()
 {
-	
+	sameBallPosTickCount_ = 0;
 }
 
 
@@ -110,6 +110,20 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 
 	auto& ourGoalKeeper = ourTeamPtr->GetGoalKeeper();
 
+	//Note: This has been put to check hang state of the AI - no activity.
+	if (lastBallPos_.x_ == ball.GetPosition().x_ &&
+		lastBallPos_.y_ == ball.GetPosition().y_)
+			sameBallPosTickCount_++;
+	else
+		sameBallPosTickCount_ = 0;
+			
+	if (sameBallPosTickCount_ > 30)
+	{
+		int x = 10; //put breakpoint here signifies hang state.
+	}
+	
+	lastBallPos_ = ball.GetPosition();
+	
 	
 	GetGame().CalculateAllPlayerToBallSortedDistance();
 	GetGame().SortTheirTeamX();

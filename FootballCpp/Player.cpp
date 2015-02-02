@@ -251,15 +251,8 @@ void CPlayer::Kick_Defender()
 		float distance = this->GetPosition().DistanceFrom(pCentrePlayer->GetPosition());
 		float distanceFromGoal = this->GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
 				
-		if (!this->IsTheirPlayerNear(DEFENDER_NO_ONE_CLOSE) && 
-			!ApproxEqual(this->GetDirection(),angle,DIRECTION_TOLERANCE))
-		{
-			
-			this->TurnTo(angle);
-		}
-		else
-		{
-			//no one near you try to short kick.
+		
+		//no one near you try to short kick.
 			if (!this->IsTheirPlayerNearFromFront(DEFENDER_SHORT_KICK_NO_ONE_CLOSE) && 
 				distanceFromGoal > DEFENDER_SHOOTING_RANGE	)
 			{
@@ -280,22 +273,29 @@ void CPlayer::Kick_Defender()
 				}
 				else
 				{
-					pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
-		
-					float speed = 100.0;
-					/*if (distance < 15.0) 
-						speed = 60.0;
-					*/	
-					Position shootAt = pCentrePlayer->GetAction().destination_;
-					//shootAt.y_ -= 20.0; 
-					this->Kick(shootAt, speed);
 					
+					if (!this->IsTheirPlayerNear(DEFENDER_NO_ONE_CLOSE) && 
+						!ApproxEqual(this->GetDirection(),angle,DIRECTION_TOLERANCE))
+					{		
+						this->TurnTo(angle);
+					}
+					else
+					{
+						pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+		
+						float speed = 100.0;
+						/*if (distance < 15.0) 
+						speed = 60.0;
+						*/	
+						Position shootAt = pCentrePlayer->GetAction().destination_;
+						//shootAt.y_ -= 20.0; 
+						this->Kick(shootAt, speed);
+					}
 				}
 				
 			//pPlayer->MoveTo({ 8.0f, 25.0 });
 			this->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 			}
-		}
 }
 
 float CPlayer::PredictDirection()
@@ -343,9 +343,16 @@ void CPlayer::MoveToGuardGoal_Radius()
 	Vector scaledVec = goalToBallvector.Scale(GUARD_RADIUS);
 
 	ourGoalCentre.AddVector(scaledVec);
-
+	
 	if (ourGoalCentre.x_ > GUARD_LINE)
 		ourGoalCentre.x_ = GUARD_LINE;
+		
+	if (ourGoalCentre.y_ < 21.5)
+		ourGoalCentre.y_ = 21.5;	
+
+	if (ourGoalCentre.y_ > 27.5)
+		ourGoalCentre.y_ = 27.5;	
+	
 
 	if (pos_.ApproxEqual(ourGoalCentre, POSITION_GUARD_TOLERANCE))
 	{
