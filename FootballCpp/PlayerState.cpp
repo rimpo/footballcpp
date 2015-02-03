@@ -66,5 +66,9 @@ void CPlayerState::InitGlobalPlayerStateVector()
 	globalPlayerStates[eCounterAttackerStrikerChaseBall]	 = new CCounterAttackerStrikerChaseBallState;
 	globalPlayerStates[eCounterAttackerStrikerTakePossession] = new CCounterAttackerStrikerTakePossessionState;
 	globalPlayerStates[eCounterAttackerStrikerShortKick]	 = new CCounterAttackerStrikerShortKickState;
+	
+	//-- counter attacker - zombie
+	globalPlayerStates[eCounterAttackerZombie]	 = new CCounterAttackerZombieState;
+	
 
 }

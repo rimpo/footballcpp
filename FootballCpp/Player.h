@@ -153,6 +153,8 @@ public:
 	inline  int GetKickingTowardPlayerNumber() { return kickingTowardPlayerNumber_;	}
 	inline  void SetKickingTowardPlayerNumber(int playerNumber) { kickingTowardPlayerNumber_ = playerNumber;	}
 	inline  void ResetKickingTowardPlayerNumber() { kickingTowardPlayerNumber_ = -1; }
+	
+	Position GetRandomFreePosition_Striker();
 private:
 	int playerType_;
 	int playerNumber_;

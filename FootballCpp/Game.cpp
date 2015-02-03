@@ -110,6 +110,12 @@ int CGame::Process(const string& sJsonMsg)
 		else if (eventTypeItr->value == "HALF_TIME")
 		{
 			strategyPtr_->OnHalfTimeEvent();
+			
+			LOGGER->Log("NoOfAttempts Our:%d Their:%d", noOfGoalAttemptsByUs, noOfGoalAttemptsOnUs);
+			LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
+			LOGGER->Log("NOOfTimes BallOwned Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
+			LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
+			LOGGER->Log("HALF TIME");
 		}
 		else if (eventTypeItr->value == "KICKOFF")
 		{

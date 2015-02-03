@@ -6,10 +6,16 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 {
 	Position perIntersection;
 	auto& pClosestPlayer = game_.GetClosestPlayer();
+	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
 	//ball is travelling and iterception is possible
 	if (pPlayer->HasBall())
 	{
 		pPlayer->KickShort_Striker();
+	}
+	else if (distanceFromBall < 0.5)
+	{
+		pPlayer->TakePossession();
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
 	}
 	else if (ball_.GetSpeed() > 0 && ball_.GetStationaryPosition().x_ > 50.0 &&
 	    GetPerpendicularIntersection(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
@@ -26,10 +32,9 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		{
 			pPlayer->MoveTo(pPlayer->GetHomePosition());
 		}
-		else if (ball_.GetStationaryPosition().x_ > 50.0f)
+		else if (ball_.IsFreeBall() && ball_.GetStationaryPosition().x_ > 50.0f)
 		{
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
-			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerChaseBall);
 		}
 		else
 		{
@@ -44,7 +49,11 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 	auto& pClosestPlayer = game_.GetClosestPlayer();
 	//ball in range take possession
 	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
-	if (distanceFromBall < 0.5)
+	if (pPlayer->HasBall())
+	{
+		pPlayer->KickShort_Striker();
+	}
+	else if (distanceFromBall < 0.5)
 	{
 		pPlayer->TakePossession();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
@@ -68,7 +77,7 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 	}
 	//lost possession
 	else if (ball_.IsTheirTeamControlling() 			//their player in control of ball
-			// || pClosestPlayer->IsTheirTeamMember()		//their player is closest
+			|| ball_.IsOurTeamControlling()
 			) // not our team member
 	{
 		//lost possession. go home bitch
@@ -137,6 +146,12 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		}
 	}
+	else if (ball_.IsOurTeamControlling())//our player in control of ball
+	{
+		//lost possession. bitch go home
+		pPlayer->MoveTo(pPlayer->GetHomePosition());
+		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+	}
 }
 
 void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
@@ -167,3 +182,17 @@ void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
 	}
 }
 
+
+void CCounterAttackerZombieState::Execute(CPlayer *pPlayer)
+{
+	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
+	
+	if (pPlayer->HasBall())
+	{
+		pPlayer->Kick({ 50.0f, 25.0f},100);
+	}
+	else if (distanceFromBall < 0.5)
+	{
+		pPlayer->TakePossession();
+	}
+}

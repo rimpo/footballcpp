@@ -246,7 +246,9 @@ void CPlayer::Kick_Defender()
 {
 		auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
 		
-		float angle = this->GetPosition().AngleWith(pCentrePlayer->GetAction().destination_);
+		Position goHomePos = GetRandomFreePosition_Striker();
+		
+		float angle = this->GetPosition().AngleWith(goHomePos);
 		
 		float distance = this->GetPosition().DistanceFrom(pCentrePlayer->GetPosition());
 		float distanceFromGoal = this->GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
@@ -281,15 +283,19 @@ void CPlayer::Kick_Defender()
 					}
 					else
 					{
+						
+						pCentrePlayer->SetHomePosition(goHomePos);
+						pCentrePlayer->MoveTo(pCentrePlayer->GetHomePosition());
 						pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		
+						//distance
 						float speed = 100.0;
-						/*if (distance < 15.0) 
-						speed = 60.0;
-						*/	
-						Position shootAt = pCentrePlayer->GetAction().destination_;
+						if (distance < 20.0) 
+						speed = 70.0;
+							
+						//Position shootAt = pCentrePlayer->GetAction().destination_;
 						//shootAt.y_ -= 20.0; 
-						this->Kick(shootAt, speed);
+						this->Kick(goHomePos, speed);
 					}
 				}
 				
@@ -749,6 +755,13 @@ float CPlayer::CalculateTimeToReachPosition(const Position& dest)
 	timeTaken = timeTakenToTurn + noOfTurn*GAME_AI_CALCULATION_INTERVAL;
 
 	return timeTaken;
+}
+
+Position CPlayer::GetRandomFreePosition_Striker()
+{
+	float randY = RandomRangeFloat(15.0,35.0);
+	
+	return { 80.0,randY};
 }
 
 Position CPlayer::GetRandomShootAtGoal() 

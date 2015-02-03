@@ -51,7 +51,7 @@ int CPitch::ProcessPitch(const Value& pitchValue)
 	theirGoalY2_.x_ = 100.0;
 	theirGoalY2_.y_ = goalY2_;
 	
-	LOGGER->Log("Our goal Y1 = (%f, %f) and Y2 = (%f, %f)", ourGoalY1_.x_, ourGoalY1_.y_, ourGoalY2_.x_, ourGoalY2_.y_ );
+	//LOGGER->Log("Our goal Y1 = (%f, %f) and Y2 = (%f, %f)", ourGoalY1_.x_, ourGoalY1_.y_, ourGoalY2_.x_, ourGoalY2_.y_ );
 
 	return 0;
 }

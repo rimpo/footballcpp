@@ -32,3 +32,10 @@ class CCounterAttackerStrikerInterceptBallState : public CPlayerState
 public:
 	void Execute(CPlayer *pPlayer);
 };
+
+//used only by Zombie player (all capability zero)
+class CCounterAttackerZombieState : public CPlayerState
+{
+public:
+	void Execute(CPlayer *pPlayer);
+};

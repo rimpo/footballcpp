@@ -92,6 +92,10 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 			//pPlayer->ChangeState(CPlayerState::eDead);
 		}
+		else
+		{
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerZombie);
+		}
 		
 		
 	}
@@ -117,9 +121,9 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 	else
 		sameBallPosTickCount_ = 0;
 			
-	if (sameBallPosTickCount_ > 30)
+	if (sameBallPosTickCount_ > 40)
 	{
-		int x = 10; //put breakpoint here signifies hang state.
+		LOGGER->Log("GAME STUCK!!"); //put breakpoint here signifies hang state.
 	}
 	
 	lastBallPos_ = ball.GetPosition();

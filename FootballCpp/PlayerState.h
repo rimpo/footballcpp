@@ -48,7 +48,9 @@ public:
 		eCounterAttackerStrikerChaseBall,
 		eCounterAttackerStrikerTakePossession,
 		eCounterAttackerStrikerShortKick,
-			
+		
+		//-- counter attacker - zombie player
+		eCounterAttackerZombie,	
 		//Note: add new state above this
 		eLastStateIndex
 	};
