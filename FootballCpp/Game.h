@@ -94,6 +94,10 @@ public:
 	int noOfTicksInOurDefenceHalf;
 	int noOfTicksInTheirDefenceHalf;
 	
+	int noOfTackleWonOur;
+	int noOfTackleWonTheir;
+	int prevBallOwner;
+		
 	float currentTimeSeconds_;
 };
 

@@ -37,6 +37,10 @@ CGame::CGame()
 	noOfAttemptsOnTarget = 0;
 	noOfTicksInOurDefenceHalf = 0;
 	noOfTicksInTheirDefenceHalf = 0;
+	
+	noOfTackleWonOur = 0;
+	noOfTackleWonTheir = 0;
+	prevBallOwner = -1;
 }
 
 
@@ -112,8 +116,19 @@ int CGame::Process(const string& sJsonMsg)
 			{
 				noOfTicksInTheirDefenceHalf++;
 			}
-	
 			
+			if(theirTeamPtr_->IsMember(prevBallOwner) && ourTeamPtr_->IsMember(ball_.GetOwner()))
+			{
+				noOfTackleWonOur++;
+			}
+			
+			if(ourTeamPtr_->IsMember(prevBallOwner) &&  theirTeamPtr_->IsMember(ball_.GetOwner()))
+			{
+				noOfTackleWonTheir++;
+			}
+				
+			prevBallOwner = ball_.GetOwner();
+			 
 			if (currentTimeSeconds_ > 1800.0)
 			{
 				LOGGER->Log("NoOfAttempts Our:[Attempts:%d OnTarget:%d] Their:%d ", noOfGoalAttemptsByUs, noOfAttemptsOnTarget, noOfGoalAttemptsOnUs);
@@ -122,6 +137,7 @@ int CGame::Process(const string& sJsonMsg)
 				LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
 				LOGGER->Log("NoOfTicks Our Defence Half:%d Their Defence Half:%d",noOfTicksInOurDefenceHalf, noOfTicksInTheirDefenceHalf);
 				LOGGER->Log("NoOfTicks Our Goal Area:%d Their Goal Area:%d",noOfTicksInOurGoalArea, noOfTicksInTheirGoalArea);
+				LOGGER->Log("NoOfTackleWon Our:%d Their:%d", noOfTackleWonOur, noOfTackleWonTheir);
 			}
 		}
 		else if (eventTypeItr->value == "GOAL")
@@ -146,6 +162,7 @@ int CGame::Process(const string& sJsonMsg)
 			LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
 			LOGGER->Log("NoOfTicks Our Defence Half:%d Their Defence Half:%d",noOfTicksInOurDefenceHalf, noOfTicksInTheirDefenceHalf);
 			LOGGER->Log("NoOfTicks Our Goal Area:%d Their Goal Area:%d",noOfTicksInOurGoalArea, noOfTicksInTheirGoalArea);
+			LOGGER->Log("NoOfTackleWon Our:%d Their:%d", noOfTackleWonOur, noOfTackleWonTheir);
 			LOGGER->Log("HALF TIME");
 		}
 		else if (eventTypeItr->value == "KICKOFF")
@@ -350,12 +367,12 @@ void CGame::CalculateAllPlayerToBallSortedDistance()
 	//ball is inside goal area.
 	if (pitch_.IsInsideTheirGoalArea(ball_.GetPosition()))
 	{
-		closestPlayer_ = ourTeamPtr_->GetGoalKeeper();
+		closestPlayer_ = theirTeamPtr_->GetGoalKeeper();
 		return;
 	}
 	else if (pitch_.IsInsideOurGoalArea(ball_.GetPosition()))
 	{
-		closestPlayer_ = theirTeamPtr_->GetGoalKeeper();
+		closestPlayer_ = ourTeamPtr_->GetGoalKeeper();
 		return;
 	}
 	

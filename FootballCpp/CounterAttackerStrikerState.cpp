@@ -17,7 +17,7 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		pPlayer->TakePossession();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
 	}
-	else if (ball_.GetSpeed() > 0 && !pitch_.IsOurHalf(ball_.GetStationaryPosition()) &&
+	else if (ball_.GetSpeed() > 0 &&
 	    GetPerpendicularIntersection(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
 	{
 		//try to intercept ball
