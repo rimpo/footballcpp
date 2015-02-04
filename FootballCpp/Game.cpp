@@ -35,6 +35,8 @@ CGame::CGame()
 	noOfTicksInTheirGoalArea = 0;
 	
 	noOfAttemptsOnTarget = 0;
+	noOfTicksInOurDefenceHalf = 0;
+	noOfTicksInTheirDefenceHalf = 0;
 }
 
 
@@ -101,6 +103,15 @@ int CGame::Process(const string& sJsonMsg)
 			{	
 				noOfTicksInTheirGoalArea++;
 			}
+			
+			if(ball_.GetPosition().x_ < 25.0)
+			{
+				noOfTicksInOurDefenceHalf++;
+			}
+			else if (ball_.GetPosition().x_ > 75.0)
+			{
+				noOfTicksInTheirDefenceHalf++;
+			}
 	
 			
 			if (currentTimeSeconds_ > 1800.0)
@@ -109,6 +120,7 @@ int CGame::Process(const string& sJsonMsg)
 				LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
 				LOGGER->Log("NOOfTimes Ball Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
 				LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
+				LOGGER->Log("NoOfTicks Our Defence Half:%d Their Defence Half:%d",noOfTicksInOurDefenceHalf, noOfTicksInTheirDefenceHalf);
 				LOGGER->Log("NoOfTicks Our Goal Area:%d Their Goal Area:%d",noOfTicksInOurGoalArea, noOfTicksInTheirGoalArea);
 			}
 		}
@@ -132,6 +144,7 @@ int CGame::Process(const string& sJsonMsg)
 			LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
 			LOGGER->Log("NOOfTimes Ball Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
 			LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
+			LOGGER->Log("NoOfTicks Our Defence Half:%d Their Defence Half:%d",noOfTicksInOurDefenceHalf, noOfTicksInTheirDefenceHalf);
 			LOGGER->Log("NoOfTicks Our Goal Area:%d Their Goal Area:%d",noOfTicksInOurGoalArea, noOfTicksInTheirGoalArea);
 			LOGGER->Log("HALF TIME");
 		}

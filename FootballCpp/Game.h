@@ -91,6 +91,9 @@ public:
 	int noOfTicksInTheirGoalArea;
 	int noOfAttemptsOnTarget;
 	
+	int noOfTicksInOurDefenceHalf;
+	int noOfTicksInTheirDefenceHalf;
+	
 	float currentTimeSeconds_;
 };
 
