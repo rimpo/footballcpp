@@ -28,4 +28,6 @@ protected:
 	
 	Position lastBallPos_;
 	int sameBallPosTickCount_;	// value greater than 30 signifies hang state.
+	
+	bool isFirstTickAfterBallMoved_;
 };

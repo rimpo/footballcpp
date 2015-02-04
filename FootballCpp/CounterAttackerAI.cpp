@@ -4,6 +4,7 @@
 CCounterAttackerAI::CCounterAttackerAI()
 {
 	sameBallPosTickCount_ = 0;
+	isFirstTickAfterBallMoved_ = true;
 }
 
 
@@ -109,12 +110,23 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 void CCounterAttackerAI::OnStartOfTurnEvent()
 {
 	auto& ball = GetGame().GetBall();
+	auto& pitch = GetGame().GetPitch();
 	auto& ourTeamPtr = GetGame().GetOurTeamPtr();
 	auto& ourPlayers = ourTeamPtr->GetPlayers();
 
 	auto& ourGoalKeeper = ourTeamPtr->GetGoalKeeper();
+	
+	
+	GetGame().CalculateAllPlayerToBallSortedDistance();
+	GetGame().SortTheirTeamX();
+	
+	//calulate all path position and stationary position.
+	ball.EstimatePath();
 
+
+	//-----------------------------------------------------------------------
 	//Note: This has been put to check hang state of the AI - no activity.
+	//----------------------------------------------------------------------
 	if (lastBallPos_.x_ == ball.GetPosition().x_ &&
 		lastBallPos_.y_ == ball.GetPosition().y_)
 			sameBallPosTickCount_++;
@@ -123,17 +135,35 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 			
 	if (sameBallPosTickCount_ > 40)
 	{
-		LOGGER->Log("GAME STUCK!!"); //put breakpoint here signifies hang state.
+		LOGGER->Log("GAME STUCK!! game_time:%f",GetGame().currentTimeSeconds_); //put breakpoint here signifies hang state.
 	}
 	
 	lastBallPos_ = ball.GetPosition();
+	//----------------------------------------------------------------------
+
+
+	//----------------------------------------------------------------------
+	//Note: This has been put to identify attempts that are on target.
+	//----------------------------------------------------------------------
+	if (ball.GetSpeed() > 0)
+	{
+		if (isFirstTickAfterBallMoved_)
+		{
+			Position hittingAt;
+			if (pitch.IsLineHittingTheirGoal(ball.GetPosition(), ball.GetVirtualStationaryPosition()))
+			{
+				GetGame().noOfAttemptsOnTarget++;
+			}
+			
+			isFirstTickAfterBallMoved_ = false;
+		}
+		
+	}
+	else
+		isFirstTickAfterBallMoved_ = true;
+	//----------------------------------------------------------------------
 	
 	
-	GetGame().CalculateAllPlayerToBallSortedDistance();
-	GetGame().SortTheirTeamX();
-	
-	//calulate all path position and stationary position.
-	GetGame().GetBall().EstimatePath();
 
 	for (auto& pPlayer : ourPlayers)
 	{

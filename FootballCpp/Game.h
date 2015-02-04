@@ -67,7 +67,7 @@ private:
 	CBall  ball_;
 
 	float gameLengthSeconds_;
-	float currentTimeSeconds_;
+
 
 	CStrategyAI::Ptr strategyPtr_;
 
@@ -87,5 +87,10 @@ public:
 	int noOfGoalsTheir;
 	int noOfTicksInOurHalf;
 	int noOfTicksInTheirHalf;
+	int noOfTicksInOurGoalArea;
+	int noOfTicksInTheirGoalArea;
+	int noOfAttemptsOnTarget;
+	
+	float currentTimeSeconds_;
 };
 

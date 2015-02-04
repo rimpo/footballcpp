@@ -17,7 +17,7 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		pPlayer->TakePossession();
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerTakePossession);
 	}
-	else if (ball_.GetSpeed() > 0 && ball_.GetStationaryPosition().x_ > 50.0 &&
+	else if (ball_.GetSpeed() > 0 && !pitch_.IsOurHalf(ball_.GetStationaryPosition()) &&
 	    GetPerpendicularIntersection(ball_.GetPosition(), ball_.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
 	{
 		//try to intercept ball
@@ -32,7 +32,7 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		{
 			pPlayer->MoveTo(pPlayer->GetHomePosition());
 		}
-		else if (ball_.IsFreeBall() && ball_.GetStationaryPosition().x_ > 50.0f)
+		else if (ball_.IsFreeBall() && !pitch_.IsOurHalf(ball_.GetStationaryPosition()))
 		{
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
 		}
@@ -67,7 +67,7 @@ void CCounterAttackerStrikerChaseBallState::Execute(CPlayer* pPlayer)
 	}
 	else if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
 	{
-		if (ball_.GetStationaryPosition().x_ > 50.0f)
+		if (!pitch_.IsOurHalf(ball_.GetStationaryPosition()))
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
 		else
 		{
@@ -99,7 +99,7 @@ void CCounterAttackerStrikerInterceptBallState::Execute(CPlayer *pPlayer)
 	}
 	else if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
 	{
-		if (ball_.GetStationaryPosition().x_ > 50.0f)
+		if (!pitch_.IsOurHalf(ball_.GetStationaryPosition()))
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
 		else
 		{
@@ -138,7 +138,7 @@ void CCounterAttackerStrikerTakePossessionState::Execute(CPlayer* pPlayer)
 	}
 	else if (ball_.GetSpeed() == 0 && ball_.IsFreeBall())
 	{
-		if (ball_.GetStationaryPosition().x_ > 50.0f)
+		if (!pitch_.IsOurHalf(ball_.GetStationaryPosition()))
 			pPlayer->MoveTo(ball_.GetStationaryPosition());
 		else
 		{
@@ -169,7 +169,14 @@ void CCounterAttackerStrikerShortKickState::Execute(CPlayer* pPlayer)
 	}
 	else if (ball_.IsFreeBall())	// no owner
 	{
-		pPlayer->MoveTo(ball_.GetStationaryPosition());
+		//pPlayer->MoveTo(ball_.GetStationaryPosition());
+		if (!pitch_.IsOurHalf(ball_.GetStationaryPosition()))
+			pPlayer->MoveTo(ball_.GetStationaryPosition());
+		else
+		{
+			pPlayer->MoveTo(pPlayer->GetHomePosition());
+			pPlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+		}
 	}
 	//lost possession
 	else if (ball_.IsTheirTeamControlling() 				//their player in control of ball

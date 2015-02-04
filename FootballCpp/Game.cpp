@@ -30,6 +30,11 @@ CGame::CGame()
 	noOfGoalsTheir = 0;
 	noOfTicksInOurHalf = 0;
 	noOfTicksInTheirHalf = 0;
+	
+	noOfTicksInOurGoalArea = 0;
+	noOfTicksInTheirGoalArea = 0;
+	
+	noOfAttemptsOnTarget = 0;
 }
 
 
@@ -87,17 +92,29 @@ int CGame::Process(const string& sJsonMsg)
 				noOfTicksInTheirHalf++;
 			}
 			
+			
+			if (pitch_.IsInsideOurGoalArea(ball_.GetPosition()))
+			{
+				noOfTicksInOurGoalArea++;
+			}
+			else if(pitch_.IsInsideTheirGoalArea(ball_.GetPosition()))
+			{	
+				noOfTicksInTheirGoalArea++;
+			}
+	
+			
 			if (currentTimeSeconds_ > 1800.0)
 			{
-				LOGGER->Log("NoOfAttempts Our:%d Their:%d", noOfGoalAttemptsByUs, noOfGoalAttemptsOnUs);
+				LOGGER->Log("NoOfAttempts Our:[Attempts:%d OnTarget:%d] Their:%d ", noOfGoalAttemptsByUs, noOfAttemptsOnTarget, noOfGoalAttemptsOnUs);
 				LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
-				LOGGER->Log("NOOfTimes BallOwned Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
+				LOGGER->Log("NOOfTimes Ball Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
 				LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
+				LOGGER->Log("NoOfTicks Our Goal Area:%d Their Goal Area:%d",noOfTicksInOurGoalArea, noOfTicksInTheirGoalArea);
 			}
 		}
 		else if (eventTypeItr->value == "GOAL")
 		{
-			if (ball_.GetPosition().x_ < 50.0)
+			if (pitch_.IsOurHalf(ball_.GetPosition()))
 			{
 				noOfGoalsTheir++;
 			}
@@ -111,10 +128,11 @@ int CGame::Process(const string& sJsonMsg)
 		{
 			strategyPtr_->OnHalfTimeEvent();
 			
-			LOGGER->Log("NoOfAttempts Our:%d Their:%d", noOfGoalAttemptsByUs, noOfGoalAttemptsOnUs);
+			LOGGER->Log("NoOfAttempts Our:[Attempts:%d OnTarget:%d] Their:%d ", noOfGoalAttemptsByUs, noOfAttemptsOnTarget, noOfGoalAttemptsOnUs);
 			LOGGER->Log("NoOfGoals Our:%d Their:%d",noOfGoalsOur, noOfGoalsTheir);
-			LOGGER->Log("NOOfTimes BallOwned Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
+			LOGGER->Log("NOOfTimes Ball Our:%d Their:%d",noOfTimesOurTeamOwnBall, noOfTimesTheirTeamOwnBall);
 			LOGGER->Log("NoOfTicks Our Half:%d Their Half:%d",noOfTicksInOurHalf, noOfTicksInTheirHalf);
+			LOGGER->Log("NoOfTicks Our Goal Area:%d Their Goal Area:%d",noOfTicksInOurGoalArea, noOfTicksInTheirGoalArea);
 			LOGGER->Log("HALF TIME");
 		}
 		else if (eventTypeItr->value == "KICKOFF")
