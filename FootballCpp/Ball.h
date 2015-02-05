@@ -3,6 +3,8 @@
 #include "Position.h"
 #include "Vector.h"
 
+#define MAX_BALL_SPEED 30.0f
+
 typedef vector<float> TimeVec;
 
 class CBall
@@ -44,6 +46,8 @@ public:
 	
 	bool IsOurGoalKeeperControlling();
 	bool IsTheirGoalKeeperControlling();
+	
+	float GetSpeedForDistance(float distance);
 	
 private:
 	

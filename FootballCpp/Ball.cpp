@@ -228,6 +228,14 @@ void CBall::EstimatePath()
 	*/
 }
 
+float CBall::GetSpeedForDistance(float distance)
+{
+	float v = sqrtf(2.0 * FRICTION * distance);
+	float percentage =  (v * 100.0f )/MAX_BALL_SPEED; 
+	
+	return percentage;
+}
+
 bool CBall::IsOurTeamControlling()
 { 
 	return GetGame().GetOurTeamPtr()->IsMember(GetOwner()); 

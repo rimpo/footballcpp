@@ -249,6 +249,7 @@ void CPlayer::Kick_Defender()
 		Position goHomePos = GetRandomFreePosition_Striker();
 		
 		float angle = this->GetPosition().AngleWith(goHomePos);
+		float distanceFromHomePos = this->GetPosition().DistanceFrom(goHomePos);
 		
 		float distance = this->GetPosition().DistanceFrom(pCentrePlayer->GetPosition());
 		float distanceFromGoal = this->GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
@@ -289,13 +290,15 @@ void CPlayer::Kick_Defender()
 						pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		
 						//distance
-						float speed = 100.0;
+						/*float speed = 100.0;
 						if (distance < 20.0) 
-						speed = 70.0;
+						speed = 70.0;*/
+						
+						distanceFromHomePos += 4.0;
 							
 						//Position shootAt = pCentrePlayer->GetAction().destination_;
 						//shootAt.y_ -= 20.0; 
-						this->Kick(goHomePos, speed);
+						this->Kick(goHomePos, ball_.GetSpeedForDistance(distanceFromHomePos));
 					}
 				}
 				
