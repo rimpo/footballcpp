@@ -214,7 +214,7 @@ void CPlayer::KickShort_Striker()
 						
 					
 		float angle = GetPosition().AngleWith(shootAt);
-		bool isNoOneClose = IsTheirPlayerNear(STRIKER_NO_ONE_CLOSE);
+		bool isNoOneClose = false;//IsTheirPlayerNear(STRIKER_NO_ONE_CLOSE);
 		
 		if (!isNoOneClose && 
 			!ApproxEqual(GetDirection(),angle,DIRECTION_TOLERANCE))
@@ -224,15 +224,25 @@ void CPlayer::KickShort_Striker()
 		}
 		else
 		{
-			
-			if (!isNoOneClose && distanceFromGoal > 15.1f)
+			//no one close and player is little far.
+			if (!isNoOneClose && (distanceFromGoal - 15.1f) > 2.5f)
 			{
-				MoveTo(shootAt);
+				//MoveTo(shootAt);
+				Kick(shootAt,ball_.GetSpeedForDistance(distanceFromGoal - 15.1f));
+				ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 			}
 			else
 			{
+				//someone is close or we are close enough - shoot!!
 				game_.noOfGoalAttemptsByUs++;
 			
+				//try to hit dead centre in case of direction still not aligned.
+				if (fabsf(GetDirection() - angle) > 25.0)
+				{
+					shootAt = pitch_.GetTheirGoalCentre();
+					//LOGGER->Log("Inaccurate shoot game_time:%f", GetGame().currentTimeSeconds_);
+				}
+					
 				Kick(shootAt, 100.0);
 				ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 			
@@ -267,7 +277,6 @@ void CPlayer::Kick_Defender()
 				if (distanceFromGoal <= DEFENDER_SHOOTING_RANGE)
 				{
 					//attempt on goal.
-					
 					Position shootAt = GetRandomShootAtGoal();
 					
 					this->Kick(shootAt, 100.0);
@@ -762,9 +771,9 @@ float CPlayer::CalculateTimeToReachPosition(const Position& dest)
 
 Position CPlayer::GetRandomFreePosition_Striker()
 {
-	float randY = RandomRangeFloat(15.0,35.0);
+	float randY = RandomRangeFloat(17.0,33.0);
 	
-	return { 80.0,randY};
+	return { 83.0,randY};
 }
 
 Position CPlayer::GetRandomShootAtGoal() 

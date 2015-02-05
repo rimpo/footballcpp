@@ -151,6 +151,8 @@ int CGame::Process(const string& sJsonMsg)
 				noOfGoalsOur++;
 			}
 			strategyPtr_->OnGoalEvent();
+			
+			//LOGGER->Log("GOAL!! game_time:%f", GetGame().currentTimeSeconds_);
 		}
 		else if (eventTypeItr->value == "HALF_TIME")
 		{
