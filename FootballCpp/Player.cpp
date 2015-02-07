@@ -241,7 +241,7 @@ void CPlayer::KickShort_Striker()
 			if (!isNoOneClose && (distanceFromGoal - 15.1f) > 2.5f)
 			{
 				//MoveTo(shootAt);
-				Kick(shootAt,ball_.GetSpeedForDistance(distanceFromGoal - 15.1f));
+				Kick(shootAt,ball_.GetSpeedForDistance(distanceFromGoal - 15.1f) + 5.0);
 				ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 			}
 			else
@@ -282,7 +282,7 @@ void CPlayer::Kick_Defender()
 			if (!this->IsTheirPlayerNearFromFront(DEFENDER_SHORT_KICK_NO_ONE_CLOSE) && 
 				distanceFromGoal > DEFENDER_SHOOTING_RANGE	)
 			{
-				this->KickShort(35.0);
+				this->KickShort(40.0);
 			}	
 			else
 			{
@@ -307,7 +307,7 @@ void CPlayer::Kick_Defender()
 					else
 					{
 						
-						pCentrePlayer->SetHomePosition(goHomePos);
+						//pCentrePlayer->SetHomePosition(goHomePos);
 						pCentrePlayer->MoveTo(pCentrePlayer->GetHomePosition());
 						pCentrePlayer->ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
 		
@@ -316,7 +316,7 @@ void CPlayer::Kick_Defender()
 						if (distance < 20.0) 
 						speed = 70.0;*/
 						
-						distanceFromHomePos += 4.0;
+						distanceFromHomePos += 3.0;
 							
 						//Position shootAt = pCentrePlayer->GetAction().destination_;
 						//shootAt.y_ -= 20.0; 
@@ -331,26 +331,41 @@ void CPlayer::Kick_Defender()
 
 void CPlayer::Kick_GoalKeeper()
 {
-	int supportingPlayerType = (GetGoalKeeperWaitTicks() % 5 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+	int supportingPlayerType = ( (GetGoalKeeperWaitTicks()/ 5)% 2 == 0? CPlayer::eLeftDefender : CPlayer::eRightDefender);
 	auto& ourTeamPtr = game_.GetOurTeamPtr();
 	auto& pPassPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
 			
-	int randVal = RandomRangeInteger(0,1);
+	//int randVal = RandomRangeInteger(0,1);
 			//int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 2 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
-	float direction = GetPosition().AngleWith(pPassPlayer->GetHomePosition());
+	float direction = GetPosition().AngleWith(pPassPlayer->GetPosition());
 			
 	IncrementGoalKeeperWaitTicks();
-			
-	if (GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS ||
-	(GetGoalKeeperWaitTicks() > 5 && (GetGoalKeeperWaitTicks() + 1) % 5 == 0 && randVal == 1))
+	
+	float speed = 100.0;
+	
+	//GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS		
+	if (ApproxEqual(direction,GetDirection(),DIRECTION_TOLERANCE))
 	{
-		Kick(pPassPlayer->GetHomePosition(),80.0);
-		ResetGoalKeeperWaitTicks();
+		if(IsKickDirectionSafe(direction, speed, 3.0f))
+		{
+			Kick(pPassPlayer->GetPosition(),speed);
+			ResetGoalKeeperWaitTicks();
+		}
+		else
+		{
+			if (GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS)
+			{
+				Kick(pPassPlayer->GetHomePosition(),speed);
+				ResetGoalKeeperWaitTicks();
+			}
+		}
 	}
 	else 
 	{
 		TurnTo(direction);
 	}
+	
+	
 	/*auto& ourTeamPtr = game_.GetOurTeamPtr();
 	int randVal = RandomRangeInteger(0,1);
 	int supportingPlayerType = (randVal == 0? CPlayer::eRightStriker : CPlayer::eLeftStriker);
@@ -865,26 +880,33 @@ bool CPlayer::IsKickDirectionSafe(float direction, float speed, float limitDista
 	
 	Position perIntersection;
 	
-	float timeToReachBall = this->CalculateTimeToReachPosition(testBall.GetStationaryPosition());
-
+	//float timeToReachBall = this->CalculateTimeToReachPosition(testBall.GetStationaryPosition());
+	
 	for (auto& pPlayer: theirNonGoalKeepers)
 	{
+
 		if(pPlayer->GetCapability().runningAbility_ < 20.0)
 			continue;
-	
-		if (pitch_.IsInsideTheirGoalArea(testBall.GetStationaryPosition()))
+			
+		if (GetPerpendicularIntersection(testBall.GetPosition(), testBall.GetVirtualStationaryPosition(), pPlayer->GetPosition(), perIntersection))
 		{
-			return false;
-		}
-		
-		if(pPlayer->CalculateTimeToReachPosition(testBall.GetStationaryPosition()) < timeToReachBall)
-		{
-			return false;
+			float dist = perIntersection.DistanceFrom(pPlayer->GetPosition());
+			
+			if (dist <= limitDistance)
+			{
+				return false;
+			}
+			
 		}
 
 	}
 	
 	return true;
+}
+
+void CPlayer::GetSafeKickDirection_GoalKeeper(float& direction, float& speed, float limitDistance)
+{
+	//IsKickDirectionSafe(direction)
 }
 
 bool CPlayer::IsTheirPlayerBehindMe()

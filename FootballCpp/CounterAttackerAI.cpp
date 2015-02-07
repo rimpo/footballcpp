@@ -29,8 +29,8 @@ void CCounterAttackerAI::InitializeOurPlayers()
 		{ 49, 26 },			//eLeftDefender,
 		{ 49, 24},			//eCentreDefender,
 		{ 25, 35 },			//eRightDefender,
-		{ 15, 24 },			//eLeftStriker,	note:dead player
-		{ 15, 26 }			//eRightStriker     note:dead player 
+		{ 15, 21.5 },			//eLeftStriker,	note:dead player
+		{ 15, 28.5 }			//eRightStriker     note:dead player 
 	};
 
 	//facing towards opponent side

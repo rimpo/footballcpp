@@ -13,9 +13,9 @@
 
 #define MAX_DISTANCE_MARK_TO_GAURD_PASS 15.0f
 #define PERCANTAGE_DIST_FOR_GUARD_PASS 0.25f
-#define STRIKER_NO_ONE_CLOSE 2.0f
+#define STRIKER_NO_ONE_CLOSE 1.2f
 #define DEFENDER_NO_ONE_CLOSE 2.0f
-#define DEFENDER_SHORT_KICK_NO_ONE_CLOSE 10.0f
+#define DEFENDER_SHORT_KICK_NO_ONE_CLOSE 11.0f
 
 #define DEFENDER_SHOOTING_RANGE 20.0
 
@@ -159,6 +159,7 @@ public:
 	Position GetRandomFreePosition_Striker();
 	
 	bool IsKickDirectionSafe(float direction, float speed, float limitDistance);
+	void GetSafeKickDirection_GoalKeeper(float& direction, float& speed, float limitDistance);
 private:
 	int playerType_;
 	int playerNumber_;
