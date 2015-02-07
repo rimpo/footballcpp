@@ -250,7 +250,7 @@ void CPlayer::KickShort_Striker()
 				game_.noOfGoalAttemptsByUs++;
 			
 				//try to hit dead centre in case of direction still not aligned.
-				if (fabsf(GetDirection() - angle) > 25.0)
+				if (fabsf(GetDirection() - angle) > 45.0)
 				{
 					shootAt = pitch_.GetTheirGoalCentre();
 					//LOGGER->Log("Inaccurate shoot game_time:%f", GetGame().currentTimeSeconds_);

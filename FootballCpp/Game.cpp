@@ -408,7 +408,15 @@ void CGame::SortTheirTeamX()
 	//copy their non-goalkeeper players into a vector if empty
 	if (theirTeamSortedX_.empty())
 	{
-		theirTeamSortedX_ = theirTeamPtr_->GetNonGoalKeepers();
+		for(auto& pPlayer : theirTeamPtr_->GetNonGoalKeepers())
+		{
+			if (pPlayer->GetCapability().runningAbility_ >= 10.0)
+			{
+				theirTeamSortedX_.push_back(pPlayer);
+			}
+		}
+		
+		//theirTeamSortedX_ = theirTeamPtr_->GetNonGoalKeepers();
 	}
 
 	//sort the vector.
