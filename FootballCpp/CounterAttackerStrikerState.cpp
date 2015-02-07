@@ -30,6 +30,11 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		if(pClosestPlayer->GetNumber() != pPlayer->GetNumber() && //not me
 		   pClosestPlayer->IsOurTeamMember())					  // is our team
 		{
+			if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+			{
+			pPlayer->SetHomePosition(pPlayer->GetRandomFreePosition_Striker());
+			}
+			
 			pPlayer->MoveTo(pPlayer->GetHomePosition());
 		}
 		else if (ball_.IsFreeBall() && !pitch_.IsOurHalf(ball_.GetStationaryPosition()))
@@ -38,6 +43,10 @@ void CCounterAttackerStrikerIdleState::Execute(CPlayer* pPlayer)
 		}
 		else
 		{
+			if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+			{
+			pPlayer->SetHomePosition(pPlayer->GetRandomFreePosition_Striker());
+			}
 			pPlayer->MoveTo(pPlayer->GetHomePosition());
 		}
 		

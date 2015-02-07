@@ -139,6 +139,7 @@ public:
 	
 	bool IsTheirPlayerNear(float distance);
 	bool IsTheirPlayerNearFromFront(float max_distance);
+	bool IsTheirPlayerBehindMe();
 	
 	inline void SetShootCache(const Position& shootAt) { shootAt_ = shootAt; isShootCached_ = true; }
 	inline bool GetShootCache(Position& shootAt) { if (isShootCached_) { shootAt = shootAt_;} return isShootCached_; }

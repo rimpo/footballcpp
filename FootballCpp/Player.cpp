@@ -164,52 +164,35 @@ void CPlayer::Kick(const Position& destination, float speed)
 void CPlayer::KickShort(float power)
 {
 	float direction = GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
-			
-	int randVal = RandomRangeInteger(0,2);
-			
-	direction = direction + (RandomRangeInteger(0,2) - 1)*20.0;
-			//float arr[] = {30.0,60.0,90.0,120.0,150.0};
-	//float arr[] = {50.0,70.0,90.0,110.0,130.0};
-			//float randomY = RandomRange(10.0f, 20.0f);
-	/*bool gotResult = false;
-	for (float i = 60.0; i > 20.0 && !gotResult; i += 10.0)	
-	{	
-		if (IsKickDirectionSafe(direction, i, 1.0f))
-		{
-				//direction += j;
-				power = i;
-				gotResult = true;
-		}
 	
-		for (int j = 20.0; j < 90.0 && !gotResult; j += 20.0)
-		{
-			if (IsKickDirectionSafe(direction + j,i,1.0f))
-			{
-				direction += j;
-				power = i;
-				gotResult = true;
-			}
-			else if (IsKickDirectionSafe(direction + j,i,1.0f))
-			{
-				direction += j;
-				power = i;
-				gotResult = true;
-			}
-		}	
+	float distance = GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre()) - 15.5;
 	
-	}*/	
+	if (IsTheirPlayerBehindMe())
+	{
+		Vector shootVec = GetVectorFromDirection(direction);
+		shootVec = shootVec.Scale(distance);
+		
+		Position shootPos = GetPosition();
+		shootPos.AddVector(shootVec);
 			
-	
+		Kick(shootPos, ball_.GetSpeedForDistance(distance));
+	}
+	else
+	{
+		int randVal = RandomRangeInteger(0,2);
+			
+		direction = direction + (RandomRangeInteger(0,2) - 1)*20.0;
+
 			//Vector shootVec = GetVectorFromDirection(arr[RandomRangeInteger(2, 4)]);
-	Vector shootVec = GetVectorFromDirection(direction);
-	shootVec = shootVec.Scale(5.0);
-	
-	
+		Vector shootVec = GetVectorFromDirection(direction);
+		shootVec = shootVec.Scale(5.0);
+		
 			
-	Position shootPos = GetPosition();
-	shootPos.AddVector(shootVec);
+		Position shootPos = GetPosition();
+		shootPos.AddVector(shootVec);
 			
-	Kick(shootPos, power);
+		Kick(shootPos, power);
+	}
 }
 void CPlayer::KickShort_Striker()
 {
@@ -844,14 +827,22 @@ float CPlayer::CalculateTimeToReachPosition(const Position& dest)
 
 Position CPlayer::GetRandomFreePosition_Striker()
 {
-	float randY = RandomRangeFloat(17.0,33.0);
+	float randY = RandomRangeFloat(15.0,35.0);
 	
-	return { 83.0,randY};
+	float x = ball_.GetPosition().x_ + 50.0;
+	
+	if (x > 82.0)
+		x = 82.0;
+		
+	if (x < 70.0)	
+		x = 70.0;
+		
+	return { x,randY};
 }
 
 Position CPlayer::GetRandomShootAtGoal() 
 { 	int randVal = RandomRangeInteger(0,1);
-	float randShootYDiff = RandomRangeFloat(3.7, 3.9);
+	float randShootYDiff = RandomRangeFloat(3.7, 3.99);
 				
 	Position shootAt = pitch_.GetTheirGoalCentre();
 	shootAt.y_ += (randVal == 0?-1:1)*randShootYDiff;
@@ -893,11 +884,24 @@ bool CPlayer::IsKickDirectionSafe(float direction, float speed, float limitDista
 
 	}
 	
-	
-	
 	return true;
 }
 
+bool CPlayer::IsTheirPlayerBehindMe()
+{
+	auto& theirNonGoalKeepers = GetGame().GetTheirTeamPtr()->GetNonGoalKeepers();
+	for (auto& pPlayer: theirNonGoalKeepers)
+	{
+		if(pPlayer->GetCapability().runningAbility_ < 20.0)
+			continue;
+	
+		if (pPlayer->GetPosition().x_ > pos_.x_)
+		{
+			return false;
+		}
+	}
+	return true;
+}
 void CPlayer::ChangeState(int type)
 {
 	pState_ = CPlayerState::GlobalPlayerState(type);
