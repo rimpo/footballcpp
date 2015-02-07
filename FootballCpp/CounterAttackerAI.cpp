@@ -14,11 +14,11 @@ void CCounterAttackerAI::InitializeOurPlayers()
 
 	playersHomePos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
-		{ 15, 10 },			//eLeftDefender,
+		{ 25, 10 },			//eLeftDefender,
 		{ 80, 30 },			//eCentreDefender,
-		{ 15, 40 },			//eRightDefender,
-		{ 25, 25 },			//eLeftStriker,
-		{ 25, 45 }			//eRightStriker
+		{ 25, 40 },			//eRightDefender,
+		{ 15, 24 },			//eLeftStriker,
+		{ 15, 26 }			//eRightStriker
 	};
 
 	//facing towards opponent side
@@ -29,8 +29,8 @@ void CCounterAttackerAI::InitializeOurPlayers()
 		{ 49, 26 },			//eLeftDefender,
 		{ 49, 24},			//eCentreDefender,
 		{ 25, 35 },			//eRightDefender,
-		{ 15, 23 },			//eLeftStriker,	note:dead player
-		{ 15, 27 }			//eRightStriker     note:dead player 
+		{ 15, 24 },			//eLeftStriker,	note:dead player
+		{ 15, 26 }			//eRightStriker     note:dead player 
 	};
 
 	//facing towards opponent side
@@ -38,9 +38,9 @@ void CCounterAttackerAI::InitializeOurPlayers()
 
 	playersAttackPos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
-		{ 17, 30 },			//eLeftDefender, (same as home)
-		{ 17, 40 },			//eRightDefender, (same as home)
-		{ 80, 5 },			//eLeftCounterAttacker,
+		{ 75, 15 },			//eLeftDefender, (same as home)
+		{ 45, 40 },			//eRightDefender, (same as home)
+		{ 75, 35 },			//eLeftCounterAttacker,
 		{ 80, 20 },			//eCentralCounterAttacker,	note:insider kick off circle
 		{ 80, 45 }			//eRightCounterAttacker     note:insider kick off circle  
 	};
@@ -98,6 +98,13 @@ void CCounterAttackerAI::OnTeamInfoEvent()
 			pPlayer->ChangeState(CPlayerState::eCounterAttackerZombie);
 		}
 		
+		
+		/*if (pPlayer->GetType() == CPlayer::eLeftDefender ||
+			pPlayer->GetType() == CPlayer::eRightDefender ||
+			pPlayer->GetType() == CPlayer::eCentreDefender)
+		{
+			pPlayer->ChangeState(CPlayerState::eDead);
+		}*/
 		
 	}
 
@@ -167,10 +174,10 @@ void CCounterAttackerAI::OnStartOfTurnEvent()
 
 	for (auto& pPlayer : ourPlayers)
 	{
-		if (pPlayer->GetType() == CPlayer::eLeftDefender ||
+		/*if (pPlayer->GetType() == CPlayer::eLeftDefender ||
 			pPlayer->GetType() == CPlayer::eCentreDefender ||
 			pPlayer->GetType() == CPlayer::eRightDefender ||
-			pPlayer->GetType() == CPlayer::eGoalKeeper)
+			pPlayer->GetType() == CPlayer::eGoalKeeper)*/
 		{
 			pPlayer->GetState()->Execute(pPlayer.get());
 		}

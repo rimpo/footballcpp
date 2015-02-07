@@ -176,11 +176,12 @@ void CCounterAttackerDefenderMarkState::Execute(CPlayer *pPlayer)
 		pPlayer->ChangeState(CPlayerState::eCounterAttackerDefenderGoHome);
 		
 	}
-	/*else if (ball_.IsOurTeamControlling())
+	else if (ball_.IsOurTeamControlling())
 	{
 		//change state
+		pPlayer->MoveTo(pPlayer->GetAttackPosition());
 	}
-	*/else if (ball_.IsFreeBall() && pClosestBallPlayer->GetNumber() == pPlayer->GetNumber())
+	else if (ball_.IsFreeBall() && pClosestBallPlayer->GetNumber() == pPlayer->GetNumber())
 	{
 		//change state
 		pPlayer->MoveTo(ball_.GetStationaryPosition());

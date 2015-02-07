@@ -44,6 +44,7 @@ public:
 	
 	inline CPitch& GetPitch() { return pitch_; }
 	inline CBall& GetBall() { return ball_; }
+	inline CBall& GetTestBall() { return testBall_; }
 
 	int Process(const string& sJsonMsg);
 
@@ -65,6 +66,7 @@ private:
 	CPitch pitch_;
 
 	CBall  ball_;
+	CBall  testBall_;
 
 	float gameLengthSeconds_;
 

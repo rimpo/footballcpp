@@ -118,26 +118,7 @@ void CGoalKeeperKickBallState::Execute(CPlayer *pPlayer)
 		//move to safe position.
 		if (pPlayer->GetPosition().ApproxEqual(safePos,POSITION_BIG_TOLERANCE))
 		{
-			int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 5 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
-			auto& ourTeamPtr = game_.GetOurTeamPtr();
-			auto& pPassPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
-			
-			int randVal = RandomRangeInteger(0,1);
-			//int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 2 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
-			float direction = pPlayer->GetPosition().AngleWith(pPassPlayer->GetHomePosition());
-			
-			pPlayer->IncrementGoalKeeperWaitTicks();
-			
-			if (pPlayer->GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS ||
-			   (pPlayer->GetGoalKeeperWaitTicks() > 5 && (pPlayer->GetGoalKeeperWaitTicks() + 1) % 5 == 0 && randVal == 1))
-			{
-				pPlayer->Kick(pPassPlayer->GetHomePosition(),80.0);
-				pPlayer->ResetGoalKeeperWaitTicks();
-			}
-			else 
-			{
-				pPlayer->TurnTo(direction);
-			}
+			pPlayer->Kick_GoalKeeper();
 		}
 	}
 	else

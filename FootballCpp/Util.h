@@ -27,3 +27,4 @@ bool GetPerpendicularIntersection(const Position& p1, const Position& p2,	//line
 Vector GetVectorFromDirection(float direction);
 
 bool ApproxEqual(float a, float b, float tolerance);
+

@@ -14,13 +14,15 @@ public:
 	~CBall();
 	
 	inline Position& GetPosition() { return pos_; }
-	inline const Vector& GetVector() { return vector_; }
+	inline Vector& GetVector() { return vector_; }
 
 	inline const Position& GetStationaryPosition() { return stationaryPos_; }
 	inline const Position& GetVirtualStationaryPosition() { return virtualStationaryPos_; }
 
 	inline int GetOwner() { return controllingPlayerNumber_; }
 	inline float GetSpeed() { return speed_; }
+	inline void SetSpeed(float speed) { speed_ = speed; }
+	
 
 
 	int ProcessStartOfTurn(const Value& ballInfo);

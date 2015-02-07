@@ -196,7 +196,7 @@ void CCounterAttackerZombieState::Execute(CPlayer *pPlayer)
 	
 	if (pPlayer->HasBall())
 	{
-		pPlayer->Kick({ 50.0f, 25.0f},100);
+		pPlayer->Kick({ 50.0f, pPlayer->GetPosition().y_},100);
 	}
 	else if (distanceFromBall < 0.5)
 	{

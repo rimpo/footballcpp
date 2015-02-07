@@ -129,6 +129,7 @@ public:
 	void KickShort_Striker();
 	
 	void Kick_Defender();
+	void Kick_GoalKeeper();
 	
 	bool IsSupportingDefenderAlreadyMarking(int playerNumber);
 	void SelectMarkedPlayer();
@@ -155,6 +156,8 @@ public:
 	inline  void ResetKickingTowardPlayerNumber() { kickingTowardPlayerNumber_ = -1; }
 	
 	Position GetRandomFreePosition_Striker();
+	
+	bool IsKickDirectionSafe(float direction, float speed, float limitDistance);
 private:
 	int playerType_;
 	int playerNumber_;

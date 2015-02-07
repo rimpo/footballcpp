@@ -167,14 +167,44 @@ void CPlayer::KickShort(float power)
 			
 	int randVal = RandomRangeInteger(0,2);
 			
-	direction = direction + (randVal - 1)*20.0;
+	direction = direction + (RandomRangeInteger(0,2) - 1)*20.0;
 			//float arr[] = {30.0,60.0,90.0,120.0,150.0};
 	//float arr[] = {50.0,70.0,90.0,110.0,130.0};
 			//float randomY = RandomRange(10.0f, 20.0f);
-				
+	/*bool gotResult = false;
+	for (float i = 60.0; i > 20.0 && !gotResult; i += 10.0)	
+	{	
+		if (IsKickDirectionSafe(direction, i, 1.0f))
+		{
+				//direction += j;
+				power = i;
+				gotResult = true;
+		}
+	
+		for (int j = 20.0; j < 90.0 && !gotResult; j += 20.0)
+		{
+			if (IsKickDirectionSafe(direction + j,i,1.0f))
+			{
+				direction += j;
+				power = i;
+				gotResult = true;
+			}
+			else if (IsKickDirectionSafe(direction + j,i,1.0f))
+			{
+				direction += j;
+				power = i;
+				gotResult = true;
+			}
+		}	
+	
+	}*/	
+			
+	
 			//Vector shootVec = GetVectorFromDirection(arr[RandomRangeInteger(2, 4)]);
 	Vector shootVec = GetVectorFromDirection(direction);
 	shootVec = shootVec.Scale(5.0);
+	
+	
 			
 	Position shootPos = GetPosition();
 	shootPos.AddVector(shootVec);
@@ -214,7 +244,7 @@ void CPlayer::KickShort_Striker()
 						
 					
 		float angle = GetPosition().AngleWith(shootAt);
-		bool isNoOneClose = false;//IsTheirPlayerNear(STRIKER_NO_ONE_CLOSE);
+		bool isNoOneClose = IsTheirPlayerNear(STRIKER_NO_ONE_CLOSE);
 		
 		if (!isNoOneClose && 
 			!ApproxEqual(GetDirection(),angle,DIRECTION_TOLERANCE))
@@ -256,7 +286,7 @@ void CPlayer::Kick_Defender()
 {
 		auto& pCentrePlayer = game_.GetOurTeamPtr()->GetPlayerFromPlayerType(CPlayer::eCentreDefender);
 		
-		Position goHomePos = GetRandomFreePosition_Striker();
+		Position goHomePos = pCentrePlayer->GetHomePosition();//GetRandomFreePosition_Striker();
 		
 		float angle = this->GetPosition().AngleWith(goHomePos);
 		float distanceFromHomePos = this->GetPosition().DistanceFrom(goHomePos);
@@ -314,6 +344,49 @@ void CPlayer::Kick_Defender()
 			//pPlayer->MoveTo({ 8.0f, 25.0 });
 			this->ChangeState(CPlayerState::eCounterAttackerDefenderMark);
 			}
+}
+
+void CPlayer::Kick_GoalKeeper()
+{
+	int supportingPlayerType = (GetGoalKeeperWaitTicks() % 5 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+	auto& ourTeamPtr = game_.GetOurTeamPtr();
+	auto& pPassPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
+			
+	int randVal = RandomRangeInteger(0,1);
+			//int supportingPlayerType = (pPlayer->GetGoalKeeperWaitTicks() % 2 == 0? CPlayer::eRightDefender : CPlayer::eLeftDefender);
+	float direction = GetPosition().AngleWith(pPassPlayer->GetHomePosition());
+			
+	IncrementGoalKeeperWaitTicks();
+			
+	if (GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS ||
+	(GetGoalKeeperWaitTicks() > 5 && (GetGoalKeeperWaitTicks() + 1) % 5 == 0 && randVal == 1))
+	{
+		Kick(pPassPlayer->GetHomePosition(),80.0);
+		ResetGoalKeeperWaitTicks();
+	}
+	else 
+	{
+		TurnTo(direction);
+	}
+	/*auto& ourTeamPtr = game_.GetOurTeamPtr();
+	int randVal = RandomRangeInteger(0,1);
+	int supportingPlayerType = (randVal == 0? CPlayer::eRightStriker : CPlayer::eLeftStriker);
+	
+	auto& pPassPlayer = ourTeamPtr->GetPlayerFromPlayerType(supportingPlayerType);
+	
+	float direction = GetPosition().AngleWith(pPassPlayer->GetHomePosition());
+	
+	float distance = GetPosition().DistanceFrom(pPassPlayer->GetPosition());
+	
+	if(ApproxEqual(direction,GetDirection(), 0.2f))
+	{
+		Kick(pPassPlayer->GetPosition(),ball_.GetSpeedForDistance(distance));
+	}
+	else 
+	{
+		TurnTo(direction);
+	}*/
+	
 }
 
 float CPlayer::PredictDirection()
@@ -785,7 +858,48 @@ Position CPlayer::GetRandomShootAtGoal()
 	return shootAt;
 }
 
+
+bool CPlayer::IsKickDirectionSafe(float direction, float speed, float limitDistance)
+{
+	auto& testBall = GetGame().GetTestBall();
+	auto& theirNonGoalKeepers = GetGame().GetTheirTeamPtr()->GetNonGoalKeepers();
+	
+	//setting test ball params.
+	testBall.GetPosition() = ball_.GetPosition();
+	testBall.SetSpeed(speed * MAX_BALL_SPEED/ 100.0f); 
+	testBall.GetVector() = GetVectorFromDirection(direction);
+	
+	float timetaken;
+	testBall.CalculateStationaryPos(timetaken);
+	
+	Position perIntersection;
+	
+	float timeToReachBall = this->CalculateTimeToReachPosition(testBall.GetStationaryPosition());
+
+	for (auto& pPlayer: theirNonGoalKeepers)
+	{
+		if(pPlayer->GetCapability().runningAbility_ < 20.0)
+			continue;
+	
+		if (pitch_.IsInsideTheirGoalArea(testBall.GetStationaryPosition()))
+		{
+			return false;
+		}
+		
+		if(pPlayer->CalculateTimeToReachPosition(testBall.GetStationaryPosition()) < timeToReachBall)
+		{
+			return false;
+		}
+
+	}
+	
+	
+	
+	return true;
+}
+
 void CPlayer::ChangeState(int type)
 {
 	pState_ = CPlayerState::GlobalPlayerState(type);
 }
+
