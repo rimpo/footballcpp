@@ -7,10 +7,10 @@ void CPasserAI::InitializeOurPlayers()
 	playersHomePos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
 		{ 25, 10 },			//eLeftDefender,
-		{ 60, 25 },			//eCentreDefender,
+		{ 55, 25 },			//eCentreDefender,
 		{ 25, 40 },			//eRightDefender,
-		{ 86.5, 15 },			//eLeftStriker,
-		{ 86.5, 35 }			//eRightStriker
+		{ 83.0, 25.0 },			//eLeftStriker,
+		{ 87.0, 30.0 }			//eRightStriker
 	};
 
 	//facing towards opponent side
@@ -22,7 +22,7 @@ void CPasserAI::InitializeOurPlayers()
 		{ 40, 25},			//eCentreDefender,
 		{ 25, 40 },			//eRightDefender,
 		{ 49, 24 },			//eLeftStriker,	note:dead player
-		{ 49, 26 }			//eRightStriker     note:dead player 
+		{ 25, 25 }			//eRightStriker     note:dead player 
 	};
 
 	//facing towards opponent side
@@ -91,7 +91,7 @@ void CPasserAI::InitializeOurPlayers()
 		{
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eCentreDefender));
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightDefender));
-			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eGoalKeeper));
+			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eGoalKeeper));
 		}
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
@@ -102,11 +102,11 @@ void CPasserAI::InitializeOurPlayers()
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eLeftStriker));
-			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightStriker));
+			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightStriker));
 		}
 		else if (pPlayer->GetType() == CPlayer::eLeftStriker)
 		{
-			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightStriker));
+			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightStriker));
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eCentreDefender));
 		}
 		else if (pPlayer->GetType() == CPlayer::eRightStriker)
@@ -239,7 +239,7 @@ void CPasserAI::OnCapabilityRequest()
 		if (pPlayer->GetType() == CPlayer::eGoalKeeper)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 90.0;
-			pPlayer->GetCapability().kickingAbility_ = 70.0;
+			pPlayer->GetCapability().kickingAbility_ = 90.0;
 			pPlayer->GetCapability().runningAbility_ = 100.0;
 			pPlayer->GetCapability().ballControlAbility_ = 100.0;
 			pPlayer->GetCapability().tacklingAbility_ = 0.0;
@@ -247,7 +247,7 @@ void CPasserAI::OnCapabilityRequest()
 		else if (pPlayer->GetType() == CPlayer::eLeftDefender)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 65.0;
-			pPlayer->GetCapability().kickingAbility_ = 70.0;
+			pPlayer->GetCapability().kickingAbility_ = 80.0;
 			pPlayer->GetCapability().runningAbility_ = 80.0;
 			pPlayer->GetCapability().ballControlAbility_ = 65.0;
 			pPlayer->GetCapability().tacklingAbility_ = 100.0;
@@ -255,7 +255,7 @@ void CPasserAI::OnCapabilityRequest()
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 70.0;
-			pPlayer->GetCapability().kickingAbility_ = 70.0;
+			pPlayer->GetCapability().kickingAbility_ = 80.0;
 			pPlayer->GetCapability().runningAbility_ = 80.0;
 			pPlayer->GetCapability().ballControlAbility_ = 70.0;
 			pPlayer->GetCapability().tacklingAbility_ = 100.0;
@@ -263,17 +263,25 @@ void CPasserAI::OnCapabilityRequest()
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 70.0;
-			pPlayer->GetCapability().kickingAbility_ = 80.0;
-			pPlayer->GetCapability().runningAbility_ = 50.0;
-			pPlayer->GetCapability().ballControlAbility_ = 55.0;
-			pPlayer->GetCapability().tacklingAbility_ = 55.0;
+			pPlayer->GetCapability().kickingAbility_ = 90.0;
+			pPlayer->GetCapability().runningAbility_ = 70.0;
+			pPlayer->GetCapability().ballControlAbility_ = 60.0;
+			pPlayer->GetCapability().tacklingAbility_ = 60.0;
+		}
+		else if (pPlayer->GetType() == CPlayer::eLeftStriker)
+		{
+			//pPlayer->GetCapability().kickingAbility_ = 70.0;
+			pPlayer->GetCapability().kickingAbility_ = 60.0;
+			pPlayer->GetCapability().runningAbility_ = 70.0;
+			pPlayer->GetCapability().ballControlAbility_ = 100.0;
+			pPlayer->GetCapability().tacklingAbility_ = 100.0;
 		}
 		else 
 		{
-			pPlayer->GetCapability().kickingAbility_ = 55.0;
-			pPlayer->GetCapability().runningAbility_ = 45.0;
-			pPlayer->GetCapability().ballControlAbility_ = 55.0;
-			pPlayer->GetCapability().tacklingAbility_ = 55.0;
+			pPlayer->GetCapability().kickingAbility_ = 0.0;
+			pPlayer->GetCapability().runningAbility_ = 0.0;
+			pPlayer->GetCapability().ballControlAbility_ = 0.0;
+			pPlayer->GetCapability().tacklingAbility_ = 0.0;
 		}
 		
 		//pPlayer->GetCapability().kickingAbility_ = 400.0/6;

@@ -25,17 +25,22 @@ void CPasserDefenderIdleState::Execute(CPlayer* pPlayer)
 	{
 		pPlayer->MoveForBall();
 	}
-	else if (ball_.IsOurTeamControlling())
-	{
-		pPlayer->MoveTo(pPlayer->GetHomePosition());
-	}
 	else if (pOurClosestPlayer && 
 			 pOurClosestPlayer->GetNumber() == pPlayer->GetNumber() &&
 			 action.type_ != CAction::eKick)
 	{
 		pPlayer->MoveTo(ball_.GetStationaryPosition());
 	}
-	else 
+	else if(ball_.IsOurTeamControlling())
+	{
+		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+		{
+			pPlayer->SetHomePosition( { RandomRangeFloat(15.0, 40.0), pPlayer->GetHomePosition().y_});
+		}
+		
+		pPlayer->MoveTo(pPlayer->GetHomePosition());
+	}
+	else
 	{
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
@@ -66,17 +71,21 @@ void CPasserMidfielderIdleState::Execute(CPlayer* pPlayer)
 	{
 		pPlayer->MoveForBall();
 	}
-	else if (ball_.IsOurTeamControlling())
-	{
-		pPlayer->MoveTo(pPlayer->GetHomePosition());
-	}
 	else if (pClosestPlayer && 
 			 pClosestPlayer->GetNumber() == pPlayer->GetNumber() &&
 			 action.type_ != CAction::eKick)
 	{
 		pPlayer->MoveTo(ball_.GetStationaryPosition());
 	}
-	else 
+	else if(ball_.IsOurTeamControlling()) 
+	{
+		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+		{
+			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_, RandomRangeFloat(5.0, 45.0)});
+		}
+		pPlayer->MoveTo(pPlayer->GetHomePosition());
+	}
+	else
 	{
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
@@ -106,7 +115,9 @@ void CPasserStrikerIdleState::Execute(CPlayer* pPlayer)
 			
 		}
 		else
-			pPlayer->Pass();	
+		{
+			pPlayer->KickShort(40.0);
+		}
 	}
 	else if (distanceFromBall < 0.5)
 	{
@@ -117,17 +128,22 @@ void CPasserStrikerIdleState::Execute(CPlayer* pPlayer)
 	{
 		pPlayer->MoveForBall();
 	}
-	else if (ball_.IsOurTeamControlling())
-	{
-		pPlayer->MoveTo(pPlayer->GetHomePosition());
-	}
 	else if (pClosestPlayer && 
 			 pClosestPlayer->GetNumber() == pPlayer->GetNumber() &&
 			 action.type_ != CAction::eKick)
 	{
 		pPlayer->MoveTo(ball_.GetStationaryPosition());
 	}
-	else 
+	else if(ball_.IsOurTeamControlling()) 
+	{
+		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+		{
+			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_, RandomRangeFloat(15.0, 35.0)});
+		}
+		
+		pPlayer->MoveTo(pPlayer->GetHomePosition());
+	}
+	else
 	{
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
