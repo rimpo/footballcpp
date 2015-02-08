@@ -7,6 +7,7 @@
 #include"Ball.h"
 #include"Action.h"
 #include"CounterAttackerAI.h"
+#include"PasserAI.h"
 
 #define MAX_NO_OF_PLAYERS  12
 #define GAME_AI_CALCULATION_INTERVAL  0.01
@@ -38,6 +39,7 @@ public:
 	inline CPlayerState::PtrVec& GetStateVec() { return allStatesVec_;}
 
 	inline const CPlayer::Ptr& GetClosestPlayer(){ return closestPlayer_; }
+	inline const CPlayer::Ptr& GetOurClosestPlayer(){ return ourClosestPlayer_; }
 	inline const CPlayer::PtrVec& GetTheirTeamSortedX() { return theirTeamSortedX_; }
 	inline const CPlayer::PtrVec& GetAllPlayersToBallSortedDist() { return allPlayersToBallSortedDist_; }
 
@@ -56,7 +58,6 @@ public:
 
 	void SortTheirTeamX();
 	
-	
 private:
 	CTeam::PtrVec teams_;
 	CTeam::Ptr	  ourTeamPtr_, theirTeamPtr_;
@@ -74,6 +75,8 @@ private:
 	CStrategyAI::Ptr strategyPtr_;
 
 	CPlayer::Ptr closestPlayer_;	//player who reaches the ball first (including goal keepers)
+	
+	CPlayer::Ptr ourClosestPlayer_;	//our closest player including goalkeeper;
 
 	CPlayer::PtrVec theirTeamSortedX_; //x co-oridnate ascending sort
 

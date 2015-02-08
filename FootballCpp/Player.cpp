@@ -930,3 +930,163 @@ void CPlayer::ChangeState(int type)
 	pState_ = CPlayerState::GlobalPlayerState(type);
 }
 
+//************Added after Passer AI****************************
+bool CPlayer::IsPassSafeTo(CPlayer::Ptr pSupportPlayer)
+{
+	/*auto& testBall = GetGame().GetTestBall();
+	auto& theirNonGoalKeepers = GetGame().GetTheirTeamPtr()->GetNonGoalKeepers();
+	
+	//setting test ball params.
+	testBall.GetPosition() = ball_.GetPosition();
+	testBall.SetSpeed(speed * MAX_BALL_SPEED/ 100.0f); 
+	testBall.GetVector() = GetVectorFromDirection(direction);
+	
+	float timetaken;
+	testBall.CalculateStationaryPos(timetaken);
+	
+	Position perIntersection;
+	
+	//float timeToReachBall = this->CalculateTimeToReachPosition(testBall.GetStationaryPosition());
+	*/
+	auto& theirNonGoalKeepers = GetGame().GetTheirTeamPtr()->GetNonGoalKeepers();
+	
+	Position perIntersection;
+	
+	for (auto& pPlayer: theirNonGoalKeepers)
+	{
+
+		if(pPlayer->GetCapability().runningAbility_ < 20.0)
+			continue;
+			
+		if (GetPerpendicularIntersection(GetPosition(), pSupportPlayer->GetPosition(), pPlayer->GetPosition(), perIntersection))
+		{	
+			float dist = perIntersection.DistanceFrom(pPlayer->GetPosition());
+				
+			if (dist <= 1.0f)
+			{
+				return false;
+			}
+			
+		}
+
+	}
+		
+	
+	return true;
+}
+
+void CPlayer::Pass()
+{
+	bool bFoundSafeSupportPlayer = false;
+	for (auto& pSupportPlayer: supportPlayers_)
+	{
+			if (IsPassSafeTo(pSupportPlayer))
+			{
+				float direction = GetPosition().AngleWith(pSupportPlayer->GetPosition());
+				float distance = GetPosition().DistanceFrom(pSupportPlayer->GetPosition());
+				
+				if (!ApproxEqual(direction,GetDirection(), 0.1f) && 
+					!IsTheirPlayerNear(DEFENDER_NO_ONE_CLOSE))
+				{
+					TurnTo(direction);
+				}
+				else
+				{
+					Kick(pSupportPlayer->GetPosition(),ball_.GetSpeedForDistance(distance) + 5.0);
+				}
+				bFoundSafeSupportPlayer = true;
+				break;
+			}
+	}
+	
+	//not found - centre kick.
+	if (!bFoundSafeSupportPlayer)
+	{
+		Kick({100.0,25.0},100.0);
+	}
+}
+
+
+void CPlayer::KickShortNoStateChange_Striker()
+{
+	float distanceFromGoal = ball_.GetPosition().DistanceFrom(pitch_.GetTheirGoalCentre());
+	if (distanceFromGoal > 20.0)
+	{
+		if (distanceFromGoal < 22.0)
+		{
+			KickShort(35.0f);
+		}
+		else
+		{
+			KickShort(40.0f);
+		}
+		
+		//ChangeState(CPlayerState::eCounterAttackerStrikerShortKick);
+	}
+	else
+	{
+		/*if (distanceFromGoal > 18.5)
+		{
+			KickShort(35.0f);
+			return;
+		}*/
+		Position shootAt;
+		if (!GetShootCache(shootAt))
+		{
+			//calucate random shoot direction;
+			shootAt = GetRandomShootAtGoal();
+			SetShootCache(shootAt);
+		}
+						
+					
+		float angle = GetPosition().AngleWith(shootAt);
+		bool isNoOneClose = IsTheirPlayerNear(STRIKER_NO_ONE_CLOSE);
+		
+		if (!isNoOneClose && 
+			!ApproxEqual(GetDirection(),angle,DIRECTION_TOLERANCE))
+		{
+			
+			TurnTo(angle);
+		}
+		else
+		{
+			//no one close and player is little far.
+			if (!isNoOneClose && (distanceFromGoal - 15.1f) > 2.5f)
+			{
+				//MoveTo(shootAt);
+				Kick(shootAt,ball_.GetSpeedForDistance(distanceFromGoal - 15.1f) + 5.0);
+				//ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			}
+			else
+			{
+				//someone is close or we are close enough - shoot!!
+				game_.noOfGoalAttemptsByUs++;
+			
+				//try to hit dead centre in case of direction still not aligned.
+				if (fabsf(GetDirection() - angle) > 90.0)
+				{
+					shootAt = pitch_.GetTheirGoalCentre();
+					//LOGGER->Log("Inaccurate shoot game_time:%f", GetGame().currentTimeSeconds_);
+				}
+					
+				Kick(shootAt, 100.0);
+				//ChangeState(CPlayerState::eCounterAttackerStrikerIdle);
+			
+				ResetShootCache();
+			}
+		}
+	}
+}
+
+
+bool CPlayer::IsInterceptionValid(const Position& perIntersection)
+{
+	if (perIntersection.x_  == 0.0 &&
+		perIntersection.y_  == 0.0)
+			return false;
+			
+	if (GetPosition().DistanceFrom(perIntersection) < 5.0f)
+		return true;
+	
+	return false;
+}

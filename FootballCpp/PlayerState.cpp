@@ -5,7 +5,7 @@
 #include "GoalkeeperState.h"
 #include "CounterAttackerDefenderState.h"
 #include "CounterAttackerStrikerState.h"
-
+#include "PasserPlayerState.h"
 
 
 
@@ -69,6 +69,11 @@ void CPlayerState::InitGlobalPlayerStateVector()
 	
 	//-- counter attacker - zombie
 	globalPlayerStates[eCounterAttackerZombie]	 = new CCounterAttackerZombieState;
+
+	globalPlayerStates[ePasserDefenderIdle]	 	 = new CPasserDefenderIdleState;
+	globalPlayerStates[ePasserMidfielderIdle]	 = new CPasserMidfielderIdleState;
+	globalPlayerStates[ePasserStrikerIdle]	 	 = new CPasserStrikerIdleState;
+	
 	
 
 }

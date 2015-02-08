@@ -22,6 +22,7 @@
 #define MAX_GOALKEEPER_WAIT_TICKS 20
 
 
+
 struct CCapability{
 	float kickingAbility_;
 	float runningAbility_;
@@ -128,6 +129,8 @@ public:
 	void KickShort(float power);
 	void KickShort_Striker();
 	
+
+	
 	void Kick_Defender();
 	void Kick_GoalKeeper();
 	
@@ -160,6 +163,18 @@ public:
 	
 	bool IsKickDirectionSafe(float direction, float speed, float limitDistance);
 	void GetSafeKickDirection_GoalKeeper(float& direction, float& speed, float limitDistance);
+	
+	//************Added after passer AI****************************
+	inline const PtrVec& GetSupportPlayers() {return supportPlayers_;}
+	inline void AddSupportPlayer(CPlayer::Ptr pPlayer) { supportPlayers_.push_back(pPlayer);}
+	
+	bool IsPassSafeTo(CPlayer::Ptr pPlayer);
+	void Pass();
+	
+	void KickShortNoStateChange_Striker();
+	
+	bool IsInterceptionValid(const Position& perIntersection);
+	
 private:
 	int playerType_;
 	int playerNumber_;
@@ -196,6 +211,8 @@ private:
 	
 	int goalKeeperWaitTicks_;
 	int kickingTowardPlayerNumber_;
+	
+	PtrVec supportPlayers_;
 };
 
 

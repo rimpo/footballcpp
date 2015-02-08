@@ -51,6 +51,12 @@ public:
 		
 		//-- counter attacker - zombie player
 		eCounterAttackerZombie,	
+		
+		
+		ePasserDefenderIdle,
+		ePasserMidfielderIdle,
+		ePasserStrikerIdle,
+		
 		//Note: add new state above this
 		eLastStateIndex
 	};

@@ -7,7 +7,8 @@ CGame::CGame()
 {
 	CPlayerState::InitGlobalPlayerStateVector();
 	//creating strategy
-	strategyPtr_ = make_shared<CCounterAttackerAI>();
+	//strategyPtr_ = make_shared<CCounterAttackerAI>();
+	strategyPtr_ = make_shared<CPasserAI>();
 
 	strategyPtr_->CreateAllPlayers();
 
@@ -367,6 +368,8 @@ void CGame::PrintPlayResponse()
 void CGame::CalculateAllPlayerToBallSortedDistance()
 {
 	//ball is inside goal area.
+	ourClosestPlayer_ = nullptr;
+	
 	if (pitch_.IsInsideTheirGoalArea(ball_.GetPosition()))
 	{
 		closestPlayer_ = theirTeamPtr_->GetGoalKeeper();
@@ -375,12 +378,14 @@ void CGame::CalculateAllPlayerToBallSortedDistance()
 	else if (pitch_.IsInsideOurGoalArea(ball_.GetPosition()))
 	{
 		closestPlayer_ = ourTeamPtr_->GetGoalKeeper();
+		ourClosestPlayer_ = ourTeamPtr_->GetGoalKeeper();
 		return;
 	}
 	
 	auto& ourNonGoalKeeper = ourTeamPtr_->GetNonGoalKeepers();
 
 	double minTimeTaken = 9999999.0;	//dummy max number
+	double ourMinTimeTaken = 9999999.0;	//dummy max number
 	double t = 0.0;
 
 	//all non goal keeper (from both teams)
@@ -395,6 +400,12 @@ void CGame::CalculateAllPlayerToBallSortedDistance()
 			{
 				minTimeTaken = t;
 				closestPlayer_ = pPlayer;
+			}
+			
+			if (ourMinTimeTaken > t && ourTeamPtr_->GetTeamNumber() == pPlayer->GetTeamNumber())
+			{
+				ourMinTimeTaken = t;
+				ourClosestPlayer_ = pPlayer;
 			}
 		}
 	}
@@ -426,3 +437,4 @@ void CGame::SortTheirTeamX()
 		return a->GetPosition().x_ < b->GetPosition().x_;
 	});
 }
+
