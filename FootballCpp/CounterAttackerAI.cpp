@@ -14,9 +14,9 @@ void CCounterAttackerAI::InitializeOurPlayers()
 
 	playersHomePos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
-		{ 25, 10 },			//eLeftDefender,
+		{ 25, 5 },			//eLeftDefender,
 		{ 80, 30 },			//eCentreDefender,
-		{ 25, 40 },			//eRightDefender,
+		{ 25, 45 },			//eRightDefender,
 		{ 15, 24 },			//eLeftStriker,
 		{ 15, 26 }			//eRightStriker
 	};

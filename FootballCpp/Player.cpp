@@ -250,7 +250,7 @@ void CPlayer::KickShort_Striker()
 				game_.noOfGoalAttemptsByUs++;
 			
 				//try to hit dead centre in case of direction still not aligned.
-				if (fabsf(GetDirection() - angle) > 45.0)
+				if (fabsf(GetDirection() - angle) > 90.0)
 				{
 					shootAt = pitch_.GetTheirGoalCentre();
 					//LOGGER->Log("Inaccurate shoot game_time:%f", GetGame().currentTimeSeconds_);
@@ -355,7 +355,8 @@ void CPlayer::Kick_GoalKeeper()
 		{
 			if (GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS)
 			{
-				Kick(pPassPlayer->GetHomePosition(),speed);
+				
+				Kick({RandomRangeFloat(25.0, 50.0), RandomRangeFloat(0, 50.0)},speed);
 				ResetGoalKeeperWaitTicks();
 			}
 		}
