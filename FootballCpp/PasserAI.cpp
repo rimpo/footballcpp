@@ -6,9 +6,9 @@ void CPasserAI::InitializeOurPlayers()
 {
 	playersHomePos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
-		{ 25, 10 },			//eLeftDefender,
-		{ 55, 25 },			//eCentreDefender,
-		{ 25, 40 },			//eRightDefender,
+		{ 25, 15 },			//eLeftDefender,
+		{ 25, 25 },			//eCentreDefender,
+		{ 25, 35 },			//eRightDefender,
 		{ 83.0, 25.0 },			//eLeftStriker,
 		{ 87.0, 30.0 }			//eRightStriker
 	};
@@ -19,10 +19,12 @@ void CPasserAI::InitializeOurPlayers()
 	playersKickOffPos_ = {
 		{ 0, 25 },			//eGoalKeeper = 0,
 		{ 25, 10 },			//eLeftDefender,
-		{ 40, 25},			//eCentreDefender,
+		{ 49, 25},			//eCentreDefender,
 		{ 25, 40 },			//eRightDefender,
-		{ 49, 24 },			//eLeftStriker,	note:dead player
-		{ 25, 25 }			//eRightStriker     note:dead player 
+		//{ 15, 21.5 },			//eLeftStriker,	note:dead player
+		//{ 15, 28.5 }			//eRightStriker     note:dead player 
+		{ 49, 15 },			//eLeftStriker,	note:dead player
+		{ 49, 35 }			//eRightStriker     note:dead player 
 	};
 
 	//facing towards opponent side
@@ -91,7 +93,7 @@ void CPasserAI::InitializeOurPlayers()
 		{
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eCentreDefender));
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightDefender));
-			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eGoalKeeper));
+			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eGoalKeeper));
 		}
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
@@ -101,10 +103,12 @@ void CPasserAI::InitializeOurPlayers()
 		}
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
-			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eLeftStriker));
+			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eLeftStriker));
+			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eLeftDefender));
+			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightDefender));
 			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightStriker));
 		}
-		else if (pPlayer->GetType() == CPlayer::eLeftStriker)
+		/*else if (pPlayer->GetType() == CPlayer::eLeftStriker)
 		{
 			//pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eRightStriker));
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eCentreDefender));
@@ -113,7 +117,7 @@ void CPasserAI::InitializeOurPlayers()
 		{
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eLeftStriker));
 			pPlayer->AddSupportPlayer(ourTeamPtr->GetPlayerFromPlayerType(CPlayer::eCentreDefender));
-		}
+		}*/
 		
 	}
 	
@@ -147,7 +151,8 @@ void CPasserAI::OnTeamInfoEvent()
 		}
 		else
 		{
-			pPlayer->ChangeState(CPlayerState::ePasserStrikerIdle);
+			//pPlayer->ChangeState(CPlayerState::ePasserStrikerIdle);
+			pPlayer->ChangeState(CPlayerState::eDead);
 		}
 		
 	}
@@ -236,7 +241,7 @@ void CPasserAI::OnCapabilityRequest()
 
 	for (auto& pPlayer : ourPlayers)
 	{
-		if (pPlayer->GetType() == CPlayer::eGoalKeeper)
+		/*if (pPlayer->GetType() == CPlayer::eGoalKeeper)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 90.0;
 			pPlayer->GetCapability().kickingAbility_ = 90.0;
@@ -282,11 +287,11 @@ void CPasserAI::OnCapabilityRequest()
 			pPlayer->GetCapability().runningAbility_ = 0.0;
 			pPlayer->GetCapability().ballControlAbility_ = 0.0;
 			pPlayer->GetCapability().tacklingAbility_ = 0.0;
-		}
+		}*/
 		
 		//pPlayer->GetCapability().kickingAbility_ = 400.0/6;
 
-		/*if (pPlayer->GetType() == CPlayer::eLeftDefender ||
+		if (pPlayer->GetType() == CPlayer::eLeftDefender ||
 			pPlayer->GetType() == CPlayer::eCentreDefender ||
 			pPlayer->GetType() == CPlayer::eRightDefender ||
 			pPlayer->GetType() == CPlayer::eGoalKeeper)
@@ -302,6 +307,6 @@ void CPasserAI::OnCapabilityRequest()
 			pPlayer->GetCapability().runningAbility_ = 0.0;
 			pPlayer->GetCapability().ballControlAbility_ = 0.0;
 			pPlayer->GetCapability().tacklingAbility_ = 0.0;
-		}*/
+		}
 	}
 }

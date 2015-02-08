@@ -962,7 +962,7 @@ bool CPlayer::IsPassSafeTo(CPlayer::Ptr pSupportPlayer)
 		{	
 			float dist = perIntersection.DistanceFrom(pPlayer->GetPosition());
 				
-			if (dist <= 4.0f)
+			if (dist <= 2.0f)
 			{
 				return false;
 			}

@@ -14,7 +14,13 @@ void CPasserDefenderIdleState::Execute(CPlayer* pPlayer)
 	
 	if (pPlayer->HasBall())
 	{
-		pPlayer->Pass();
+		pPlayer->KickShortNoStateChange_Striker();
+		//pPlayer->Pass();
+		
+		/*if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+		{
+			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_ + 5.0f, pPlayer->GetHomePosition().y_});
+		}*/
 	}
 	else if (distanceFromBall < 0.5)
 	{
@@ -31,12 +37,13 @@ void CPasserDefenderIdleState::Execute(CPlayer* pPlayer)
 	{
 		pPlayer->MoveTo(ball_.GetStationaryPosition());
 	}
+	else if (ball_.IsOurGoalKeeperControlling())
+	{
+		pPlayer->MoveTo(pPlayer->GetKickOffPosition());
+	}
 	else if(ball_.IsOurTeamControlling())
 	{
-		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
-		{
-			pPlayer->SetHomePosition( { RandomRangeFloat(15.0, 40.0), pPlayer->GetHomePosition().y_});
-		}
+		
 		
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
@@ -61,6 +68,12 @@ void CPasserMidfielderIdleState::Execute(CPlayer* pPlayer)
 	if (pPlayer->HasBall())
 	{
 		pPlayer->Pass();
+		
+		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
+		{
+			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_ + 5.0, RandomRangeFloat(5.0, 45.0)});
+		}
+		//pPlayer->KickShortNoStateChange_Striker();
 	}
 	else if (distanceFromBall < 0.5)
 	{
@@ -79,10 +92,7 @@ void CPasserMidfielderIdleState::Execute(CPlayer* pPlayer)
 	}
 	else if(ball_.IsOurTeamControlling()) 
 	{
-		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
-		{
-			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_, RandomRangeFloat(5.0, 45.0)});
-		}
+		
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
 	else
@@ -118,6 +128,7 @@ void CPasserStrikerIdleState::Execute(CPlayer* pPlayer)
 		{
 			pPlayer->KickShort(40.0);
 		}
+		pPlayer->KickShortNoStateChange_Striker();
 	}
 	else if (distanceFromBall < 0.5)
 	{

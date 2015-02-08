@@ -32,7 +32,7 @@ bool Test_GetPerpendicularIntersection()
 
 int main(int argc, char* argv[])
 {
-	//srand();
+	srand (time(NULL));
 	
 	Test_GetPerpendicularIntersection();
 
