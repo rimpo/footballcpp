@@ -70,8 +70,8 @@ void CPasserMidfielderIdleState::Execute(CPlayer* pPlayer)
 	{
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
-	else if (pOurClosestPlayer && 
-			 pOurClosestPlayer->GetNumber() == pPlayer->GetNumber() &&
+	else if (pClosestPlayer && 
+			 pClosestPlayer->GetNumber() == pPlayer->GetNumber() &&
 			 action.type_ != CAction::eKick)
 	{
 		pPlayer->MoveTo(ball_.GetStationaryPosition());
@@ -85,13 +85,28 @@ void CPasserMidfielderIdleState::Execute(CPlayer* pPlayer)
 void CPasserStrikerIdleState::Execute(CPlayer* pPlayer)
 {
 	float distanceFromBall = ball_.GetPosition().DistanceFrom(pPlayer->GetPosition());
-	CPlayer::Ptr pOurClosestPlayer = GetGame().GetOurClosestPlayer();
+	CPlayer::Ptr pClosestPlayer = GetGame().GetClosestPlayer();
+	
+	auto& action = pPlayer->GetAction(); 
 	
 	Position perIntersection;
 	
 	if (pPlayer->HasBall())
 	{
-		pPlayer->Pass();
+		if (pPlayer->GetPosition().x_ > 83.0f)
+		{
+			float direction = pPlayer->GetPosition().AngleWith(pitch_.GetTheirGoalCentre());
+			if(!pPlayer->IsTheirPlayerNear(2.0f) &&
+				!ApproxEqual(direction,pPlayer->GetDirection(),0.1f))
+			{
+				pPlayer->TurnTo(direction);
+			}
+			else
+				pPlayer->Kick(pitch_.GetTheirGoalCentre(), 100.0f);
+			
+		}
+		else
+			pPlayer->Pass();	
 	}
 	else if (distanceFromBall < 0.5)
 	{
@@ -106,10 +121,11 @@ void CPasserStrikerIdleState::Execute(CPlayer* pPlayer)
 	{
 		pPlayer->MoveTo(pPlayer->GetHomePosition());
 	}
-	else if (pOurClosestPlayer && 
-			 pOurClosestPlayer->GetNumber() == pPlayer->GetNumber())
+	else if (pClosestPlayer && 
+			 pClosestPlayer->GetNumber() == pPlayer->GetNumber() &&
+			 action.type_ != CAction::eKick)
 	{
-		//pPlayer->MoveTo(ball_.GetStationaryPosition());
+		pPlayer->MoveTo(ball_.GetStationaryPosition());
 	}
 	else 
 	{

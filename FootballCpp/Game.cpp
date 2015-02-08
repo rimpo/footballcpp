@@ -8,8 +8,11 @@ CGame::CGame()
 	CPlayerState::InitGlobalPlayerStateVector();
 	//creating strategy
 	//strategyPtr_ = make_shared<CCounterAttackerAI>();
+#ifdef _DEBUG
 	strategyPtr_ = make_shared<CPasserAI>();
-
+#else
+	strategyPtr_ = make_shared<CCounterAttackerAI>();
+#endif 
 	strategyPtr_->CreateAllPlayers();
 
 	//copying over all the players created by strategy. (helps in creating custom player)

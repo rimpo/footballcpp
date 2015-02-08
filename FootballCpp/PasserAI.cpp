@@ -9,8 +9,8 @@ void CPasserAI::InitializeOurPlayers()
 		{ 25, 10 },			//eLeftDefender,
 		{ 60, 25 },			//eCentreDefender,
 		{ 25, 40 },			//eRightDefender,
-		{ 85, 15 },			//eLeftStriker,
-		{ 85, 35 }			//eRightStriker
+		{ 86.5, 15 },			//eLeftStriker,
+		{ 86.5, 35 }			//eRightStriker
 	};
 
 	//facing towards opponent side
@@ -239,6 +239,7 @@ void CPasserAI::OnCapabilityRequest()
 		if (pPlayer->GetType() == CPlayer::eGoalKeeper)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 90.0;
+			pPlayer->GetCapability().kickingAbility_ = 70.0;
 			pPlayer->GetCapability().runningAbility_ = 100.0;
 			pPlayer->GetCapability().ballControlAbility_ = 100.0;
 			pPlayer->GetCapability().tacklingAbility_ = 0.0;
@@ -246,6 +247,7 @@ void CPasserAI::OnCapabilityRequest()
 		else if (pPlayer->GetType() == CPlayer::eLeftDefender)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 65.0;
+			pPlayer->GetCapability().kickingAbility_ = 70.0;
 			pPlayer->GetCapability().runningAbility_ = 80.0;
 			pPlayer->GetCapability().ballControlAbility_ = 65.0;
 			pPlayer->GetCapability().tacklingAbility_ = 100.0;
@@ -253,6 +255,7 @@ void CPasserAI::OnCapabilityRequest()
 		else if (pPlayer->GetType() == CPlayer::eRightDefender)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 70.0;
+			pPlayer->GetCapability().kickingAbility_ = 70.0;
 			pPlayer->GetCapability().runningAbility_ = 80.0;
 			pPlayer->GetCapability().ballControlAbility_ = 70.0;
 			pPlayer->GetCapability().tacklingAbility_ = 100.0;
@@ -260,19 +263,20 @@ void CPasserAI::OnCapabilityRequest()
 		else if (pPlayer->GetType() == CPlayer::eCentreDefender)
 		{
 			//pPlayer->GetCapability().kickingAbility_ = 70.0;
+			pPlayer->GetCapability().kickingAbility_ = 80.0;
 			pPlayer->GetCapability().runningAbility_ = 50.0;
 			pPlayer->GetCapability().ballControlAbility_ = 55.0;
 			pPlayer->GetCapability().tacklingAbility_ = 55.0;
 		}
 		else 
 		{
-			//pPlayer->GetCapability().kickingAbility_ = 50.0;
+			pPlayer->GetCapability().kickingAbility_ = 55.0;
 			pPlayer->GetCapability().runningAbility_ = 45.0;
 			pPlayer->GetCapability().ballControlAbility_ = 55.0;
 			pPlayer->GetCapability().tacklingAbility_ = 55.0;
 		}
 		
-		pPlayer->GetCapability().kickingAbility_ = 400.0/6;
+		//pPlayer->GetCapability().kickingAbility_ = 400.0/6;
 
 		/*if (pPlayer->GetType() == CPlayer::eLeftDefender ||
 			pPlayer->GetType() == CPlayer::eCentreDefender ||
