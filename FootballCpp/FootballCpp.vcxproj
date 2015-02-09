@@ -87,6 +87,8 @@
     <ClInclude Include="Game.h" />
     <ClInclude Include="GoalkeeperState.h" />
     <ClInclude Include="Logger.h" />
+    <ClInclude Include="PasserAI.h" />
+    <ClInclude Include="PasserPlayerState.h" />
     <ClInclude Include="Pitch.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="PlayerState.h" />
@@ -108,6 +110,8 @@
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GoalKeeperState.cpp" />
     <ClCompile Include="Logger.cpp" />
+    <ClCompile Include="PasserAI.cpp" />
+    <ClCompile Include="PasserPlayerState.cpp" />
     <ClCompile Include="Pitch.cpp" />
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="PlayerState.cpp" />

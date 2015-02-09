@@ -71,7 +71,7 @@ void CPasserMidfielderIdleState::Execute(CPlayer* pPlayer)
 		
 		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
 		{
-			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_ + 5.0, RandomRangeFloat(5.0, 45.0)});
+			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_ + 5.0f, RandomRangeFloat(5.0f, 45.0f)});
 		}
 		//pPlayer->KickShortNoStateChange_Striker();
 	}
@@ -149,7 +149,7 @@ void CPasserStrikerIdleState::Execute(CPlayer* pPlayer)
 	{
 		if (pPlayer->GetPosition().ApproxEqual(pPlayer->GetHomePosition(),POSITION_BIG_TOLERANCE))
 		{
-			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_, RandomRangeFloat(15.0, 35.0)});
+			pPlayer->SetHomePosition( { pPlayer->GetHomePosition().x_, RandomRangeFloat(15.0f, 35.0f)});
 		}
 		
 		pPlayer->MoveTo(pPlayer->GetHomePosition());

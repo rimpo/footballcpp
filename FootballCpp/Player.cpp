@@ -356,7 +356,7 @@ void CPlayer::Kick_GoalKeeper()
 			if (GetGoalKeeperWaitTicks() > MAX_GOALKEEPER_WAIT_TICKS)
 			{
 				
-				Kick({RandomRangeFloat(25.0, 50.0), RandomRangeFloat(0, 50.0)},speed);
+				Kick({RandomRangeFloat(25.0f, 50.0f), RandomRangeFloat(0.0f, 50.0f)},speed);
 				ResetGoalKeeperWaitTicks();
 			}
 		}
